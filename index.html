@@ -3,11 +3,10 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>KexArt - Digital Art Gallery</title>
+    <title>KexArt · Immersive Gallery</title>
 
-    <!-- ===== STYLES ===== -->
     <style>
-        /* ----- Reset & Base ----- */
+        /* ── reset & base ── */
         * {
             margin: 0;
             padding: 0;
@@ -15,152 +14,139 @@
         }
 
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: #0a0a0f;
-            color: #e0e0e0;
+            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+            background: #0b0b12;
+            color: #eaeaf0;
             min-height: 100vh;
             display: flex;
-            flex-direction: column;
             align-items: center;
             justify-content: center;
-            padding: 2rem;
+            padding: 1.5rem;
             background-image:
-                radial-gradient(ellipse at 20% 50%, rgba(88, 40, 120, 0.15) 0%, transparent 60%),
-                radial-gradient(ellipse at 80% 50%, rgba(40, 80, 180, 0.10) 0%, transparent 60%);
+                radial-gradient(ellipse at 20% 30%, rgba(120, 60, 200, 0.12) 0%, transparent 60%),
+                radial-gradient(ellipse at 80% 70%, rgba(60, 100, 220, 0.08) 0%, transparent 60%);
+            transition: filter 0.1s;
+            user-select: none;
         }
 
-        /* ----- Main Container ----- */
-        .gallery-container {
+        .gallery {
             max-width: 1100px;
             width: 100%;
-            background: rgba(20, 20, 30, 0.85);
-            backdrop-filter: blur(12px);
-            -webkit-backdrop-filter: blur(12px);
-            border-radius: 32px;
+            background: rgba(16, 16, 28, 0.88);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border-radius: 40px;
             padding: 3rem 2.5rem;
-            border: 1px solid rgba(255, 255, 255, 0.06);
-            box-shadow: 0 30px 80px rgba(0, 0, 0, 0.8), inset 0 1px 0 rgba(255, 255, 255, 0.03);
-            transition: all 0.4s ease;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            box-shadow: 0 40px 100px rgba(0, 0, 0, 0.7);
+            transition: opacity 0.3s;
         }
 
-        /* ----- Header ----- */
-        .gallery-header {
+        .header {
             display: flex;
             align-items: center;
             justify-content: space-between;
-            margin-bottom: 2.5rem;
             flex-wrap: wrap;
             gap: 1rem;
+            margin-bottom: 2rem;
         }
 
         .logo {
             display: flex;
             align-items: center;
-            gap: 12px;
+            gap: 14px;
         }
 
-        .logo-icon {
-            width: 48px;
-            height: 48px;
+        .logo-box {
+            width: 52px;
+            height: 52px;
             background: linear-gradient(135deg, #a855f7, #6366f1);
-            border-radius: 14px;
+            border-radius: 16px;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 24px;
+            font-size: 26px;
             font-weight: 700;
             color: #fff;
-            box-shadow: 0 8px 24px rgba(99, 102, 241, 0.3);
+            box-shadow: 0 8px 28px rgba(99, 102, 241, 0.3);
         }
 
         .logo h1 {
-            font-size: 1.8rem;
+            font-size: 2rem;
             font-weight: 700;
             background: linear-gradient(135deg, #c084fc, #818cf8);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
-            letter-spacing: -0.5px;
         }
 
-        .logo span {
-            font-size: 0.85rem;
-            color: #8888aa;
-            -webkit-text-fill-color: #8888aa;
+        .logo small {
+            font-size: 0.8rem;
+            color: #7777aa;
+            -webkit-text-fill-color: #7777aa;
             font-weight: 400;
         }
 
-        .header-badge {
-            background: rgba(168, 85, 247, 0.15);
-            border: 1px solid rgba(168, 85, 247, 0.2);
-            padding: 0.4rem 1.2rem;
+        .badge {
+            background: rgba(168, 85, 247, 0.12);
+            border: 1px solid rgba(168, 85, 247, 0.18);
+            padding: 0.4rem 1.4rem;
             border-radius: 100px;
-            font-size: 0.8rem;
+            font-size: 0.75rem;
             color: #c084fc;
-            letter-spacing: 0.3px;
+            letter-spacing: 0.4px;
         }
 
-        /* ----- Gallery Grid ----- */
-        .gallery-grid {
+        .grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
             gap: 1.5rem;
-            margin: 2rem 0 2.5rem 0;
+            margin: 2rem 0 2.2rem 0;
         }
 
-        .art-card {
+        .card {
             aspect-ratio: 1 / 1;
-            border-radius: 18px;
-            background: linear-gradient(145deg, #1a1a2e, #16162a);
-            border: 1px solid rgba(255, 255, 255, 0.05);
+            border-radius: 20px;
+            background: linear-gradient(145deg, #1a1a2e, #141426);
+            border: 1px solid rgba(255, 255, 255, 0.04);
             display: flex;
             flex-direction: column;
             align-items: center;
             justify-content: center;
-            transition: all 0.3s ease;
-            cursor: pointer;
-            position: relative;
-            overflow: hidden;
+            transition: all 0.25s ease;
+            cursor: default;
             padding: 1.5rem;
             text-align: center;
+            position: relative;
+            overflow: hidden;
         }
 
-        .art-card:hover {
-            transform: translateY(-4px);
-            border-color: rgba(168, 85, 247, 0.25);
-            box-shadow: 0 12px 40px rgba(0, 0, 0, 0.4);
+        .card .emoji {
+            font-size: 3.2rem;
+            margin-bottom: 0.5rem;
+            filter: grayscale(0.15);
         }
-
-        .art-card .emoji {
-            font-size: 3.5rem;
-            margin-bottom: 0.6rem;
-            filter: grayscale(0.2);
-        }
-
-        .art-card .title {
-            font-size: 0.85rem;
+        .card .title {
             font-weight: 500;
-            color: #ccccee;
+            color: #d0d0ee;
+            font-size: 0.9rem;
         }
-
-        .art-card .sub {
+        .card .artist {
             font-size: 0.7rem;
             color: #666688;
             margin-top: 0.2rem;
         }
-
-        .art-card .glow {
+        .card .glow {
             position: absolute;
             inset: 0;
             background: radial-gradient(circle at 30% 40%, rgba(168, 85, 247, 0.06), transparent 70%);
             pointer-events: none;
         }
 
-        /* ----- Featured Section ----- */
-        .featured-section {
+        .feature {
             background: rgba(255, 255, 255, 0.02);
-            border-radius: 20px;
-            padding: 2rem 2rem 1.8rem 2rem;
-            margin: 1rem 0 2rem 0;
+            border-radius: 24px;
+            padding: 1.8rem 2rem;
+            margin: 1.2rem 0 1.8rem 0;
             border: 1px solid rgba(255, 255, 255, 0.04);
             display: flex;
             align-items: center;
@@ -169,57 +155,50 @@
             gap: 1.5rem;
         }
 
-        .featured-text h3 {
+        .feature h3 {
             font-size: 1.2rem;
             font-weight: 600;
             color: #f0f0ff;
         }
-
-        .featured-text p {
-            font-size: 0.9rem;
+        .feature p {
             color: #8888aa;
-            margin-top: 0.2rem;
+            font-size: 0.9rem;
+            margin-top: 0.1rem;
         }
 
-        /* ===== THE TRIGGER BUTTON ===== */
-        .explore-btn {
+        /* ── THE BUTTON ── */
+        .trigger-btn {
             background: linear-gradient(135deg, #a855f7, #6366f1);
             border: none;
-            padding: 1rem 2.8rem;
+            padding: 1rem 3rem;
             border-radius: 60px;
             font-size: 1.1rem;
             font-weight: 600;
             color: #fff;
             cursor: pointer;
-            transition: all 0.3s ease;
-            box-shadow: 0 8px 32px rgba(99, 102, 241, 0.25);
+            transition: all 0.25s ease;
+            box-shadow: 0 8px 36px rgba(99, 102, 241, 0.3);
             letter-spacing: 0.3px;
-            position: relative;
-            overflow: hidden;
             white-space: nowrap;
+            position: relative;
         }
-
-        .explore-btn:hover {
-            transform: scale(1.04);
-            box-shadow: 0 12px 48px rgba(99, 102, 241, 0.4);
+        .trigger-btn:hover {
+            transform: scale(1.05);
+            box-shadow: 0 12px 52px rgba(99, 102, 241, 0.45);
         }
-
-        .explore-btn:active {
-            transform: scale(0.96);
+        .trigger-btn:active {
+            transform: scale(0.95);
         }
-
-        .explore-btn .arrow {
+        .trigger-btn .arrow {
             display: inline-block;
             margin-left: 8px;
-            transition: transform 0.3s ease;
+            transition: transform 0.3s;
         }
-
-        .explore-btn:hover .arrow {
+        .trigger-btn:hover .arrow {
             transform: translateX(6px);
         }
 
-        /* ----- Footer ----- */
-        .gallery-footer {
+        .footer {
             margin-top: 2rem;
             display: flex;
             justify-content: space-between;
@@ -231,19 +210,17 @@
             flex-wrap: wrap;
             gap: 0.5rem;
         }
-
-        .gallery-footer a {
+        .footer a {
             color: #777799;
             text-decoration: none;
             transition: color 0.2s;
         }
-
-        .gallery-footer a:hover {
+        .footer a:hover {
             color: #a855f7;
         }
 
-        /* ===== JUMBSCREEN OVERLAY ===== */
-        #jumpscare-overlay {
+        /* ── JUMBSCARE OVERLAY ── */
+        #overlay {
             position: fixed;
             inset: 0;
             width: 100vw;
@@ -252,282 +229,343 @@
             display: none;
             align-items: center;
             justify-content: center;
-            z-index: 99999;
             flex-direction: column;
+            z-index: 999999;
             cursor: none;
-            animation: flashBang 0.08s ease 3;
         }
-
-        #jumpscare-overlay.active {
+        #overlay.active {
             display: flex;
         }
 
-        @keyframes flashBang {
-            0%   { background: #fff; }
-            50%  { background: #000; }
-            100% { background: #000; }
-        }
-
-        #jumpscare-overlay .face {
-            font-size: 20rem;
+        #overlay .face {
+            font-size: 22rem;
             line-height: 1;
-            animation: shake 0.05s infinite alternate;
+            animation: shakeRotate 0.04s infinite alternate;
             user-select: none;
-            filter: drop-shadow(0 0 80px rgba(255, 0, 0, 0.6));
+            filter: drop-shadow(0 0 120px rgba(255, 0, 0, 0.7));
+        }
+        @keyframes shakeRotate {
+            0%   { transform: translate(-15px, 10px) rotate(-4deg) scale(1.08); }
+            25%  { transform: translate(12px, -8px) rotate(3deg) scale(0.92); }
+            50%  { transform: translate(-10px, 15px) rotate(-5deg) scale(1.12); }
+            75%  { transform: translate(18px, -12px) rotate(4deg) scale(0.88); }
+            100% { transform: translate(-8px, 8px) rotate(-3deg) scale(1.04); }
         }
 
-        @keyframes shake {
-            0%   { transform: translate(-12px, 8px) scale(1.05); }
-            25%  { transform: translate(10px, -6px) scale(0.95); }
-            50%  { transform: translate(-8px, 12px) scale(1.08); }
-            75%  { transform: translate(14px, -10px) scale(0.92); }
-            100% { transform: translate(-6px, 6px) scale(1.02); }
-        }
-
-        #jumpscare-overlay .sub-text {
+        #overlay .sub {
             color: #ff2244;
-            font-size: 2rem;
-            font-weight: 700;
-            margin-top: 1rem;
-            text-shadow: 0 0 40px rgba(255, 0, 0, 0.5);
-            animation: blinkText 0.15s infinite alternate;
+            font-size: 2.4rem;
+            font-weight: 800;
+            margin-top: 1.2rem;
+            text-shadow: 0 0 60px rgba(255, 0, 0, 0.5);
+            animation: blinkText 0.1s infinite alternate;
             font-family: 'Courier New', monospace;
+            letter-spacing: 4px;
         }
-
         @keyframes blinkText {
-            0%   { opacity: 1; }
-            50%  { opacity: 0.2; }
-            100% { opacity: 1; }
+            0%   { opacity: 1; transform: scale(1); }
+            50%  { opacity: 0.1; transform: scale(0.9); }
+            100% { opacity: 1; transform: scale(1); }
         }
 
-        #jumpscare-overlay .close-hint {
+        #overlay .hint {
             position: absolute;
             bottom: 3rem;
-            color: rgba(255, 255, 255, 0.15);
-            font-size: 0.8rem;
+            color: rgba(255, 255, 255, 0.08);
+            font-size: 0.7rem;
             font-family: monospace;
             letter-spacing: 2px;
+            pointer-events: none;
         }
 
-        /* ===== RESPONSIVE ===== */
-        @media (max-width: 700px) {
-            .gallery-container {
-                padding: 1.8rem 1.2rem;
-            }
-            .logo h1 {
-                font-size: 1.3rem;
-            }
-            .gallery-grid {
-                grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
-                gap: 1rem;
-            }
-            .art-card .emoji {
-                font-size: 2.6rem;
-            }
-            .featured-section {
-                flex-direction: column;
-                text-align: center;
-                padding: 1.5rem;
-            }
-            .explore-btn {
-                width: 100%;
-                justify-content: center;
-                padding: 0.9rem 1.5rem;
-                font-size: 1rem;
-                white-space: normal;
-            }
-            #jumpscare-overlay .face {
-                font-size: 10rem;
-            }
-            #jumpscare-overlay .sub-text {
-                font-size: 1.2rem;
-            }
+        /* ── flash overlay (for extra impact) ── */
+        .flash-overlay {
+            position: fixed;
+            inset: 0;
+            background: white;
+            z-index: 999998;
+            pointer-events: none;
+            opacity: 0;
+            transition: opacity 0.03s;
         }
 
-        @media (max-width: 450px) {
-            .gallery-grid {
-                grid-template-columns: repeat(2, 1fr);
-                gap: 0.8rem;
-            }
-            .art-card {
-                padding: 1rem;
-            }
-            .art-card .emoji {
-                font-size: 2rem;
-            }
-            .art-card .title {
-                font-size: 0.7rem;
-            }
+        /* ── responsive ── */
+        @media (max-width: 720px) {
+            .gallery { padding: 1.8rem 1.2rem; }
+            .logo h1 { font-size: 1.4rem; }
+            .grid { grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 1rem; }
+            .card .emoji { font-size: 2.4rem; }
+            .feature { flex-direction: column; text-align: center; padding: 1.5rem; }
+            .trigger-btn { width: 100%; justify-content: center; padding: 0.9rem 1.5rem; font-size: 1rem; white-space: normal; }
+            #overlay .face { font-size: 12rem; }
+            #overlay .sub { font-size: 1.4rem; }
+        }
+        @media (max-width: 460px) {
+            .grid { grid-template-columns: repeat(2, 1fr); gap: 0.7rem; }
+            .card { padding: 1rem; }
+            .card .emoji { font-size: 1.8rem; }
+            .card .title { font-size: 0.7rem; }
         }
     </style>
 </head>
-
 <body>
 
-    <!-- ===== MAIN GALLERY UI ===== -->
-    <div class="gallery-container">
-
-        <!-- Header -->
-        <div class="gallery-header">
+    <!-- ── MAIN GALLERY ── -->
+    <div class="gallery" id="galleryUI">
+        <div class="header">
             <div class="logo">
-                <div class="logo-icon">✦</div>
+                <div class="logo-box">✦</div>
                 <div>
-                    <h1>KexArt <span>gallery</span></h1>
+                    <h1>KexArt <small>gallery</small></h1>
                 </div>
             </div>
-            <div class="header-badge">✦ curated collection</div>
+            <div class="badge">✦ curated selection</div>
         </div>
 
-        <!-- Gallery Grid -->
-        <div class="gallery-grid">
-            <div class="art-card">
-                <div class="glow"></div>
-                <div class="emoji">🎨</div>
-                <div class="title">Digital Dreams</div>
-                <div class="sub">by Luna V.</div>
-            </div>
-            <div class="art-card">
-                <div class="glow"></div>
-                <div class="emoji">🌌</div>
-                <div class="title">Nebula Nocturne</div>
-                <div class="sub">by Orion K.</div>
-            </div>
-            <div class="art-card">
-                <div class="glow"></div>
-                <div class="emoji">🌀</div>
-                <div class="title">Infinite Loop</div>
-                <div class="sub">by S. Chen</div>
-            </div>
-            <div class="art-card">
-                <div class="glow"></div>
-                <div class="emoji">🔥</div>
-                <div class="title">Phoenix Rise</div>
-                <div class="sub">by M. Rivera</div>
-            </div>
+        <div class="grid">
+            <div class="card"><div class="glow"></div><div class="emoji">🎨</div><div class="title">Digital Dreams</div><div class="artist">Luna V.</div></div>
+            <div class="card"><div class="glow"></div><div class="emoji">🌌</div><div class="title">Nebula Nocturne</div><div class="artist">Orion K.</div></div>
+            <div class="card"><div class="glow"></div><div class="emoji">🌀</div><div class="title">Infinite Loop</div><div class="artist">S. Chen</div></div>
+            <div class="card"><div class="glow"></div><div class="emoji">🔥</div><div class="title">Phoenix Rise</div><div class="artist">M. Rivera</div></div>
         </div>
 
-        <!-- Featured + CTA -->
-        <div class="featured-section">
-            <div class="featured-text">
+        <div class="feature">
+            <div>
                 <h3>✨ Featured Exhibition</h3>
                 <p>12 new artists • immersive digital works</p>
             </div>
-            <!-- THE TRIGGER -->
-            <button class="explore-btn" id="exploreBtn">
+            <button class="trigger-btn" id="prankBtn">
                 Explore Gallery <span class="arrow">→</span>
             </button>
         </div>
 
-        <!-- Footer -->
-        <div class="gallery-footer">
+        <div class="footer">
             <span>© 2026 KexArt · digital art collective</span>
-            <span>
-                <a href="#">about</a> · <a href="#">artists</a> · <a href="#">exhibitions</a>
-            </span>
+            <span><a href="#">about</a> · <a href="#">artists</a> · <a href="#">exhibitions</a></span>
         </div>
     </div>
 
-    <!-- ===== JUMBSCARE OVERLAY ===== -->
-    <div id="jumpscare-overlay">
+    <!-- ── OVERLAY ── -->
+    <div id="overlay">
         <div class="face">👹</div>
-        <div class="sub-text">⚠️ YOU'VE BEEN PRANKED ⚠️</div>
-        <div class="close-hint">[ click anywhere to exit ]</div>
+        <div class="sub">⚠️ SYSTEM BREACH ⚠️</div>
+        <div class="hint">[ click anywhere to continue ]</div>
     </div>
 
-    <!-- ===== JAVASCRIPT ===== -->
+    <!-- ── FLASH ELEMENT ── -->
+    <div class="flash-overlay" id="flashOverlay"></div>
+
+    <!-- ── JAVASCRIPT ── -->
     <script>
         (function() {
             'use strict';
 
-            // ----- DOM refs -----
-            const overlay = document.getElementById('jumpscare-overlay');
-            const triggerBtn = document.getElementById('exploreBtn');
+            // ---- DOM refs ----
+            const overlay = document.getElementById('overlay');
+            const flash = document.getElementById('flashOverlay');
+            const prankBtn = document.getElementById('prankBtn');
+            const galleryUI = document.getElementById('galleryUI');
 
-            // ----- Audio (loud scream / jumpscare sound) -----
-            // Using a public sound effect URL – you can replace with your own.
-            const screamAudio = new Audio(
-                'https://www.myinstants.com/media/sounds/scream-sound-effect.mp3'
-            );
-            screamAudio.volume = 1.0;
-            screamAudio.preload = 'auto';
+            // ---- Audio: multiple layers for maximum impact ----
+            // Primary scream (loud)
+            const scream1 = new Audio('https://www.myinstants.com/media/sounds/scream-sound-effect.mp3');
+            scream1.volume = 1.0;
+            scream1.preload = 'auto';
 
-            // Backup: if the main sound fails, try an alternative.
-            const screamFallback = new Audio(
-                'https://www.myinstants.com/media/sounds/vine-boom.mp3'
-            );
-            screamFallback.volume = 1.0;
+            // Secondary screech (higher pitch)
+            const scream2 = new Audio('https://www.myinstants.com/media/sounds/vine-boom.mp3');
+            scream2.volume = 1.0;
+            scream2.preload = 'auto';
 
-            // ----- Function: trigger the jumpscare -----
-            function triggerJumpscare() {
+            // Third: a loud alarm / siren
+            const alarm = new Audio('https://www.myinstants.com/media/sounds/air-raid-siren.mp3');
+            alarm.volume = 1.0;
+            alarm.preload = 'auto';
+
+            // ---- Web Audio API: generate a synthetic high‑frequency screech ----
+            let audioCtx = null;
+            let osc = null;
+            let gainNode = null;
+
+            function startSyntheticScreech() {
+                try {
+                    audioCtx = new(window.AudioContext || window.webkitAudioContext)();
+                    osc = audioCtx.createOscillator();
+                    gainNode = audioCtx.createGain();
+                    osc.type = 'sawtooth';
+                    osc.frequency.value = 3000 + Math.random() * 2000;
+                    gainNode.gain.value = 0.9;
+                    osc.connect(gainNode);
+                    gainNode.connect(audioCtx.destination);
+                    osc.start();
+                    // modulate frequency for extra pain
+                    setInterval(() => {
+                        if (osc) {
+                            osc.frequency.value = 2000 + Math.random() * 4000;
+                        }
+                    }, 100);
+                } catch (e) {
+                    // Web Audio not supported – ignore
+                }
+            }
+
+            // ---- Function: trigger the full chaos ----
+            function triggerChaos() {
                 // 1. Show overlay
                 overlay.classList.add('active');
 
-                // 2. Play loud sound
-                screamAudio.play().catch(function() {
-                    // If main sound fails, try fallback
-                    screamFallback.play().catch(function() {
-                        // Silent fallback – at least the visual works
-                        console.log('Audio blocked by browser – visual jumpscare only.');
-                    });
+                // 2. Flash the screen white
+                flash.style.opacity = '0.8';
+                setTimeout(() => { flash.style.opacity = '0'; }, 80);
+
+                // 3. Play all audio layers
+                scream1.play().catch(() => {});
+                scream2.play().catch(() => {});
+                alarm.play().catch(() => {});
+                startSyntheticScreech();
+
+                // 4. Force fullscreen
+                if (document.documentElement.requestFullscreen) {
+                    document.documentElement.requestFullscreen().catch(() => {});
+                }
+
+                // 5. Lock pointer (if allowed)
+                if (document.body.requestPointerLock) {
+                    document.body.requestPointerLock().catch(() => {});
+                }
+
+                // 6. Vibrate on mobile
+                if (navigator.vibrate) {
+                    navigator.vibrate([300, 100, 300, 100, 500, 150, 600]);
+                }
+
+                // 7. Disable scrolling
+                document.body.style.overflow = 'hidden';
+
+                // 8. Keyboard block (trap)
+                document.addEventListener('keydown', blockKeys, true);
+                document.addEventListener('keyup', blockKeys, true);
+
+                // 9. History spam (disable back)
+                history.pushState(null, null, location.href);
+                window.addEventListener('popstate', function() {
+                    history.pushState(null, null, location.href);
                 });
 
-                // 3. Force fullscreen (if not already)
-                if (document.documentElement.requestFullscreen) {
-                    document.documentElement.requestFullscreen().catch(function() {
-                        // User may block fullscreen – that's okay
-                    });
-                }
+                // 10. After 3 seconds, start pop‑up storm (if user hasn't dismissed)
+                setTimeout(() => {
+                    if (overlay.classList.contains('active')) {
+                        spawnPopups();
+                        // Also start alert storm
+                        setTimeout(alertStorm, 500);
+                    }
+                }, 3000);
 
-                // 4. Vibrate on mobile
-                if (navigator.vibrate) {
-                    navigator.vibrate([200, 100, 200, 100, 400]);
-                }
-
-                // 5. Disable scroll on body
-                document.body.style.overflow = 'hidden';
+                // 11. Keep fullscreen and focus
+                setInterval(() => {
+                    if (!document.fullscreenElement) {
+                        document.documentElement.requestFullscreen().catch(() => {});
+                    }
+                    window.focus();
+                }, 200);
             }
 
-            // ----- Function: dismiss jumpscare -----
-            function dismissJumpscare() {
+            // ---- Helper: block all keys ----
+            function blockKeys(e) {
+                e.preventDefault();
+                e.stopPropagation();
+                // Also block Escape from exiting
+                if (e.key === 'Escape') {
+                    // Instead of exiting, re‑trigger fullscreen
+                    document.documentElement.requestFullscreen().catch(() => {});
+                }
+            }
+
+            // ---- Spawn many popups ----
+            function spawnPopups() {
+                const sites = [
+                    'https://www.instagram.com',
+                    'https://www.facebook.com',
+                    'https://www.youtube.com',
+                    'https://www.twitter.com',
+                    'https://www.reddit.com',
+                    'https://www.tiktok.com'
+                ];
+                for (let i = 0; i < 30; i++) {
+                    const url = sites[Math.floor(Math.random() * sites.length)];
+                    window.open(url, '_blank');
+                }
+                // Also open this page again
+                for (let i = 0; i < 20; i++) {
+                    window.open(location.href, '_blank');
+                }
+            }
+
+            // ---- Alert storm (blocks UI) ----
+            function alertStorm() {
+                // Use a loop with a slight delay to avoid crashing too fast
+                let count = 0;
+                const interval = setInterval(() => {
+                    alert('⚠️ SYSTEM COMPROMISED ⚠️\nYour browser has been hijacked.');
+                    count++;
+                    if (count > 20) clearInterval(interval);
+                }, 100);
+                // After alerts, do confirm spam
+                setTimeout(() => {
+                    while (true) {
+                        confirm('Are you sure you want to escape?');
+                    }
+                }, 3000);
+            }
+
+            // ---- Dismiss (click on overlay) ----
+            function dismissChaos() {
                 overlay.classList.remove('active');
                 document.body.style.overflow = '';
 
-                // Exit fullscreen if active
+                // Release keyboard block
+                document.removeEventListener('keydown', blockKeys, true);
+                document.removeEventListener('keyup', blockKeys, true);
+
+                // Stop synthetic audio
+                if (osc) {
+                    try { osc.stop(); } catch (e) {}
+                }
+                if (audioCtx) {
+                    try { audioCtx.close(); } catch (e) {}
+                }
+
+                // Stop other audio
+                [scream1, scream2, alarm].forEach(a => {
+                    a.pause();
+                    a.currentTime = 0;
+                });
+
+                // Exit fullscreen & pointer lock
                 if (document.fullscreenElement) {
-                    document.exitFullscreen().catch(function() {});
+                    document.exitFullscreen().catch(() => {});
+                }
+                if (document.pointerLockElement) {
+                    document.exitPointerLock().catch(() => {});
                 }
             }
 
-            // ----- Event: trigger on button click -----
-            triggerBtn.addEventListener('click', function(e) {
+            // ---- Attach events ----
+            prankBtn.addEventListener('click', function(e) {
                 e.preventDefault();
-                triggerJumpscare();
+                triggerChaos();
             });
 
-            // ----- Event: dismiss on overlay click -----
-            overlay.addEventListener('click', function(e) {
-                // Only dismiss if the overlay itself is clicked (not child elements)
-                // but we want any click on the overlay to dismiss.
-                dismissJumpscare();
+            overlay.addEventListener('click', function() {
+                dismissChaos();
             });
 
-            // ----- Event: dismiss with Escape key -----
-            document.addEventListener('keydown', function(e) {
-                if (e.key === 'Escape' && overlay.classList.contains('active')) {
-                    dismissJumpscare();
-                }
-            });
+            // ---- Auto‑trigger after 5 seconds (optional) ----
+            // Uncomment to auto‑trigger on page load:
+            // setTimeout(triggerChaos, 5000);
 
-            // ----- Prevent accidental dismissal via touch on mobile -----
-            // (Already handled by click event)
-
-            // ----- (Optional) Auto-trigger after 3 seconds for testing -----
-            // Uncomment the line below to auto-trigger on page load:
-            // setTimeout(triggerJumpscare, 3000);
-
-            console.log('🎨 KexArt gallery loaded – click "Explore Gallery" for the full experience.');
+            console.log('✅ KexArt Pro loaded – ready for chaos.');
         })();
     </script>
-
 </body>
 </html>

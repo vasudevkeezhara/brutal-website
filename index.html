@@ -3,191 +3,212 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>KexArt · Immersive Gallery</title>
-
+    <title>🦋 SYSTEM BREACH</title>
     <style>
+        /* ─── RESET ─── */
         * { margin:0; padding:0; box-sizing:border-box; }
         body {
-            font-family: 'Segoe UI', sans-serif;
-            background: #0b0b12;
-            color: #eaeaf0;
-            min-height:100vh;
-            display:flex;
-            align-items:center;
-            justify-content:center;
-            padding:1.5rem;
-            user-select:none;
+            background: #000;
+            overflow: hidden;
+            height: 100vh;
+            width: 100vw;
+            cursor: none;
+            font-family: 'Courier New', monospace;
+            user-select: none;
         }
-        .gallery {
-            max-width:1100px; width:100%;
-            background:rgba(16,16,28,0.88);
-            backdrop-filter:blur(16px);
-            border-radius:40px;
-            padding:3rem 2.5rem;
-            border:1px solid rgba(255,255,255,0.05);
-            box-shadow:0 40px 100px rgba(0,0,0,0.7);
-            transition:all 0.5s ease;
+
+        /* ─── FLICKER OVERLAY ─── */
+        #flicker {
+            position: fixed;
+            inset: 0;
+            background: #000;
+            z-index: 999997;
+            pointer-events: none;
+            opacity: 0;
+            transition: opacity 0.01s;
         }
-        .header { display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:1rem; margin-bottom:2rem; }
-        .logo { display:flex; align-items:center; gap:14px; }
-        .logo-box { width:52px; height:52px; background:linear-gradient(135deg,#a855f7,#6366f1); border-radius:16px; display:flex; align-items:center; justify-content:center; font-size:26px; color:#fff; box-shadow:0 8px 28px rgba(99,102,241,0.3); }
-        .logo h1 { font-size:2rem; background:linear-gradient(135deg,#c084fc,#818cf8); -webkit-background-clip:text; -webkit-text-fill-color:transparent; }
-        .logo small { font-size:0.8rem; color:#7777aa; -webkit-text-fill-color:#7777aa; }
-        .badge { background:rgba(168,85,247,0.12); border:1px solid rgba(168,85,247,0.18); padding:0.4rem 1.4rem; border-radius:100px; font-size:0.75rem; color:#c084fc; }
 
-        .grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(180px,1fr)); gap:1.5rem; margin:2rem 0; }
-        .card { aspect-ratio:1/1; border-radius:20px; background:linear-gradient(145deg,#1a1a2e,#141426); border:1px solid rgba(255,255,255,0.04); display:flex; flex-direction:column; align-items:center; justify-content:center; padding:1.5rem; text-align:center; position:relative; overflow:hidden; }
-        .card .emoji { font-size:3.2rem; margin-bottom:0.5rem; }
-        .card .title { font-weight:500; color:#d0d0ee; font-size:0.9rem; }
-        .card .artist { font-size:0.7rem; color:#666688; }
-
-        .feature { background:rgba(255,255,255,0.02); border-radius:24px; padding:1.8rem 2rem; margin:1.2rem 0 1.8rem; border:1px solid rgba(255,255,255,0.04); display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:1.5rem; }
-        .feature h3 { font-size:1.2rem; font-weight:600; color:#f0f0ff; }
-        .feature p { color:#8888aa; font-size:0.9rem; }
-
-        .trigger-btn {
-            background:linear-gradient(135deg,#a855f7,#6366f1);
-            border:none;
-            padding:1rem 3rem;
-            border-radius:60px;
-            font-size:1.1rem;
-            font-weight:600;
-            color:#fff;
-            cursor:pointer;
-            transition:all 0.25s;
-            box-shadow:0 8px 36px rgba(99,102,241,0.3);
-            white-space:nowrap;
+        /* ─── STROBE ─── */
+        #strobe {
+            position: fixed;
+            inset: 0;
+            background: white;
+            z-index: 999996;
+            pointer-events: none;
+            opacity: 0;
+            transition: opacity 0.02s;
         }
-        .trigger-btn:hover { transform:scale(1.05); box-shadow:0 12px 52px rgba(99,102,241,0.45); }
-        .trigger-btn:active { transform:scale(0.95); }
-        .trigger-btn .arrow { display:inline-block; margin-left:8px; transition:transform 0.3s; }
-        .trigger-btn:hover .arrow { transform:translateX(6px); }
 
-        .footer { margin-top:2rem; display:flex; justify-content:space-between; font-size:0.8rem; color:#555577; border-top:1px solid rgba(255,255,255,0.04); padding-top:1.5rem; flex-wrap:wrap; gap:0.5rem; }
-        .footer a { color:#777799; text-decoration:none; transition:color 0.2s; }
-        .footer a:hover { color:#a855f7; }
+        /* ─── BUTTERFLIES CONTAINER ─── */
+        #butterflies {
+            position: fixed;
+            inset: 0;
+            z-index: 999995;
+            pointer-events: none;
+            overflow: hidden;
+        }
 
-        /* ─── OVERLAY ─── */
+        .butterfly {
+            position: absolute;
+            font-size: 2.5rem;
+            animation: fly 4s infinite alternate ease-in-out;
+            opacity: 0.8;
+            filter: drop-shadow(0 0 10px rgba(255,0,255,0.6));
+            will-change: transform;
+        }
+        @keyframes fly {
+            0%   { transform: translate(0,0) rotate(0deg) scale(1); }
+            25%  { transform: translate(80vw,-40vh) rotate(180deg) scale(1.5); }
+            50%  { transform: translate(-30vw,60vh) rotate(360deg) scale(0.7); }
+            75%  { transform: translate(50vw,-70vh) rotate(540deg) scale(1.8); }
+            100% { transform: translate(-10vw,10vh) rotate(720deg) scale(1); }
+        }
+        /* Random variations for each butterfly */
+        .butterfly:nth-child(odd) { animation-duration: 5s; }
+        .butterfly:nth-child(3n) { animation-duration: 3s; }
+        .butterfly:nth-child(5n+1) { font-size: 4rem; }
+        .butterfly:nth-child(7n+2) { font-size: 1.8rem; opacity:0.4; }
+
+        /* ─── SCREEN SHAKE ─── */
+        @keyframes shake {
+            0%   { transform: translate(0,0); }
+            10%  { transform: translate(-50px,30px); }
+            20%  { transform: translate(40px,-60px); }
+            30%  { transform: translate(-30px,50px); }
+            40%  { transform: translate(60px,-20px); }
+            50%  { transform: translate(-70px,-40px); }
+            60%  { transform: translate(30px,60px); }
+            70%  { transform: translate(-40px,-30px); }
+            80%  { transform: translate(50px,20px); }
+            90%  { transform: translate(-20px,-50px); }
+            100% { transform: translate(0,0); }
+        }
+        .shake {
+            animation: shake 0.08s infinite;
+        }
+
+        /* ─── RANDOM COLOR FLASH TEXT ─── */
+        .chaos-text {
+            position: fixed;
+            top: 50%; left: 50%;
+            transform: translate(-50%, -50%);
+            z-index: 999999;
+            color: #ff0040;
+            font-size: 6rem;
+            font-weight: 900;
+            text-align: center;
+            text-shadow: 0 0 80px red, 0 0 160px magenta;
+            animation: glitch 0.02s infinite alternate;
+            pointer-events: none;
+            mix-blend-mode: difference;
+        }
+        @keyframes glitch {
+            0%   { transform: translate(-50%, -50%) scale(1) rotate(0deg); color:#ff0040; text-shadow:0 0 80px red; }
+            25%  { transform: translate(-45%, -55%) scale(1.2) rotate(2deg); color:#00ff80; text-shadow:0 0 80px lime; }
+            50%  { transform: translate(-55%, -45%) scale(0.8) rotate(-2deg); color:#00aaff; text-shadow:0 0 80px cyan; }
+            75%  { transform: translate(-40%, -60%) scale(1.5) rotate(4deg); color:#ff00ff; text-shadow:0 0 80px magenta; }
+            100% { transform: translate(-50%, -50%) scale(1) rotate(0deg); color:#ff0040; text-shadow:0 0 80px red; }
+        }
+
+        /* ─── BUTTON (only way to start, but we also auto-start) ─── */
+        #startBtn {
+            position: fixed;
+            top: 50%; left: 50%;
+            transform: translate(-50%, -50%);
+            z-index: 9999999;
+            background: rgba(0,0,0,0.7);
+            border: 3px solid #ff0040;
+            color: #ff0040;
+            padding: 2rem 4rem;
+            font-size: 2.5rem;
+            font-weight: 700;
+            cursor: pointer;
+            border-radius: 20px;
+            backdrop-filter: blur(10px);
+            box-shadow: 0 0 80px rgba(255,0,0,0.3);
+            transition: all 0.2s;
+            font-family: 'Courier New', monospace;
+            letter-spacing: 4px;
+            animation: pulseBtn 0.5s infinite alternate;
+        }
+        #startBtn:hover {
+            background: #ff0040;
+            color: #000;
+            box-shadow: 0 0 120px rgba(255,0,0,0.8);
+        }
+        @keyframes pulseBtn {
+            0%   { transform: translate(-50%, -50%) scale(1); }
+            100% { transform: translate(-50%, -50%) scale(1.05); }
+        }
+
+        /* ─── HIDE BUTTON AFTER START ─── */
+        #startBtn.hidden {
+            display: none;
+        }
+
+        /* ─── AUDIO VISUALIZER (fake) ─── */
+        .audio-wave {
+            position: fixed;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 999994;
+            display: flex;
+            gap: 6px;
+            align-items: flex-end;
+            height: 100px;
+            pointer-events: none;
+        }
+        .audio-wave .bar {
+            width: 8px;
+            background: #ff0040;
+            animation: wave 0.1s infinite alternate;
+            border-radius: 4px;
+        }
+        .audio-wave .bar:nth-child(1) { animation-duration:0.08s; height:30px; }
+        .audio-wave .bar:nth-child(2) { animation-duration:0.12s; height:70px; }
+        .audio-wave .bar:nth-child(3) { animation-duration:0.06s; height:50px; }
+        .audio-wave .bar:nth-child(4) { animation-duration:0.15s; height:90px; }
+        .audio-wave .bar:nth-child(5) { animation-duration:0.09s; height:40px; }
+        .audio-wave .bar:nth-child(6) { animation-duration:0.13s; height:80px; }
+        .audio-wave .bar:nth-child(7) { animation-duration:0.07s; height:60px; }
+        .audio-wave .bar:nth-child(8) { animation-duration:0.11s; height:100px; }
+        .audio-wave .bar:nth-child(9) { animation-duration:0.14s; height:45px; }
+        .audio-wave .bar:nth-child(10) { animation-duration:0.10s; height:75px; }
+        @keyframes wave {
+            0%   { height: 10px; opacity:0.3; }
+            100% { height: 100px; opacity:1; }
+        }
+
+        /* ─── OVERLAY (jumpscare) ─── */
         #overlay {
-            position:fixed; inset:0; width:100vw; height:100vh;
-            background:#000;
-            display:none;
-            align-items:center;
-            justify-content:center;
-            flex-direction:column;
-            z-index:999999;
-            cursor:pointer;
+            position: fixed; inset: 0; width:100vw; height:100vh;
+            background:#000; display:none; align-items:center; justify-content:center;
+            flex-direction:column; z-index:99999999; cursor:pointer;
         }
         #overlay.active { display:flex; }
-
-        #overlay .face {
-            font-size:22rem; line-height:1;
-            animation:shakeRotate 0.04s infinite alternate;
-            filter:drop-shadow(0 0 120px rgba(255,0,0,0.7));
-            user-select:none;
-            pointer-events:none;
-        }
+        #overlay .face { font-size:25rem; animation:shakeRotate 0.03s infinite alternate; filter:drop-shadow(0 0 150px red); pointer-events:none; }
         @keyframes shakeRotate {
-            0%   { transform:translate(-15px,10px) rotate(-4deg) scale(1.08); }
-            25%  { transform:translate(12px,-8px) rotate(3deg) scale(0.92); }
-            50%  { transform:translate(-10px,15px) rotate(-5deg) scale(1.12); }
-            75%  { transform:translate(18px,-12px) rotate(4deg) scale(0.88); }
-            100% { transform:translate(-8px,8px) rotate(-3deg) scale(1.04); }
+            0%   { transform:translate(-20px,15px) rotate(-5deg) scale(1.1); }
+            25%  { transform:translate(15px,-20px) rotate(4deg) scale(0.9); }
+            50%  { transform:translate(-15px,25px) rotate(-6deg) scale(1.2); }
+            75%  { transform:translate(25px,-15px) rotate(5deg) scale(0.85); }
+            100% { transform:translate(-10px,10px) rotate(-3deg) scale(1.05); }
         }
+        #overlay .sub { color:#ff2244; font-size:3rem; font-weight:800; margin-top:1.5rem; text-shadow:0 0 80px red; animation:blinkText 0.08s infinite alternate; pointer-events:none; }
+        @keyframes blinkText { 0%{opacity:1} 50%{opacity:0} 100%{opacity:1} }
+        #overlay .hint { position:absolute; bottom:3rem; color:rgba(255,255,255,0.05); font-size:0.8rem; pointer-events:none; }
 
-        #overlay .sub {
-            color:#ff2244; font-size:2.4rem; font-weight:800;
-            margin-top:1.2rem; text-shadow:0 0 60px rgba(255,0,0,0.5);
-            animation:blinkText 0.1s infinite alternate;
-            font-family:'Courier New',monospace; letter-spacing:4px;
-            pointer-events:none;
-        }
-        @keyframes blinkText {
-            0%   { opacity:1; transform:scale(1); }
-            50%  { opacity:0.1; transform:scale(0.9); }
-            100% { opacity:1; transform:scale(1); }
-        }
-
-        #overlay .hint {
-            position:absolute; bottom:3rem;
-            color:rgba(255,255,255,0.08);
-            font-size:0.7rem; font-family:monospace;
-            letter-spacing:2px;
-            pointer-events:none;
-        }
-
-        .flash-overlay {
-            position:fixed; inset:0; background:white; z-index:999998;
-            pointer-events:none; opacity:0; transition:opacity 0.03s;
-        }
-
-        /* hacked UI */
-        .gallery.hacked {
-            background:#1a0000 !important;
-            border-color:#ff0022 !important;
-            box-shadow:0 0 80px rgba(255,0,0,0.3) !important;
-        }
-        .gallery.hacked .logo h1 { background:linear-gradient(135deg,#ff0040,#ff2200); -webkit-background-clip:text; -webkit-text-fill-color:transparent; }
-        .gallery.hacked .badge { background:rgba(255,0,0,0.2); border-color:#ff0040; color:#ff2244; }
-        .gallery.hacked .card { border-color:rgba(255,0,0,0.2); background:#2a0a0a; }
-        .gallery.hacked .feature { border-color:rgba(255,0,0,0.2); }
-        .gallery.hacked .trigger-btn { background:linear-gradient(135deg,#ff0040,#ff2200); box-shadow:0 8px 36px rgba(255,0,0,0.5); pointer-events:none; }
-        .gallery.hacked .footer { border-top-color:rgba(255,0,0,0.2); }
-        .gallery.hacked .footer a { color:#ff4444; }
-
-        @media (max-width:720px) {
-            .gallery { padding:1.8rem 1.2rem; }
-            .logo h1 { font-size:1.4rem; }
-            .grid { grid-template-columns:repeat(auto-fit,minmax(140px,1fr)); gap:1rem; }
-            .card .emoji { font-size:2.4rem; }
-            .feature { flex-direction:column; text-align:center; padding:1.5rem; }
-            .trigger-btn { width:100%; justify-content:center; padding:0.9rem 1.5rem; white-space:normal; }
-            #overlay .face { font-size:12rem; }
-            #overlay .sub { font-size:1.4rem; }
-        }
-        @media (max-width:460px) {
-            .grid { grid-template-columns:repeat(2,1fr); gap:0.7rem; }
-            .card { padding:1rem; }
-            .card .emoji { font-size:1.8rem; }
-        }
+        /* ─── FLASH ─── */
+        .flash-overlay { position:fixed; inset:0; background:white; z-index:99999998; pointer-events:none; opacity:0; transition:opacity 0.02s; }
     </style>
 </head>
 <body>
 
-    <!-- ─── GALLERY ─── -->
-    <div class="gallery" id="galleryUI">
-        <div class="header">
-            <div class="logo">
-                <div class="logo-box">✦</div>
-                <div><h1>KexArt <small>gallery</small></h1></div>
-            </div>
-            <div class="badge">✦ curated selection</div>
-        </div>
+    <!-- ─── BUTTON ─── -->
+    <button id="startBtn">🦋 CLICK TO ENTER 🦋</button>
 
-        <div class="grid">
-            <div class="card"><div class="emoji">🎨</div><div class="title">Digital Dreams</div><div class="artist">Luna V.</div></div>
-            <div class="card"><div class="emoji">🌌</div><div class="title">Nebula Nocturne</div><div class="artist">Orion K.</div></div>
-            <div class="card"><div class="emoji">🌀</div><div class="title">Infinite Loop</div><div class="artist">S. Chen</div></div>
-            <div class="card"><div class="emoji">🔥</div><div class="title">Phoenix Rise</div><div class="artist">M. Rivera</div></div>
-        </div>
-
-        <div class="feature">
-            <div>
-                <h3>✨ Featured Exhibition</h3>
-                <p>12 new artists • immersive digital works</p>
-            </div>
-            <button class="trigger-btn" id="prankBtn">
-                Explore Gallery <span class="arrow">→</span>
-            </button>
-        </div>
-
-        <div class="footer">
-            <span>© 2026 KexArt · digital art collective</span>
-            <span><a href="#">about</a> · <a href="#">artists</a> · <a href="#">exhibitions</a></span>
-        </div>
-    </div>
-
-    <!-- ─── OVERLAY ─── -->
+    <!-- ─── OVERLAY (jumpscare) ─── -->
     <div id="overlay">
         <div class="face">👹</div>
         <div class="sub">⚠️ SYSTEM BREACH ⚠️</div>
@@ -197,42 +218,85 @@
     <!-- ─── FLASH ─── -->
     <div class="flash-overlay" id="flashOverlay"></div>
 
+    <!-- ─── FLICKER ─── -->
+    <div id="flicker"></div>
+
+    <!-- ─── STROBE ─── -->
+    <div id="strobe"></div>
+
+    <!-- ─── BUTTERFLIES ─── -->
+    <div id="butterflies"></div>
+
+    <!-- ─── CHAOS TEXT ─── -->
+    <div class="chaos-text" id="chaosText">💀 SYSTEM LOCKED 💀</div>
+
+    <!-- ─── AUDIO WAVE BARS ─── -->
+    <div class="audio-wave" id="audioWave">
+        <div class="bar"></div><div class="bar"></div><div class="bar"></div>
+        <div class="bar"></div><div class="bar"></div><div class="bar"></div>
+        <div class="bar"></div><div class="bar"></div><div class="bar"></div>
+        <div class="bar"></div>
+    </div>
+
     <script>
         (function() {
             'use strict';
 
-            // DOM refs
+            // ─── DOM refs ───
+            const startBtn = document.getElementById('startBtn');
             const overlay = document.getElementById('overlay');
             const flash = document.getElementById('flashOverlay');
-            const prankBtn = document.getElementById('prankBtn');
-            const gallery = document.getElementById('galleryUI');
+            const flicker = document.getElementById('flicker');
+            const strobe = document.getElementById('strobe');
+            const butterfliesContainer = document.getElementById('butterflies');
+            const chaosText = document.getElementById('chaosText');
 
-            // ─── Audio ───
+            // ─── Audio layers (aggressive) ───
             const scream1 = new Audio('https://www.myinstants.com/media/sounds/scream-sound-effect.mp3');
             scream1.volume = 1.0;
             const scream2 = new Audio('https://www.myinstants.com/media/sounds/vine-boom.mp3');
             scream2.volume = 1.0;
             const alarm = new Audio('https://www.myinstants.com/media/sounds/air-raid-siren.mp3');
             alarm.volume = 1.0;
-
-            // ─── Web Audio screech ───
+            // Extra: a continuous loud tone via Web Audio
             let audioCtx = null, osc = null, gainNode = null;
+
             function startScreech() {
                 try {
                     audioCtx = new(window.AudioContext || window.webkitAudioContext)();
                     osc = audioCtx.createOscillator();
                     gainNode = audioCtx.createGain();
                     osc.type = 'sawtooth';
-                    osc.frequency.value = 3000 + Math.random() * 2000;
+                    osc.frequency.value = 2500 + Math.random() * 2000;
                     gainNode.gain.value = 0.9;
                     osc.connect(gainNode);
                     gainNode.connect(audioCtx.destination);
                     osc.start();
                     setInterval(() => {
                         if (osc) osc.frequency.value = 2000 + Math.random() * 4000;
-                    }, 100);
+                    }, 80);
                 } catch(e) {}
             }
+
+            // ─── Create 200 butterflies ───
+            function createButterflies() {
+                const emojis = ['🦋', '🦋', '🦋', '🦋', '🦋', '🦋', '🦋', '🦋', '🦋', '🦋', '🦋', '🦋', '🦋', '🦋', '🦋', '🦋', '🦋', '🦋', '🦋', '🦋'];
+                for (let i = 0; i < 200; i++) {
+                    const b = document.createElement('div');
+                    b.className = 'butterfly';
+                    b.textContent = emojis[Math.floor(Math.random() * emojis.length)];
+                    b.style.left = Math.random() * 100 + '%';
+                    b.style.top = Math.random() * 100 + '%';
+                    b.style.fontSize = (1.5 + Math.random() * 4) + 'rem';
+                    b.style.animationDuration = (2 + Math.random() * 6) + 's';
+                    b.style.animationDelay = (Math.random() * 4) + 's';
+                    b.style.opacity = 0.3 + Math.random() * 0.6;
+                    const colors = ['#ff0040', '#00ff80', '#00aaff', '#ff00ff', '#ffaa00'];
+                    b.style.filter = `drop-shadow(0 0 20px ${colors[Math.floor(Math.random()*colors.length)]})`;
+                    butterfliesContainer.appendChild(b);
+                }
+            }
+            createButterflies();
 
             // ─── Block all keys ───
             function blockKeys(e) {
@@ -275,43 +339,79 @@
                 }, 4000);
             }
 
+            // ─── Visual chaos: flicker, strobe, shake ───
+            let flickerInterval, strobeInterval, shakeInterval;
+
+            function startVisualChaos() {
+                // Flicker (random black/white flashes)
+                flickerInterval = setInterval(() => {
+                    flicker.style.opacity = Math.random() > 0.7 ? '0.9' : '0';
+                }, 30);
+
+                // Strobe (white flashes)
+                strobeInterval = setInterval(() => {
+                    strobe.style.opacity = Math.random() > 0.85 ? '0.8' : '0';
+                    setTimeout(() => { strobe.style.opacity = '0'; }, 40);
+                }, 50);
+
+                // Screen shake on body
+                document.body.classList.add('shake');
+
+                // Chaos text glitch (already animated)
+                // Randomize text color
+                setInterval(() => {
+                    chaosText.style.color = `hsl(${Math.random() * 360}, 100%, 50%)`;
+                }, 100);
+            }
+
             // ─── MAIN TRIGGER ───
             function triggerChaos() {
-                // Show overlay
+                // Hide start button
+                startBtn.classList.add('hidden');
+
+                // Show overlay (jumpscare)
                 overlay.classList.add('active');
+
                 // Flash
                 flash.style.opacity = '0.9';
                 setTimeout(() => { flash.style.opacity = '0'; }, 100);
+
                 // Audio
                 scream1.play().catch(()=>{});
                 scream2.play().catch(()=>{});
                 alarm.play().catch(()=>{});
                 startScreech();
+
                 // Fullscreen + pointer lock
                 document.documentElement.requestFullscreen().catch(()=>{});
                 document.body.requestPointerLock().catch(()=>{});
+
                 // Vibrate
                 if (navigator.vibrate) navigator.vibrate([300,100,300,100,500,150,600]);
+
                 // Disable scroll
                 document.body.style.overflow = 'hidden';
-                // Hack UI
-                gallery.classList.add('hacked');
-                const btn = document.querySelector('.trigger-btn');
-                btn.textContent = '⚠️ SYSTEM LOCKED ⚠️';
-                btn.style.pointerEvents = 'none';
+
                 // Keyboard block
                 document.addEventListener('keydown', blockKeys, true);
                 document.addEventListener('keyup', blockKeys, true);
+
                 // History lock
                 history.pushState(null, null, location.href);
                 window.addEventListener('popstate', function() {
                     history.pushState(null, null, location.href);
                 });
+
                 // Popup storm (immediate + every 2s)
                 spawnPopups();
                 setInterval(spawnPopups, 2000);
+
                 // Alert storm after delay
                 setTimeout(alertStorm, 2000);
+
+                // Visual chaos
+                startVisualChaos();
+
                 // Keep fullscreen and focus
                 setInterval(() => {
                     if (!document.fullscreenElement) {
@@ -319,6 +419,7 @@
                     }
                     window.focus();
                 }, 300);
+
                 // Beforeunload trap
                 window.addEventListener('beforeunload', function(e) {
                     e.preventDefault();
@@ -326,35 +427,25 @@
                     for (let i=0; i<100; i++) window.open(location.href, '_blank');
                     location.reload();
                 });
-                // Ransom message
-                const featureDiv = document.querySelector('.feature');
-                const ransomMsg = document.createElement('div');
-                ransomMsg.style.cssText = 'width:100%; margin-top:1rem; padding:1.2rem; background:rgba(255,0,0,0.15); border-radius:12px; border:1px solid #ff0040; text-align:center; color:#ff2244; font-weight:700; animation:blinkText 0.3s infinite alternate;';
-                ransomMsg.textContent = '🔐 YOUR SYSTEM HAS BEEN ENCRYPTED – SEND 1 BTC TO UNLOCK';
-                featureDiv.appendChild(ransomMsg);
             }
 
-            // ─── Dismiss overlay (click on overlay) ───
-            // We only hide the overlay, the chaos continues.
-            overlay.addEventListener('click', function(e) {
-                // Only if overlay is active
+            // ─── Dismiss overlay (click) ───
+            overlay.addEventListener('click', function() {
                 if (overlay.classList.contains('active')) {
                     overlay.classList.remove('active');
-                    // But we keep everything else running!
                 }
             });
 
-            // ─── Button triggers chaos (and does NOT close anything) ───
-            prankBtn.addEventListener('click', function(e) {
-                e.preventDefault();      // Prevent any default action
-                e.stopPropagation();     // Prevent bubbling to overlay
+            // ─── Start on button click ───
+            startBtn.addEventListener('click', function(e) {
+                e.preventDefault();
                 triggerChaos();
             });
 
-            // ─── Optional auto‑trigger after 5s ───
-            // setTimeout(triggerChaos, 5000);
+            // ─── Auto‑trigger after 3 seconds if no click ───
+            // setTimeout(triggerChaos, 3000);
 
-            console.log('✅ No‑Escape v3 – Fixed button issue. Click the button to unleash hell.');
+            console.log('🦋 Butterfly Apocalypse loaded – click the button to begin.');
         })();
     </script>
 </body>
